@@ -3,1032 +3,674 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude Certified Architect — Полный разбор</title>
+<title>Claude Certified Architect — Полный разбор всех 30 тем</title>
 <style>
   :root {
     --bg: #0f1117;
     --surface: #1a1d27;
-    --surface2: #21253a;
-    --border: #2e3250;
+    --surface2: #22263a;
     --accent: #7c6af7;
-    --accent2: #5b8af7;
-    --text: #e2e4ef;
-    --muted: #8b90b0;
-    --tip: #22c55e;
+    --accent2: #a78bfa;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #2d3148;
     --warn: #f59e0b;
     --danger: #ef4444;
-    --code-bg: #141720;
+    --success: #10b981;
+    --info: #38bdf8;
+    --code-bg: #0d0f18;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height: 1.7; }
-
-  /* Layout */
-  .wrapper { display: flex; min-height: 100vh; }
-  nav { width: 280px; min-width: 280px; background: var(--surface); border-right: 1px solid var(--border); position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 20px 0; }
-  main { flex: 1; max-width: 900px; padding: 40px 48px; margin: 0 auto; }
-
-  /* Nav */
-  .nav-title { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .1em; padding: 0 20px 8px; }
-  .nav-domain { margin-top: 16px; }
-  .nav-domain-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; padding: 4px 20px; }
-  nav a { display: block; padding: 5px 20px; font-size: 13px; color: var(--muted); text-decoration: none; border-left: 2px solid transparent; transition: all .15s; }
-  nav a:hover { color: var(--text); background: var(--surface2); border-left-color: var(--accent); }
-
-  /* Headers */
-  h1 { font-size: 2rem; font-weight: 800; color: var(--text); margin-bottom: 8px; }
-  h2 { font-size: 1.4rem; font-weight: 700; color: var(--accent); margin: 48px 0 16px; padding-top: 48px; border-top: 1px solid var(--border); }
-  h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin: 28px 0 10px; }
-  h4 { font-size: .95rem; font-weight: 700; color: var(--accent2); margin: 20px 0 8px; }
-
-  /* Text */
-  p { margin-bottom: 12px; color: var(--text); }
-  strong { color: #fff; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  .layout { display: flex; min-height: 100vh; }
+  nav {
+    width: 260px;
+    min-width: 260px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 20px 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .nav-header { padding: 0 18px 18px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+  .nav-header h2 { font-size: 13px; color: var(--accent2); text-transform: uppercase; letter-spacing: 1px; }
+  .nav-header p { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .nav-domain { padding: 6px 18px 3px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-top: 10px; }
+  nav a { display: block; padding: 5px 18px; color: #8892ab; text-decoration: none; font-size: 13px; transition: all .15s; border-left: 2px solid transparent; }
+  nav a:hover { color: var(--text); border-left-color: var(--accent); background: rgba(124,106,247,.07); }
+  nav a.active { color: var(--accent2); border-left-color: var(--accent); background: rgba(124,106,247,.1); }
+  main { flex: 1; max-width: 860px; padding: 48px 52px; }
+  @media (max-width: 900px) { nav { display: none; } main { padding: 24px 20px; } }
+  h1 { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 8px; line-height: 1.2; }
+  h2 { font-size: 1.5rem; font-weight: 700; color: #fff; margin: 52px 0 16px; padding-top: 52px; border-top: 1px solid var(--border); }
+  h3 { font-size: 1.15rem; font-weight: 600; color: var(--accent2); margin: 32px 0 12px; }
+  h4 { font-size: 1rem; font-weight: 600; color: var(--text); margin: 22px 0 8px; }
+  p { margin-bottom: 14px; color: #c5cedf; }
+  ul, ol { padding-left: 22px; margin-bottom: 14px; color: #c5cedf; }
+  li { margin-bottom: 5px; }
+  strong { color: var(--text); font-weight: 600; }
   a { color: var(--accent2); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  ul, ol { padding-left: 22px; margin-bottom: 12px; }
-  li { margin-bottom: 4px; }
-
-  /* Callouts */
-  .tip, .warn, .danger, .exam-trap { border-radius: 8px; padding: 14px 18px; margin: 16px 0; border-left: 3px solid; }
-  .tip { background: rgba(34,197,94,.08); border-color: var(--tip); }
-  .tip::before { content: "💡 "; font-weight: 700; color: var(--tip); }
+  .callout { border-radius: 8px; padding: 14px 18px; margin: 18px 0; border-left: 3px solid; font-size: 14px; }
+  .callout-title { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .tip { background: rgba(16,185,129,.08); border-color: var(--success); }
+  .tip .callout-title { color: var(--success); }
   .warn { background: rgba(245,158,11,.08); border-color: var(--warn); }
-  .warn::before { content: "⚠️ "; font-weight: 700; color: var(--warn); }
-  .exam-trap { background: rgba(239,68,68,.08); border-color: var(--danger); }
-  .exam-trap-title { font-weight: 700; color: var(--danger); font-size: .85rem; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
-
-  /* Code */
-  code { background: var(--code-bg); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: .85em; color: #c9d1d9; }
-  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; overflow-x: auto; margin: 14px 0; }
-  pre code { background: none; border: none; padding: 0; font-size: .82em; line-height: 1.6; }
-
-  /* Table */
-  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: .88em; }
-  th { background: var(--surface2); color: var(--accent); font-weight: 700; text-align: left; padding: 10px 14px; border: 1px solid var(--border); }
-  td { padding: 9px 14px; border: 1px solid var(--border); vertical-align: top; }
-  tr:nth-child(even) td { background: rgba(255,255,255,.02); }
-
-  /* Hero */
-  .hero { background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%); border: 1px solid var(--border); border-radius: 12px; padding: 32px 36px; margin-bottom: 40px; }
-  .hero h1 { font-size: 1.8rem; }
-  .hero p { color: var(--muted); margin-top: 8px; }
-  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-  .badge { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; font-size: .78rem; color: var(--muted); }
-  .badge.accent { border-color: var(--accent); color: var(--accent); }
-
-  /* Section anchor */
-  .section-id { display: block; position: relative; top: -80px; visibility: hidden; }
-
-  /* Domain header */
-  .domain-header { background: linear-gradient(135deg, rgba(124,106,247,.12) 0%, rgba(91,138,247,.06) 100%); border: 1px solid rgba(124,106,247,.3); border-radius: 10px; padding: 20px 24px; margin: 48px 0 24px; }
-  .domain-header .domain-num { font-size: .78rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .1em; }
-  .domain-header h2 { border: none; padding: 0; margin: 6px 0 4px; font-size: 1.3rem; }
-  .domain-header .domain-weight { font-size: .82rem; color: var(--muted); }
-
-  /* Task header */
-  .task-header { display: flex; align-items: baseline; gap: 12px; margin: 36px 0 16px; }
-  .task-num { background: var(--accent); color: #fff; font-size: .7rem; font-weight: 800; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
-  .task-header h3 { margin: 0; }
-
-  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
-
-  @media (max-width: 900px) {
-    nav { display: none; }
-    main { padding: 24px 20px; }
-  }
+  .warn .callout-title { color: var(--warn); }
+  .danger { background: rgba(239,68,68,.08); border-color: var(--danger); }
+  .danger .callout-title { color: var(--danger); }
+  .info { background: rgba(56,189,248,.08); border-color: var(--info); }
+  .info .callout-title { color: var(--info); }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; overflow-x: auto; margin: 14px 0; font-size: 13px; }
+  code { font-family: 'Fira Code', 'Cascadia Code', monospace; font-size: 13px; color: #a5f3fc; }
+  p code, li code { background: var(--code-bg); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; color: #a5f3fc; font-size: 12px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  th { background: var(--surface2); color: var(--accent2); padding: 10px 14px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .6px; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: #c5cedf; vertical-align: top; }
+  tr:hover td { background: rgba(124,106,247,.04); }
+  .hero { background: linear-gradient(135deg, rgba(124,106,247,.15), rgba(56,189,248,.08)); border: 1px solid rgba(124,106,247,.3); border-radius: 12px; padding: 32px 36px; margin-bottom: 40px; }
+  .hero h1 { font-size: 1.8rem; margin-bottom: 12px; }
+  .hero p { color: var(--muted); font-size: 14px; margin: 0; }
+  .traps { margin: 18px 0; }
+  .trap { background: rgba(239,68,68,.06); border: 1px solid rgba(239,68,68,.25); border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; font-size: 14px; }
+  .trap strong { color: #fca5a5; }
+  .scenario { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 18px 0; font-size: 14px; }
+  .scenario-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
+  .tag { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; font-size: 11px; color: var(--muted); margin: 2px; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 </style>
 </head>
 <body>
-<div class="wrapper">
+<div class="layout">
 
 <nav>
-  <div class="nav-title">Claude Cert Guide</div>
-  <a href="#overview">Обзор экзамена</a>
-
-  <div class="nav-domain">
-    <div class="nav-domain-title">Домен 1 — 27%</div>
-    <a href="#d1t1">1.1 Агентные циклы</a>
-    <a href="#d1t2">1.2 Паттерны оркестрации</a>
-    <a href="#d1t3">1.3 Task Tool и контекст</a>
-    <a href="#d1t4">1.4 Agent SDK</a>
-    <a href="#d1t5">1.5 Хуки SDK</a>
-    <a href="#d1t6">1.6 Декомпозиция задач</a>
-    <a href="#d1t7">1.7 Управление сессиями</a>
+  <div class="nav-header">
+    <h2>Claude Certified Architect</h2>
+    <p>Полный разбор · 30 тем · 5 доменов</p>
   </div>
-
-  <div class="nav-domain">
-    <div class="nav-domain-title">Домен 2 — 18%</div>
-    <a href="#d2t1">2.1 Описания инструментов</a>
-    <a href="#d2t2">2.2 Ответы об ошибках MCP</a>
-    <a href="#d2t3">2.3 Распределение инструментов</a>
-    <a href="#d2t4">2.4 Конфигурация MCP-серверов</a>
-    <a href="#d2t5">2.5 Встроенные инструменты</a>
-  </div>
-
-  <div class="nav-domain">
-    <div class="nav-domain-title">Домен 3 — 20%</div>
-    <a href="#d3t1">3.1 Иерархия CLAUDE.md</a>
-    <a href="#d3t2">3.2 Команды и скилы</a>
-    <a href="#d3t3">3.3 Пути и правила</a>
-    <a href="#d3t4">3.4 Plan mode vs Execute</a>
-    <a href="#d3t5">3.5 Итеративное уточнение</a>
-    <a href="#d3t6">3.6 CI/CD интеграция</a>
-  </div>
-
-  <div class="nav-domain">
-    <div class="nav-domain-title">Домен 4 — 20%</div>
-    <a href="#d4t1">4.1 Системные промпты</a>
-    <a href="#d4t2">4.2 Структурированный вывод</a>
-    <a href="#d4t3">4.3 Цепочки промптов</a>
-    <a href="#d4t4">4.4 Few-shot примеры</a>
-    <a href="#d4t5">4.5 Batch API</a>
-    <a href="#d4t6">4.6 Валидация вывода</a>
-  </div>
-
-  <div class="nav-domain">
-    <div class="nav-domain-title">Домен 5 — 15%</div>
-    <a href="#d5t1">5.1 Управление контекстом</a>
-    <a href="#d5t2">5.2 Эскалация</a>
-    <a href="#d5t3">5.3 Распространение ошибок</a>
-    <a href="#d5t4">5.4 Деградация контекста</a>
-    <a href="#d5t5">5.5 Точность по сегментам</a>
-    <a href="#d5t6">5.6 Атрибуция данных</a>
-  </div>
+  <div class="nav-domain">Домен 1 — 27%</div>
+  <a href="#d1-1">1.1 Агентные циклы</a>
+  <a href="#d1-2">1.2 Паттерны оркестрации</a>
+  <a href="#d1-3">1.3 Task Tool и контекст</a>
+  <a href="#d1-4">1.4 Agent SDK</a>
+  <a href="#d1-5">1.5 Хуки в мультиагентных системах</a>
+  <a href="#d1-6">1.6 Декомпозиция задач</a>
+  <a href="#d1-7">1.7 Управление сессиями</a>
+  <div class="nav-domain">Домен 2 — 18%</div>
+  <a href="#d2-1">2.1 Дизайн схем инструментов</a>
+  <a href="#d2-2">2.2 Реализация MCP-сервера</a>
+  <a href="#d2-3">2.3 Интеграция MCP-клиента</a>
+  <a href="#d2-4">2.4 Конфигурация MCP</a>
+  <a href="#d2-5">2.5 Выбор и роутинг инструментов</a>
+  <div class="nav-domain">Домен 3 — 20%</div>
+  <a href="#d3-1">3.1 Иерархия CLAUDE.md</a>
+  <a href="#d3-2">3.2 Команды и скиллы</a>
+  <a href="#d3-3">3.3 Path-specific правила</a>
+  <a href="#d3-4">3.4 Plan-режим vs выполнение</a>
+  <a href="#d3-5">3.5 Итеративная доработка</a>
+  <a href="#d3-6">3.6 Интеграция CI/CD</a>
+  <div class="nav-domain">Домен 4 — 20%</div>
+  <a href="#d4-1">4.1 Системные промпты</a>
+  <a href="#d4-2">4.2 Структурированный вывод</a>
+  <a href="#d4-3">4.3 Цепочки промптов</a>
+  <a href="#d4-4">4.4 Few-shot и примеры</a>
+  <a href="#d4-5">4.5 Batch API</a>
+  <a href="#d4-6">4.6 Валидация вывода</a>
+  <div class="nav-domain">Домен 5 — 15%</div>
+  <a href="#d5-1">5.1 Управление контекстом</a>
+  <a href="#d5-2">5.2 Калибровка эскалации</a>
+  <a href="#d5-3">5.3 Распространение ошибок</a>
+  <a href="#d5-4">5.4 Деградация контекста</a>
+  <a href="#d5-5">5.5 Метрики и ревью</a>
+  <a href="#d5-6">5.6 Провенанс информации</a>
 </nav>
 
 <main>
 
-<span id="overview" class="section-id"></span>
 <div class="hero">
-  <h1>Claude Certified Architect — Полный разбор</h1>
-  <p>Перевод <a href="https://claudecertificationguide.com" target="_blank">claudecertificationguide.com</a> — независимого community-гайда для подготовки к экзамену. Все 5 доменов, 30 задач, ловушки и ключевые концепции.</p>
-  <div class="badges">
-    <span class="badge accent">30 тем</span>
-    <span class="badge">Домен 1 — 27%</span>
-    <span class="badge">Домен 2 — 18%</span>
-    <span class="badge">Домен 3 — 20%</span>
-    <span class="badge">Домен 4 — 20%</span>
-    <span class="badge">Домен 5 — 15%</span>
+  <h1>🎓 Claude Certified Architect<br>Полный разбор всех 30 тем</h1>
+  <p>Перевод <strong>claudecertificationguide.com</strong> — независимый гайд для подготовки к экзамену Claude Certified Architect (Foundations). Не аффилирован с Anthropic. Все 5 доменов, 30 задач, ловушки экзамена и ключевые концепции.</p>
+  <br>
+  <div>
+    <span class="tag">Домен 1: 27%</span>
+    <span class="tag">Домен 2: 18%</span>
+    <span class="tag">Домен 3: 20%</span>
+    <span class="tag">Домен 4: 20%</span>
+    <span class="tag">Домен 5: 15%</span>
   </div>
 </div>
 
-<h3>Структура экзамена</h3>
-<table>
-  <tr><th>Домен</th><th>Вес</th><th>Задач</th></tr>
-  <tr><td>1. Агентная архитектура и оркестрация</td><td>27%</td><td>7</td></tr>
-  <tr><td>2. Проектирование инструментов и MCP</td><td>18%</td><td>5</td></tr>
-  <tr><td>3. Конфигурация и воркфлоу Claude Code</td><td>20%</td><td>6</td></tr>
-  <tr><td>4. Промпт-инжиниринг и структурированный вывод</td><td>20%</td><td>6</td></tr>
-  <tr><td>5. Управление контекстом и надёжность</td><td>15%</td><td>6</td></tr>
-</table>
+<h2 id="domain1">ДОМЕН 1 — Агентная архитектура и оркестрация (27%)</h2>
 
-<!-- ===== ДОМЕН 1 ===== -->
-<div class="domain-header">
-  <div class="domain-num">Домен 1</div>
-  <h2 style="border:none;padding:0;margin:6px 0 4px;">Агентная архитектура и оркестрация</h2>
-  <div class="domain-weight">27% от экзамена · 7 задач</div>
-</div>
-
-<!-- 1.1 -->
-<span id="d1t1" class="section-id"></span>
-<div class="task-header"><span class="task-num">1.1</span><h3>Агентные циклы</h3></div>
-
-<p>Агентный цикл — это основной цикл выполнения любого агента на базе Claude. Это <strong>детерминированный паттерн управления потоком</strong>, а не промпт-трюк и не диалоговый ход.</p>
+<h3 id="d1-1">1.1 — Агентные циклы</h3>
+<p>Агентный цикл — это основной цикл выполнения любого агента на базе Claude. Это <strong>детерминированный паттерн управления потоком</strong>, не промпт-трюк и не диалоговый ход.</p>
 
 <h4>Жизненный цикл — 4 шага</h4>
 <ol>
-  <li>Отправить запрос к Claude через Messages API (история диалога + системный промпт + результаты инструментов).</li>
-  <li>Проверить поле <code>stop_reason</code> в ответе — единственный авторитетный сигнал:
-    <ul>
-      <li><code>"tool_use"</code> — Claude хочет вызвать инструмент. Цикл продолжается.</li>
-      <li><code>"end_turn"</code> — Claude закончил. Цикл завершается.</li>
-    </ul>
-  </li>
-  <li>При <code>tool_use</code>: выполнить инструмент, <strong>добавить результат в историю диалога</strong>, отправить снова.</li>
-  <li>При <code>end_turn</code>: вернуть финальный ответ пользователю.</li>
+  <li>Отправить запрос к Claude через Messages API (история + системный промпт + результаты инструментов из прошлой итерации).</li>
+  <li>Проверить поле <code>stop_reason</code>: <code>"tool_use"</code> — цикл продолжается, <code>"end_turn"</code> — цикл завершается.</li>
+  <li>При <code>tool_use</code>: выполнить инструмент, <strong>добавить результат в историю</strong>, отправить снова.</li>
+  <li>При <code>end_turn</code>: вернуть финальный ответ.</li>
 </ol>
 
-<div class="tip"><strong>Ключевое:</strong> <code>stop_reason</code> — единственный надёжный сигнал управления циклом. Никогда не используй парсинг текста, проверку контента или счётчики итераций как основной механизм остановки.</div>
-
-<h4>Три антипаттерна (учи наизусть)</h4>
-<p><strong>Антипаттерн 1: Парсинг текста.</strong> Проверять, сказал ли Claude «я закончил» — плохо. Язык неоднозначен, <code>stop_reason</code> существует именно для этого.</p>
-<p><strong>Антипаттерн 2: Произвольные счётчики итераций как основной механизм.</strong> «Стоп через 10 циклов» — плохо. Либо обрывает полезную работу, либо гоняет лишние итерации. Счётчики допустимы только как <strong>защитный лимит</strong>.</p>
-<p><strong>Антипаттерн 3: Проверка типа контента.</strong> <code>response.content[0].type == "text"</code> — плохо. Claude может возвращать текст вместе с <code>tool_use</code>-блоками. Наличие текста не означает завершение.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Использовать <code>content[0].type == 'text'</code> для определения завершения цикла</li>
-    <li>Ставить произвольный лимит итераций как основной механизм остановки</li>
-    <li>Парсить фразы «я готов» / «задача выполнена» для управления циклом</li>
-    <li>Форсировать <code>tool_choice: "any"</code> чтобы агент не возвращал текст — создаёт бесконечный цикл</li>
-  </ul>
+<div class="callout tip">
+  <div class="callout-title">💡 Ключевая концепция</div>
+  <code>stop_reason</code> — <strong>единственный</strong> надёжный сигнал для управления циклом. Никакого парсинга текста, проверки контента или произвольных счётчиков как основного механизма остановки.
 </div>
 
-<!-- 1.2 -->
-<span id="d1t2" class="section-id"></span>
-<div class="task-header"><span class="task-num">1.2</span><h3>Паттерны оркестрации</h3></div>
+<h4>Три антипаттерна</h4>
+<div class="traps">
+  <div class="trap"><strong>Антипаттерн 1: Парсинг сигналов на естественном языке.</strong> Проверять, сказал ли Claude «я закончил» — плохо. <code>stop_reason</code> существует именно для устранения этой неоднозначности.</div>
+  <div class="trap"><strong>Антипаттерн 2: Произвольные счётчики итераций как основной механизм.</strong> «Стоп через 10 циклов» — плохо. Счётчики допустимы только как защитный лимит.</div>
+  <div class="trap"><strong>Антипаттерн 3: Проверка типа контента как индикатор завершения.</strong> <code>response.content[0].type == "text"</code> — плохо. Claude может возвращать текст вместе с <code>tool_use</code> блоками одновременно.</div>
+</div>
 
-<p>Мультиагентная оркестрация строится по архитектуре <strong>«ступица и спицы» (hub-and-spoke)</strong> с координатором в центре.</p>
+<div class="scenario">
+  <div class="scenario-label">📋 Практический сценарий</div>
+  <p>Код проверяет <code>content[0].type == "text"</code> для определения завершения. Claude возвращает текст + tool_use одновременно. Код видит текст, считает агента завершённым — неполный ответ пользователю.</p>
+  <p><strong>Фикс:</strong> проверять <code>stop_reason</code>. Продолжать при <code>tool_use</code>, завершать при <code>end_turn</code>.</p>
+</div>
 
-<p><strong>Координатор:</strong> принимает задачу, декомпозирует её, выбирает субагентов, передаёт контекст, агрегирует результаты, обрабатывает ошибки.</p>
-<p><strong>Субагенты:</strong> каждый специализирован (веб-поиск, анализ документов, синтез). Получают инструкции от координатора — и только от него.</p>
+<h3 id="d1-2">1.2 — Паттерны оркестрации</h3>
+<p>Мультиагентная оркестрация строится на архитектуре <strong>«ступица и спицы» (hub-and-spoke)</strong> с координатором в центре.</p>
 
-<div class="tip"><strong>Главное правило:</strong> ВСЕ коммуникации идут через координатора. Субагенты никогда не общаются напрямую. Это обеспечивает наблюдаемость, единообразную обработку ошибок и контроль потоков информации.</div>
+<div class="callout tip">
+  <div class="callout-title">💡 Главное правило</div>
+  ВСЕ коммуникации идут через координатора. Субагенты никогда не общаются напрямую — это обеспечивает наблюдаемость, единообразную обработку ошибок и контроль информационных потоков.
+</div>
 
-<h4>Принцип изоляции (самый частый источник ошибок)</h4>
-<p>Субагенты <strong>не наследуют историю диалога координатора</strong>. При создании субагент получает только то, что координатор явно включил в его промпт. Никакой «общей памяти» нет. Каждый вызов — независимый.</p>
+<h4>Принцип изоляции субагентов</h4>
+<p>Субагенты <strong>НЕ наследуют автоматически</strong> историю координатора. Каждый вызов независим — никакой «общей памяти». Всё, что нужно субагенту, координатор должен явно включить в его промпт.</p>
 
 <h4>Ошибка узкой декомпозиции</h4>
-<p>Если финальный отчёт неполный по охвату (упущены целые темы) — почти всегда виновата <strong>декомпозиция координатора</strong>, а не субагенты. Субагенты честно исследовали то, что им назначили.</p>
+<p>Координатор декомпозирует «влияние ИИ на творческие индустрии» только на визуальные искусства — упускает музыку, литературу, кино. Субагенты честно исследовали то, что им назначили. <strong>Корневая причина — декомпозиция координатора.</strong> Если вывод неполный по охвату — почти всегда виновата декомпозиция координатора.</p>
 
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Обвинять субагентов за пробелы в охвате, когда декомпозиция координатора слишком узкая</li>
-    <li>Считать, что субагенты разделяют память или наследуют историю координатора</li>
-    <li>Предлагать прямую коммуникацию между субагентами как улучшение</li>
-    <li>Добавлять больше субагентов, чтобы исправить проблему декомпозиции</li>
-  </ul>
+<div class="traps">
+  <div class="trap"><strong>Ловушка:</strong> обвинять субагентов за пробелы в охвате, когда декомпозиция координатора была слишком узкой.</div>
+  <div class="trap"><strong>Ловушка:</strong> считать, что субагенты разделяют память или наследуют историю координатора.</div>
+  <div class="trap"><strong>Ловушка:</strong> предлагать прямую коммуникацию субагентов как улучшение эффективности — ломает наблюдаемость.</div>
+  <div class="trap"><strong>Ловушка:</strong> добавлять больше субагентов для исправления проблемы декомпозиции — они получат столь же узкие задания.</div>
 </div>
 
-<!-- 1.3 -->
-<span id="d1t3" class="section-id"></span>
-<div class="task-header"><span class="task-num">1.3</span><h3>Task Tool и передача контекста</h3></div>
-
-<p><strong>Task tool</strong> — конкретный API-механизм для порождения субагентов из координатора в Agent SDK. Критическое требование: <strong><code>allowedTools</code> координатора должен включать <code>"Task"</code></strong>. Без этого — бинарный шлюз, координатор физически не может создавать субагентов.</p>
-
-<p>Каждый субагент определяется через <code>AgentDefinition</code>: описание, системный промпт, ограничения на инструменты.</p>
+<h3 id="d1-3">1.3 — Task Tool и передача контекста</h3>
+<p><strong>Task tool</strong> — механизм порождения субагентов в Agent SDK. Критическое требование: <strong><code>allowedTools</code> координатора должен включать <code>"Task"</code></strong> — иначе субагентов создать невозможно физически.</p>
 
 <h4>Три правила передачи контекста</h4>
-<p><strong>Правило 1:</strong> Передавай полные находки от предыдущих агентов. Синтез-агент не может «найти» результаты веб-поиска сам — только если координатор явно их передал.</p>
-<p><strong>Правило 2:</strong> Используй структурированные форматы, разделяющие контент и метаданные. Без метаданных (URL, имя документа, страница) синтез-агент не может атрибутировать утверждения.</p>
+<ol>
+  <li><strong>Полные находки от предыдущих агентов.</strong> Субагент не может «найти» предыдущие результаты сам.</li>
+  <li><strong>Структурированные данные с метаданными.</strong> Каждая находка = содержание + URL + имя документа + страница. Без метаданных синтез-агент не может атрибутировать утверждения — это ловушка экзамена.</li>
+  <li><strong>Промпты координатора — цели, а не процедуры.</strong> Цель-ориентированные промпты позволяют субагентам адаптироваться.</li>
+</ol>
 
 <pre><code>{
   "findings": [{
-    "claim": "КПД солнечных панелей вырос на 25% за десятилетие",
+    "claim": "КПД солнечных панелей вырос на 25% за 10 лет",
     "source_url": "https://example.com/solar-report",
-    "document_name": "Annual Solar Industry Report 2024",
+    "document_name": "Solar Industry Report 2024",
     "page_number": 14,
     "confidence": "high"
   }]
 }</code></pre>
 
-<p><strong>Правило 3:</strong> Промпты координатора задают цели, а не процедуры. Цель-ориентированные промпты позволяют субагентам адаптироваться к непредвиденным ситуациям.</p>
-
 <h4>Параллельное порождение</h4>
-<p>Независимые субагенты нужно порождать <strong>параллельно — несколькими Task tool calls в одном ответе</strong>. Последовательное порождение добавляет лишнюю задержку.</p>
+<p>Для независимых субагентов — испускай несколько Task tool calls в <strong>одном ответе</strong>. Последовательное порождение добавляет лишнюю задержку без причины.</p>
 
-<h4>fork_session vs —resume</h4>
-<p><code>fork_session</code> — создаёт независимые ветки от общей аналитической базы. Для дивергентного исследования разных подходов.</p>
-<p><code>--resume</code> — продолжает ту же конкретную сессию. Для продолжения той же линии работы.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Считать, что субагенты автоматически имеют доступ к истории координатора</li>
-    <li>Обвинять синтез-агент в отсутствии цитат, когда координатор не передал метаданные</li>
-    <li>Предлагать последовательное порождение субагентов для независимых задач</li>
-    <li>Путать <code>fork_session</code> с <code>--resume</code></li>
-  </ul>
-</div>
-
-<!-- 1.4 -->
-<span id="d1t4" class="section-id"></span>
-<div class="task-header"><span class="task-num">1.4</span><h3>Agent SDK: промпты vs программное исполнение</h3></div>
-
-<p>Жёсткая граница между двумя подходами:</p>
-
-<p><strong>Управление через промпты</strong> — работает в 90–95% случаев. Но имеет ненулевой процент сбоев. Модель вероятностная.</p>
-<p><strong>Программное исполнение</strong> — хуки, шлюзы-предусловия, код-проверки, которые физически блокируют вызов инструментов. Работает <strong>всегда</strong>. Детерминировано.</p>
-
-<div class="tip"><strong>Правило экзамена:</strong> Если один сбой приводит к финансовым потерям, нарушению безопасности или compliance — только программное исполнение.</div>
-
+<h4>fork_session vs --resume</h4>
 <table>
-  <tr><th>Операция</th><th>Подход</th></tr>
-  <tr><td>Финансовые операции (возвраты, переводы)</td><td>Программное исполнение</td></tr>
-  <tr><td>Верификация личности, контроль доступа</td><td>Программное исполнение</td></tr>
-  <tr><td>AML-проверки, regulatory compliance</td><td>Программное исполнение</td></tr>
-  <tr><td>Предпочтения форматирования, стиль</td><td>Промпты</td></tr>
+  <tr><th>Инструмент</th><th>Когда использовать</th></tr>
+  <tr><td><code>fork_session</code></td><td>Дивергентное исследование двух подходов от общей базы</td></tr>
+  <tr><td><code>--resume</code></td><td>Продолжение той же линии исследования</td></tr>
 </table>
 
-<h4>Структурированный хэндофф (передача человеку)</h4>
-<p>Человек-агент <strong>не имеет доступа к истории переписки</strong>. Протокол хэндоффа обязан содержать: Customer ID, краткое изложение диалога, анализ корневой причины, сумму возврата, рекомендуемое действие.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Усиленные инструкции в промпте как фикс для сбоев в финансовых операциях</li>
-    <li>Few-shot примеры как достаточное решение для гарантированного compliance</li>
-    <li>Роутинг-классификатор как фикс нарушений внутри агентского workflow</li>
-    <li>Неполный хэндофф (без Customer ID или рекомендации)</li>
-  </ul>
-</div>
-
-<!-- 1.5 -->
-<span id="d1t5" class="section-id"></span>
-<div class="task-header"><span class="task-num">1.5</span><h3>Хуки Agent SDK</h3></div>
-
-<p>Хуки SDK — механизм внедрения детерминированного поведения в вероятностную систему. Два типа:</p>
-
-<p><strong>PostToolUse хуки</strong> — запускаются <strong>после</strong> выполнения инструмента, <strong>до</strong> обработки результата моделью. Нормализуют данные перед тем, как модель их увидит. Например: Unix-таймстемпы → ISO 8601, числовые коды статусов → читаемые строки.</p>
-
-<p><strong>Хуки перехвата tool call</strong> — запускаются <strong>до</strong> выполнения инструмента. Могут заблокировать вызов, изменить его или перенаправить. Инструмент не запускается если хук заблокировал.</p>
-
-<div class="warn"><strong>Критично:</strong> PostToolUse запускается ПОСЛЕ выполнения — действие уже произошло. Для блокировки используй только хуки перехвата (до выполнения).</div>
-
+<h3 id="d1-4">1.4 — Agent SDK: программное исполнение vs промпты</h3>
 <table>
-  <tr><th>Требование</th><th>Механизм</th><th>Гарантия</th></tr>
-  <tr><td>Соблюдение 100% случаев</td><td>Хуки</td><td>Детерминированная</td></tr>
-  <tr><td>Желательно, редкие отклонения ок</td><td>Промпты</td><td>Вероятностная</td></tr>
+  <tr><th>Подход</th><th>Надёжность</th><th>Когда</th></tr>
+  <tr><td><strong>Промпты</strong></td><td>~90–95% (вероятностно)</td><td>Предпочтения форматирования, style guidelines</td></tr>
+  <tr><td><strong>Программное исполнение</strong></td><td>100% (детерминировано)</td><td>Финансы, безопасность, compliance</td></tr>
 </table>
 
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Использовать PostToolUse для блокировки — действие уже выполнено</li>
-    <li>Промпты как решение для 100%-compliance требований</li>
-    <li>Полагаться на модель для нормализации разнородных форматов данных</li>
-    <li>Путать направление хуков: PostToolUse — после, перехват — до</li>
-  </ul>
+<div class="callout tip">
+  <div class="callout-title">💡 Правило для экзамена</div>
+  Один сбой → финансовые потери, нарушение безопасности или compliance → только программное исполнение. Никаких исключений.
 </div>
 
-<!-- 1.6 -->
-<span id="d1t6" class="section-id"></span>
-<div class="task-header"><span class="task-num">1.6</span><h3>Декомпозиция задач и attention dilution</h3></div>
+<h4>Пример: 8% процент сбоев</h4>
+<p>Агент обрабатывает возвраты без верификации в 8% случаев. Промпт «всегда верифицируй» — недостаточно для финансовых операций. <strong>Фикс:</strong> программный шлюз. До выполнения <code>process_refund</code> — обязательная проверка верифицированного customer ID. Устраняет 8% полностью.</p>
 
-<h4>Паттерн 1: Фиксированные последовательные пайплайны (prompt chaining)</h4>
-<p>Шаги определены заранее, выполняются по порядку. Лучший выбор для предсказуемых структурированных задач (code review, обработка документов, data extraction). Плюсы: консистентность, лёгкость отладки. Минус: не адаптируется к неожиданным находкам.</p>
+<h4>Протокол хэндоффа к человеку</h4>
+<p>Человек-агент не имеет доступа к истории переписки. Обязательные поля: Customer ID, краткое изложение, анализ корневой причины, сумма возврата, рекомендуемое действие.</p>
 
-<h4>Паттерн 2: Динамическая адаптивная декомпозиция</h4>
-<p>Подзадачи генерируются на основе того, что обнаружено на каждом шаге. План эволюционирует. Лучший выбор для открытых исследовательских задач с неизвестным охватом (аудит legacy-кода, security audit). Плюсы: адаптируется к проблеме. Минус: менее предсказуем.</p>
-
-<h4>Attention Dilution — деградация внимания</h4>
-<p>Если агент обрабатывает слишком много файлов за один проход — возникает неравномерная глубина анализа. Симптомы: детальная обратная связь по первым файлам, поверхностная по последним; одинаковый паттерн флагируется как проблема в одном файле, но одобряется в другом.</p>
-
-<p><strong>Фикс: мультипроходная архитектура.</strong> Два слоя:
-<ol>
-  <li><strong>Локальный анализ каждого файла:</strong> каждый файл анализируется отдельно с полным бюджетом внимания.</li>
-  <li><strong>Интеграционный проход:</strong> отдельный проход по всем находкам для cross-file проблем (data flow, несогласованные паттерны).</li>
-</ol></p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Предлагать более мощную модель или больший контекст как фикс для attention dilution</li>
-    <li>Считать, что один проход с улучшенным промптом эквивалентен мультипроходной архитектуре</li>
-    <li>Применять фиксированные пайплайны к открытым исследовательским задачам</li>
-    <li>Батчевать файлы без добавления интеграционного прохода</li>
-  </ul>
+<div class="traps">
+  <div class="trap"><strong>Ловушка:</strong> «добавить более строгие инструкции» как фикс для финансового compliance — улучшит с 8% до ~4%, но никогда не даст 0%.</div>
+  <div class="trap"><strong>Ловушка:</strong> few-shot примеры как достаточные для гарантированного compliance.</div>
+  <div class="trap"><strong>Ловушка:</strong> роутинг-классификаторы решают проблему роутинга, а не compliance внутри агента.</div>
 </div>
 
-<!-- 1.7 -->
-<span id="d1t7" class="section-id"></span>
-<div class="task-header"><span class="task-num">1.7</span><h3>Управление сессиями и stale context</h3></div>
+<h3 id="d1-5">1.5 — Хуки в мультиагентных системах</h3>
+<table>
+  <tr><th>Хук</th><th>Когда срабатывает</th><th>Применение</th></tr>
+  <tr><td><strong>PostToolUse</strong></td><td>После выполнения, до обработки моделью</td><td>Нормализация данных (форматы дат, статус-коды)</td></tr>
+  <tr><td><strong>Tool call interception</strong></td><td>До выполнения</td><td>Блокировка нарушений политики</td></tr>
+</table>
 
-<p>Три варианта управления сессиями:</p>
+<h4>PostToolUse: нормализация данных</h4>
+<p>Три разных инструмента возвращают даты по-разному: Unix timestamp, ISO 8601, DD/MM/YYYY. PostToolUse хук нормализует всё к единому формату до того, как модель увидит результат. Убирает непоследовательность интерпретации.</p>
 
-<p><strong><code>--resume &lt;session-name&gt;</code></strong> — продолжает сессию, восстанавливая всю историю. Использовать когда: предыдущий контекст валиден, файлы не менялись. НЕ использовать когда: файлы изменились после прошлой сессии — результаты инструментов устарели.</p>
+<h4>Tool call interception: принудительное исполнение политики</h4>
+<p>Возврат свыше $500 → хук перехватывает и направляет на одобрение менеджера. Инструмент возврата никогда не выполняется. AML не пройдена → хук блокирует перевод средств.</p>
 
-<p><strong><code>fork_session</code></strong> — создаёт независимую ветку от общей базы анализа. Использовать для исследования дивергентных подходов от одной отправной точки.</p>
+<div class="callout danger">
+  <div class="callout-title">🚫 Ловушка экзамена</div>
+  PostToolUse запускается <strong>после</strong> выполнения — нарушающее политику действие уже совершено. Для блокировки используй только перехват до выполнения.
+</div>
 
-<p><strong>Свежий старт с инжекцией саммари</strong> — новая сессия с введением структурированного резюме прошлых находок. Использовать когда: результаты инструментов устарели (файлы изменились), контекст деградировал от слишком долгой сессии.</p>
+<h3 id="d1-6">1.6 — Декомпозиция задач и проблема рассеивания внимания</h3>
 
-<h4>Проблема устаревшего контекста (stale context)</h4>
-<p>При возобновлении сессии после изменения файлов агент рассуждает на основе старых результатов инструментов. Симптомы: рекомендует исправить уже исправленные баги, ссылается на несуществующий код.</p>
-<p><strong>Правильный фикс:</strong> свежий старт с инжекцией саммари. В саммари указать какие файлы изменились — агент сделает целевой повторный анализ только их, не переисследуя всё.</p>
+<h4>Два паттерна декомпозиции</h4>
+<table>
+  <tr><th>Паттерн</th><th>Лучше для</th><th>Ограничение</th></tr>
+  <tr><td><strong>Фиксированный пайплайн</strong></td><td>Предсказуемые задачи: ревью кода, обработка документов</td><td>Не адаптируется к неожиданным находкам</td></tr>
+  <tr><td><strong>Динамическая декомпозиция</strong></td><td>Открытые задачи: legacy, аудит безопасности</td><td>Менее предсказуемое время выполнения</td></tr>
+</table>
 
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Полное переисследование 50-файловой базы когда изменились только 3 файла</li>
-    <li>Рекомендовать <code>--resume</code> после изменения файлов</li>
-    <li>Путать <code>fork_session</code> с <code>--resume</code></li>
-    <li>Использовать <code>fork_session</code> для устаревшего контекста — форк наследует stale данные</li>
-  </ul>
+<h4>Рассеивание внимания (Attention Dilution)</h4>
+<p>Агент обрабатывает 14 файлов в одном проходе: подробный фидбек для файлов 1–5, поверхностный для 10–14, очевидные баги пропущены. Один и тот же <code>forEach</code> помечен как неэффективный в файле 3, но одобрен в файле 11.</p>
+<p><strong>Фикс — многопроходная архитектура:</strong> (1) отдельный проход на каждый файл, (2) интеграционный проход для кросс-файловых проблем.</p>
+
+<div class="traps">
+  <div class="trap"><strong>Ловушка:</strong> «модель с большим контекстом» как фикс — проблема архитектурная, не в размере контекста.</div>
+  <div class="trap"><strong>Ловушка:</strong> батчить файлы без интеграционного прохода — кросс-файловые проблемы пропускаются.</div>
+</div>
+
+<h3 id="d1-7">1.7 — Управление сессиями и устаревший контекст</h3>
+<table>
+  <tr><th>Опция</th><th>Когда использовать</th><th>Когда НЕ использовать</th></tr>
+  <tr><td><code>--resume</code></td><td>Файлы не менялись, контекст валиден</td><td>Файлы изменились после последней сессии</td></tr>
+  <tr><td><code>fork_session</code></td><td>Дивергентное исследование от общей базы</td><td>Просто продолжить работу</td></tr>
+  <tr><td>Новая сессия + инъекция саммари</td><td>Файлы изменились, устаревший контекст</td><td>Контекст всё ещё валиден</td></tr>
+</table>
+
+<h4>Проблема устаревшего контекста</h4>
+<p>Исправил баги в 3 из 50 файлов, возобновил сессию. Claude рекомендует исправить уже исправленное, ссылается на несуществующий код — старые результаты инструментов остались в истории.</p>
+<p><strong>Правильный фикс:</strong> новая сессия + структурированное саммари + указание 3 изменённых файлов для точечного переанализа. Не все 50 — это расточительно.</p>
+
+<div class="callout warn">
+  <div class="callout-title">⚠️ Ловушка экзамена</div>
+  Просто возобновить и попросить перечитать изменённые файлы — недостаточно. Старые результаты инструментов остаются и всё равно влияют на рассуждение.
 </div>
 
 <hr>
 
-<!-- ===== ДОМЕН 2 ===== -->
-<div class="domain-header">
-  <div class="domain-num">Домен 2</div>
-  <h2 style="border:none;padding:0;margin:6px 0 4px;">Проектирование инструментов и MCP</h2>
-  <div class="domain-weight">18% от экзамена · 5 задач</div>
-</div>
+<h2 id="domain2">ДОМЕН 2 — Проектирование инструментов и MCP (18%)</h2>
 
-<!-- 2.1 -->
-<span id="d2t1" class="section-id"></span>
-<div class="task-header"><span class="task-num">2.1</span><h3>Описания инструментов — главный механизм выбора</h3></div>
+<h3 id="d2-1">2.1 — Дизайн схем инструментов</h3>
+<p>Описания инструментов — это <strong>основной механизм выбора инструментов LLM</strong>. Не метаданные. Именно по описаниям модель решает, что вызвать.</p>
 
-<p>Описания инструментов — это <strong>основной механизм</strong>, которым LLM пользуется при выборе инструмента. Не вспомогательные метаданные — именно механизм. Минимальные описания («Получает данные клиента») приводят к неверной маршрутизации.</p>
-
-<h4>Production-grade описание включает 5 элементов:</h4>
+<h4>Хорошее описание включает</h4>
 <ol>
-  <li>Что делает инструмент — цель, без двусмысленностей</li>
-  <li>Какие входные данные ожидает — типы, форматы, обязательные/опциональные поля</li>
-  <li>Примеры запросов, которые он обрабатывает хорошо</li>
-  <li>Граничные случаи и ограничения — что инструмент НЕ делает</li>
-  <li>Явные границы — когда использовать ЭТОТ инструмент, а не похожий</li>
+  <li>Что делает инструмент — однозначно</li>
+  <li>Какие входные данные ожидает — типы, форматы</li>
+  <li>Примеры запросов</li>
+  <li>Граничные случаи и ограничения</li>
+  <li>Явные границы — когда использовать этот инструмент, а не похожий</li>
 </ol>
 
-<h4>Плохо vs хорошо:</h4>
-<pre><code>// Плохо — вызывает неверную маршрутизацию
-get_customer: "Получает данные клиента"
-lookup_order: "Получает детали заказа"
-
-// Хорошо — надёжный выбор
-get_customer: "Ищет аккаунт клиента по email, номеру телефона
-  или customer ID. Возвращает профиль клиента (имя, контакты,
-  статус аккаунта). Используй когда нужно верифицировать личность.
-  НЕ использовать для запросов о конкретных заказах — для этого
-  есть lookup_order."
-
-lookup_order: "Получает детали заказа по номеру (формат #NNNNN)
-  или tracking ID. Возвращает статус, товары, детали доставки.
-  Используй когда клиент спрашивает о конкретном заказе.
-  НЕ использовать для верификации личности клиента."</code></pre>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Few-shot примеры как фикс неверной маршрутизации из-за плохих описаний — добавляет токены, не устраняет причину</li>
-    <li>Роутинг-классификатор как первый шаг — оверинжиниринг, обходит NLU модели</li>
-    <li>Объединение похожих инструментов как первый шаг — требует больше усилий, чем улучшение описаний</li>
-    <li>Игнорировать формулировки системного промпта после обновления описаний — они могут конфликтовать</li>
-  </ul>
-</div>
-
-<!-- 2.2 -->
-<span id="d2t2" class="section-id"></span>
-<div class="task-header"><span class="task-num">2.2</span><h3>Структурированные ответы об ошибках MCP</h3></div>
-
-<p>Когда MCP-инструмент падает — структура ответа об ошибке определяет, сможет ли агент восстановиться. Флаг <code>isError: true</code> сигнализирует провал инструмента, позволяя модели рассуждать о восстановлении.</p>
-
-<h4>4 категории ошибок:</h4>
-
-<p><strong>Transient (временные):</strong> таймауты, недоступность сервиса, rate limits. Запрос валиден, система временно недоступна. Восстановление: повторить через паузу. <code>isRetryable: true</code></p>
-
-<p><strong>Validation (валидационные):</strong> неверный формат, отсутствие обязательных полей. Запрос некорректен. Восстановление: исправить входные данные. <code>isRetryable: true</code></p>
-
-<p><strong>Business (бизнес-ошибки):</strong> нарушение политики, превышение лимитов. Запрос технически корректен, но нарушает бизнес-правила. <strong>НЕ повторять</strong> — тот же запрос всегда упадёт. Нужен альтернативный workflow. <code>isRetryable: false</code></p>
-
-<p><strong>Permission (ошибки доступа):</strong> отказ в доступе. Восстановление: эскалация или другие учётные данные. <code>isRetryable: false</code></p>
-
-<h4>Access failure vs валидный пустой результат</h4>
-<p>Это критическое различие, которое экзамен тестирует напрямую.</p>
-<p><strong>Access failure:</strong> инструмент не смог достичь источника данных. Запрос не выполнился. Стоит попробовать ещё раз.</p>
-<p><strong>Валидный пустой результат:</strong> инструмент успешно обратился к источнику и нашёл ноль совпадений. Это и есть ответ. Повторять бессмысленно.</p>
-
-<pre><code>// Валидный пустой результат — НЕ ошибка
-{ "isError": false, "results": [], "resultCount": 0 }
-
-// Access failure — ошибка
-{ "isError": true, "errorCategory": "transient", "isRetryable": true,
-  "description": "Соединение с базой данных прервалось по таймауту" }</code></pre>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Повторять запрос при пустом результате от успешного запроса</li>
-    <li>Возвращать «Operation failed» без структурированных метаданных</li>
-    <li>Считать бизнес-ошибки повторяемыми</li>
-    <li>Тихо подавлять ошибки субагентов, возвращая пустые успешные результаты</li>
-  </ul>
-</div>
-
-<!-- 2.3 -->
-<span id="d2t3" class="section-id"></span>
-<div class="task-header"><span class="task-num">2.3</span><h3>Распределение инструментов по агентам</h3></div>
-
-<p>Число инструментов у одного агента напрямую влияет на надёжность выбора. Давать одному агенту 18 инструментов — деградирует точность. <strong>Оптимальный диапазон: 4–5 инструментов на агента</strong>, строго привязанных к его роли.</p>
-
-<h4>Параметр tool_choice — три режима:</h4>
-<p><code>"auto"</code> (по умолчанию) — модель сама решает, вызывать инструмент или отвечать текстом.</p>
-<p><code>"any"</code> — модель ОБЯЗАНА вызвать инструмент, но выбирает какой. Гарантирует структурированный вывод при неизвестном типе документа.</p>
-<p><code>{"type": "tool", "name": "..."}</code> — модель ОБЯЗАНА вызвать конкретный инструмент. Для обязательных первых шагов.</p>
-
-<h4>Scoped cross-role инструменты</h4>
-<p>Когда агент часто обращается к координатору за простыми операциями — это добавляет 2–3 лишних хопа и до 40% задержки. Решение: дать агенту ограниченный вариант нужного инструмента напрямую для 85% простых случаев. Сложные случаи по-прежнему идут через координатора.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Маршрутизировать все простые верификации через координатор при 85% простых запросов</li>
-    <li>Использовать <code>"auto"</code> когда нужен гарантированный структурированный вывод</li>
-    <li>Давать агенту 18 инструментов и ожидать надёжного выбора</li>
-    <li>Использовать generic <code>fetch_url</code> вместо ограниченного <code>load_document</code></li>
-  </ul>
-</div>
-
-<!-- 2.4 -->
-<span id="d2t4" class="section-id"></span>
-<div class="task-header"><span class="task-num">2.4</span><h3>Конфигурация MCP-серверов</h3></div>
-
-<p>Конфигурация существует на двух уровнях:</p>
-
-<p><strong>Уровень проекта: <code>.mcp.json</code></strong> — живёт в корне репозитория, под версионным контролем. Разделяется со всей командой. Для серверов, нужных всем: Jira, GitHub, внутренние API.</p>
-
-<p><strong>Уровень пользователя: <code>~/.claude.json</code></strong> — в домашней директории, не под версионным контролем, не разделяется. Для экспериментальных серверов или личных интеграций.</p>
-
-<p>Синтаксис <code>${VARIABLE_NAME}</code> для подстановки переменных среды держит учётные данные вне репозитория. Каждый разработчик устанавливает свои токены локально.</p>
-
-<h4>MCP Resources</h4>
-<p>Ресурсы предоставляют каталоги контента агентам без лишних tool calls. Вместо серии вызовов <code>list_tables</code> / <code>describe_table</code> — схема БД доступна сразу. Меньше лишних запросов, более целевые операции.</p>
-
-<h4>Build vs Use</h4>
-<p>Для стандартных интеграций (Jira, GitHub, Slack, Notion) — сначала ищи существующие community MCP серверы. Строить кастомный сервер стоит только когда community серверы не покрывают специфические воркфлоу команды.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Строить кастомный MCP сервер для стандартной интеграции вроде Jira</li>
-    <li>Хранить конфигурацию для всей команды в <code>~/.claude.json</code></li>
-    <li>Хардкодить учётные данные прямо в <code>.mcp.json</code></li>
-    <li>Оставлять описания MCP-инструментов скудными — модель предпочтёт встроенные инструменты</li>
-  </ul>
-</div>
-
-<!-- 2.5 -->
-<span id="d2t5" class="section-id"></span>
-<div class="task-header"><span class="task-num">2.5</span><h3>Встроенные инструменты Claude Code</h3></div>
-
-<p>Claude Code имеет 6 встроенных инструментов: Read, Write, Edit, Bash, <strong>Grep</strong>, <strong>Glob</strong>.</p>
-
-<h4>Grep vs Glob — важнейшее различие:</h4>
-<p><strong>Grep ищет по СОДЕРЖИМОМУ файлов.</strong> Нужно найти вызовы функции, сообщения об ошибках, import-строки — Grep.</p>
-<p><strong>Glob ищет файлы по ПАТТЕРНУ ПУТИ.</strong> Нужно найти тест-файлы, конфиги, все TypeScript-файлы в директории — Glob.</p>
-
-<p>Одной фразой: <strong>Grep — что ВНУТРИ файлов. Glob — ИМЕНА файлов.</strong></p>
-
-<h4>Edit, Read, Write:</h4>
-<p><strong>Edit</strong> — точечные изменения по уникальному тексту. Быстрее и экономнее по контексту. Используй первым.</p>
-<p><strong>Read + Write</strong> — фолбэк когда Edit не может найти уникальный якорный текст. Загружает весь файл, более дорогостоящий.</p>
-
-<h4>Инкрементальное исследование кодовой базы:</h4>
-<p>Читать все файлы заранее — главный антипаттерн (убивает бюджет контекста). Правильно: Grep → найти точки входа → Read только нужных файлов → Grep снова для трассировки использования.</p>
-
-<p><strong>Паттерн для устаревшей функции:</strong> Grep по имени функции → Glob для тест-файлов с именами вызывающих файлов. Именно в этом порядке: поиск по содержимому, затем поиск по путям.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Использовать Glob для поиска вызывающих функцию файлов — он ищет по путям, не по содержимому</li>
-    <li>Использовать Grep для поиска файлов по расширению — для этого есть Glob</li>
-    <li>Читать все исходники заранее до понимания что нужно</li>
-    <li>Всегда использовать Read+Write вместо попытки Edit сначала</li>
-  </ul>
-</div>
-
-<hr>
-
-<!-- ===== ДОМЕН 3 ===== -->
-<div class="domain-header">
-  <div class="domain-num">Домен 3</div>
-  <h2 style="border:none;padding:0;margin:6px 0 4px;">Конфигурация и воркфлоу Claude Code</h2>
-  <div class="domain-weight">20% от экзамена · 6 задач</div>
-</div>
-
-<!-- 3.1 -->
-<span id="d3t1" class="section-id"></span>
-<div class="task-header"><span class="task-num">3.1</span><h3>Иерархия CLAUDE.md</h3></div>
-
-<p>Claude Code читает конфигурацию из CLAUDE.md на трёх уровнях:</p>
-
-<p><strong>Уровень пользователя: <code>~/.claude/CLAUDE.md</code></strong> — только для тебя. Не под версионным контролем. Не разделяется через git. Для личных предпочтений.</p>
-
-<p><strong>Уровень проекта: <code>.claude/CLAUDE.md</code> или корневой <code>CLAUDE.md</code></strong> — для всех в проекте. В репозитории, под версионным контролем. Каждый разработчик, кто клонирует репо — получает эти инструкции автоматически. Стандарты команды: соглашения именования, паттерны обработки ошибок, требования к тестированию.</p>
-
-<p><strong>Уровень директории: <code>CLAUDE.md</code> в поддиректории</strong> — применяется при работе в этой конкретной директории. Для пакет-специфичных соглашений.</p>
-
-<p>Синтаксис <code>@import</code> позволяет ссылаться на внешние файлы из CLAUDE.md для модульной организации стандартов.</p>
-
-<p>Команда <code>/memory</code> — диагностический инструмент. <strong>Показывает, какие файлы загружены</strong>. Не загружает их — конфигурация грузится автоматически по расположению.</p>
-
-<h4>Главный сценарий экзамена:</h4>
-<p>Разработчик А работает давно, Claude Code соблюдает все соглашения команды. Разработчик Б только что влился, клонировал репо — и Claude Code ведёт себя непоследовательно. <strong>Причина: соглашения хранятся в пользовательском конфиге разработчика А (<code>~/.claude/CLAUDE.md</code>), а не в проектном.</strong> Пользовательский конфиг не разделяется через git.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Новый участник команды не получает инструкции — конфиг в пользовательском, а не проектном уровне</li>
-    <li>Считать что <code>/memory</code> активирует загрузку — это только диагностика</li>
-    <li>Думать что директорийный CLAUDE.md лучший вариант для cross-directory соглашений</li>
-  </ul>
-</div>
-
-<!-- 3.2 -->
-<span id="d3t2" class="section-id"></span>
-<div class="task-header"><span class="task-num">3.2</span><h3>Кастомные команды и скилы</h3></div>
-
-<p><strong>Кастомные slash-команды — два уровня:</strong></p>
-<p><code>.claude/commands/</code> — проектный уровень, под версионным контролем, разделяется через git. Для командных воркфлоу: <code>/review</code>, <code>/deploy-check</code>.</p>
-<p><code>~/.claude/commands/</code> — пользовательский уровень, личные, не разделяются. Для индивидуальных шорткатов.</p>
-
-<p><strong>Скилы живут в <code>.claude/skills/</code></strong> с файлами <code>SKILL.md</code>. Поддерживают frontmatter-конфигурацию. <strong>Вызываются по требованию, не загружаются автоматически.</strong></p>
-
-<h4>Три критичных опции frontmatter скила:</h4>
-<p><code>context: fork</code> — запускает скил в изолированном субагентном контексте. Весь verbose-вывод остаётся в форке, основной диалог остаётся чистым. Критично для объёмных задач: анализ кодовой базы, брейнсторминг.</p>
-<p><code>allowed-tools</code> — ограничивает, какие инструменты может использовать скил. Граница безопасности: read-only анализ не должен иметь Write или Bash.</p>
-<p><code>argument-hint</code> — запрашивает у разработчика обязательные параметры при вызове без аргументов.</p>
-
-<h4>Скилы vs CLAUDE.md:</h4>
-<p><strong>Скилы</strong> = по требованию, задача-специфичные воркфлоу. Не грузятся автоматически.</p>
-<p><strong>CLAUDE.md</strong> = всегда загружен, универсальные стандарты. Применяется к каждой сессии.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Командную slash-команду класть в <code>~/.claude/commands/</code> вместо <code>.claude/commands/</code></li>
-    <li>Считать что скилы загружаются автоматически как CLAUDE.md</li>
-    <li>Не знать когда нужен <code>context: fork</code> — для verbose вывода</li>
-    <li>Помещать задача-специфичные процедуры в CLAUDE.md</li>
-  </ul>
-</div>
-
-<!-- 3.3 -->
-<span id="d3t3" class="section-id"></span>
-<div class="task-header"><span class="task-num">3.3</span><h3>Path-specific правила с glob-паттернами</h3></div>
-
-<p>Файлы правил живут в <code>.claude/rules/</code> с YAML frontmatter, содержащим поле <code>paths</code> с glob-паттернами. Правила загружаются <strong>только при редактировании файлов, совпадающих с паттернами</strong>.</p>
-
-<pre><code>---
-paths: ["**/*.test.ts", "**/*.test.tsx"]
----
-# Соглашения тестирования
-- Используй блоки describe/it с описательными именами
-- Каждый тест-файл должен иметь happy path и error case</code></pre>
-
-<h4>Почему не директорийный CLAUDE.md?</h4>
-<p>Директорийный CLAUDE.md применяется только к одной директории. Для тест-файлов, разбросанных по 50+ директориям, пришлось бы создавать CLAUDE.md в каждой директории — кошмар обслуживания, неизбежный дрифт.</p>
-
-<h4>Почему не корневой CLAUDE.md?</h4>
-<p>Корневой CLAUDE.md грузится для каждой сессии независимо от редактируемых файлов. Terraform-соглашения потребляют токены при редактировании React-компонентов. Path-specific правила грузятся <strong>только когда нужны</strong> — это ещё и более экономично по токенам.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Директорийный CLAUDE.md для кросс-директорийных соглашений</li>
-    <li>Помещать тип-файл-специфичные соглашения в корневой CLAUDE.md</li>
-    <li>Путать скилы с path-specific правилами для автоматической загрузки соглашений — скилы вызываются вручную</li>
-  </ul>
-</div>
-
-<!-- 3.4 -->
-<span id="d3t4" class="section-id"></span>
-<div class="task-header"><span class="task-num">3.4</span><h3>Plan mode vs Direct execution</h3></div>
-
-<p><strong>Plan mode</strong> — для сложных задач с неопределённым подходом: нужно исследовать базу кода, оценить варианты и спроектировать стратегию перед изменениями. Используй когда: масштабные изменения, несколько валидных подходов, архитектурные решения, multi-file изменения, нужно исследование зависимостей.</p>
-
-<p><strong>Direct execution</strong> — для хорошо понятых изменений с чётким ограниченным охватом: однофайловый баг с чётким стектрейсом, добавление валидационного условия, обновление конфигурационного значения.</p>
-
-<div class="tip"><strong>Ключевое различие:</strong> Решение не о сложности, а о <strong>неопределённости</strong>. Сложный но хорошо определённый баг-фикс (чёткий стектрейс, одна функция) — direct execution. Seemingly простой feature request, который можно реализовать тремя способами и затрагивает несколько модулей — plan mode.</div>
-
-<h4>Гибридный подход: Plan then Execute</h4>
-<p>Plan mode для исследования → Direct execution для реализации. Для миграций библиотек: план → стратегия → файл за файлом выполнение.</p>
-
-<h4>Explore субагент</h4>
-<p>Изолирует verbose вывод обнаружения от основного диалога. Возвращает саммари в основной контекст, не засоряя его.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Direct execution для multi-file архитектурных изменений</li>
-    <li>Plan mode для однофайлового баг-фикса с чётким стектрейсом</li>
-    <li>Не замечать паттерн plan-then-execute для миграций</li>
-    <li>Начинать direct execution и переключаться на plan только если появляется сложность — когда сложность уже описана в требованиях, plan нужен с самого начала</li>
-  </ul>
-</div>
-
-<!-- 3.5 -->
-<span id="d3t5" class="section-id"></span>
-<div class="task-header"><span class="task-num">3.5</span><h3>Итеративное уточнение</h3></div>
-
-<p>Иерархия техник уточнения по эффективности:</p>
-
-<p><strong>1. Конкретные примеры input/output (самое эффективное при непоследовательной интерпретации)</strong></p>
-<p>Когда описание трансформации на естественном языке интерпретируется по-разному каждый раз — фикс не в более точном описании. Фикс — конкретные примеры: 2–3 пары до/после, показывающие точную трансформацию. Модель обобщает паттерн из примеров надёжнее, чем из любого текстового описания.</p>
-
-<p><strong>2. Test-driven iteration (для сложных трансформаций)</strong></p>
-<p>Сначала пиши тесты. Делись провалами тестов с Claude Code. Провалы дают конкретную, однозначную обратную связь: нет места для интерпретации когда тест говорит «ожидал X, получил Y».</p>
-
-<p><strong>3. Interview pattern (для незнакомых доменов)</strong></p>
-<p>Вместо «Сделай кэширующий слой» — «Мне нужен кэширующий слой. Перед реализацией — задай мне вопросы о требованиях, граничных случаях и ограничениях». Выявляет соображения, которые ты бы пропустил.</p>
-
-<h4>Батчевый vs последовательный фидбэк:</h4>
-<p><strong>Одно сообщение (батч)</strong> когда правки взаимодействуют друг с другом. Модели нужно видеть все взаимосвязанные ограничения сразу.</p>
-<p><strong>Последовательная итерация</strong> когда проблемы независимы.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Уточнять текстовое описание когда модель интерпретирует его непоследовательно — нужны примеры</li>
-    <li>Путать interview pattern (незнакомый домен) с техникой примеров (известная трансформация, непоследовательное выполнение)</li>
-    <li>Не различать батч vs последовательный фидбэк для взаимодействующих vs независимых проблем</li>
-  </ul>
-</div>
-
-<!-- 3.6 -->
-<span id="d3t6" class="section-id"></span>
-<div class="task-header"><span class="task-num">3.6</span><h3>CI/CD интеграция</h3></div>
-
-<div class="warn"><strong>Флаг <code>-p</code> — самый прямо тестируемый факт Домена 3.</strong> Это Вопрос 10 в официальных примерах экзамена.</div>
-
-<h4>Флаг -p для неинтерактивного режима</h4>
-<p>Claude Code по умолчанию работает в интерактивном режиме. В CI-пайплайне нет клавиатуры — без <code>-p</code> джоб зависнет бесконечно, ожидая ввода.</p>
-<pre><code># НЕВЕРНО — зависает в CI
-claude "Проанализируй этот pull request"
-
-# ВЕРНО — неинтерактивный режим
-claude -p "Проанализируй этот pull request"</code></pre>
-
-<h4>Структурированный вывод для CI:</h4>
-<p><code>--output-format json</code> + <code>--json-schema</code> — форсирует JSON-вывод для машинной обработки: парсинг находок, inline PR-комментарии, фильтрация по severity.</p>
-
-<h4>Изоляция контекста для review:</h4>
-<p>Та же сессия, которая генерировала код, менее эффективна для его ревью — сохраняет рассуждательный контекст. Независимый инстанс без предыдущего контекста оценивает код свежим взглядом.</p>
-
-<h4>Инкрементальный review:</h4>
-<p>Передавай предыдущие находки в следующий запуск review и инструктируй Claude сообщать только о новых или всё ещё актуальных проблемах. Дублирующиеся комментарии убивают доверие разработчиков.</p>
-
-<h4>Batch API vs реальное время для CI:</h4>
 <table>
-  <tr><th>Тип workflow</th><th>API</th><th>Почему</th></tr>
-  <tr><td>Pre-merge проверки (блокирующие)</td><td>Реальное время</td><td>Разработчики ждут результата</td></tr>
-  <tr><td>Ночные отчёты о техдолге</td><td>Batch API</td><td>Нечувствительно к задержке, 50% экономия</td></tr>
-  <tr><td>Еженедельный аудит кода</td><td>Batch API</td><td>Запланировано, задержка терпима</td></tr>
+  <tr><th>Минимальное (вызывает неправильный роутинг)</th><th>Для продакшна</th></tr>
+  <tr><td><code>get_customer: "Получает информацию о клиенте"</code></td><td><code>get_customer: "Ищет аккаунт по email, телефону или ID. Возвращает профиль. Используй для верификации личности. НЕ использовать для запросов по заказам — для этого lookup_order."</code></td></tr>
 </table>
 
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>CI зависает — фикс это флаг <code>-p</code>, не <code>CLAUDE_HEADLESS=true</code> (не существует), не <code>--batch</code> (не существует)</li>
-    <li>Self-review в той же сессии так же эффективен как независимый review</li>
-    <li>Batch API для блокирующих pre-merge проверок — до 24 часов обработки, нет SLA</li>
-    <li>Не передавать предыдущие находки — каждый прогон дублирует комментарии</li>
-  </ul>
+<h4>Иерархия фиксов при неправильном роутинге</h4>
+<p>Экзамен всегда предпочитает минимальные и эффективные решения первым. <strong>Улучшить описания → правильно как первый шаг.</strong> Few-shot, роутинг-классификаторы, консолидация инструментов — неправильно как первый шаг.</p>
+
+<div class="callout warn">
+  <div class="callout-title">⚠️ Ловушка</div>
+  Keyword-sensitive инструкции в системных промптах могут создавать нежелательные ассоциации с инструментами и переопределять даже хорошо написанные описания. После обновления описаний всегда проверяй системный промпт на конфликты.
 </div>
+
+<h3 id="d2-2">2.2 — Реализация MCP-сервера: структурированные ошибки</h3>
+<p>Флаг <code>isError</code> в протоколе MCP позволяет агенту умно восстанавливаться. Без него — слепое угадывание.</p>
+
+<h4>Четыре категории ошибок</h4>
+<table>
+  <tr><th>Категория</th><th>Примеры</th><th>isRetryable</th><th>Действие</th></tr>
+  <tr><td><strong>Transient</strong></td><td>Таймаут, rate limit</td><td>Да</td><td>Повторить после паузы</td></tr>
+  <tr><td><strong>Validation</strong></td><td>Неверный формат</td><td>Да</td><td>Исправить ввод и повторить</td></tr>
+  <tr><td><strong>Business</strong></td><td>Превышение лимита политики</td><td><strong>Нет</strong></td><td>Эскалировать, альтернативный путь</td></tr>
+  <tr><td><strong>Permission</strong></td><td>Доступ запрещён</td><td>Нет</td><td>Эскалировать</td></tr>
+</table>
+
+<div class="callout danger">
+  <div class="callout-title">🚫 Критическое различие</div>
+  <strong>Сбой доступа:</strong> инструмент не смог достучаться до данных. Данные могут существовать — нужно повторить.<br><br>
+  <strong>Валидный пустой результат:</strong> инструмент успешно выполнил запрос и ничего не нашёл. Это и есть ответ. Повторять бесполезно — результат будет тем же.
+</div>
+
+<pre><code>// Сбой доступа — isError: true, isRetryable: true
+{
+  "isError": true,
+  "errorCategory": "transient",
+  "isRetryable": true,
+  "description": "Таймаут соединения через 30с. Запрос не выполнился."
+}
+
+// Валидный пустой результат — isError: false
+{
+  "isError": false,
+  "content": [{"type": "text", "text": "Запрос выполнен успешно. Совпадений не найдено."}],
+  "resultCount": 0
+}</code></pre>
+
+<h3 id="d2-3">2.3 — Интеграция MCP-клиента: распределение инструментов</h3>
+
+<h4>Оптимум — 4–5 инструментов на агента</h4>
+<p>Более 18 инструментов у одного агента снижает надёжность выбора. Синтез-агент не должен иметь инструменты поиска — иначе может решить искать сам, вместо использования переданных ему результатов.</p>
+
+<h4>Три режима tool_choice</h4>
+<table>
+  <tr><th>Режим</th><th>Поведение</th><th>Когда использовать</th></tr>
+  <tr><td><code>"auto"</code></td><td>Модель выбирает — инструмент или текст</td><td>Общая работа с гибкостью</td></tr>
+  <tr><td><code>"any"</code></td><td>Обязан вызвать инструмент, выбирает какой</td><td>Гарантированный вывод, тип документа неизвестен</td></tr>
+  <tr><td><code>{"type":"tool","name":"..."}</code></td><td>Обязан вызвать конкретный инструмент</td><td>Обязательный первый шаг пайплайна</td></tr>
+</table>
+
+<h4>Ограниченные кросс-ролевые инструменты</h4>
+<p>85% верификаций синтез-агента — простые поиски. Роутить их через координатора (+2–3 хопа, +40% задержки) — расточительно. <strong>Решение:</strong> дать синтез-агенту ограниченный <code>verify_fact</code> для простых поисков. Сложные по-прежнему через координатора.</p>
+
+<h3 id="d2-4">2.4 — Конфигурация MCP: область видимости</h3>
+<table>
+  <tr><th>Уровень</th><th>Файл</th><th>Видимость</th><th>Что хранить</th></tr>
+  <tr><td>Проект</td><td><code>.mcp.json</code></td><td>В git, общий</td><td>Командные серверы: Jira, GitHub</td></tr>
+  <tr><td>Пользователь</td><td><code>~/.claude.json</code></td><td>Личный, не в git</td><td>Экспериментальные серверы</td></tr>
+</table>
+<p>Синтаксис <code>${GITHUB_TOKEN}</code> в <code>.mcp.json</code> — токены не попадают в репозиторий, каждый разработчик устанавливает их локально.</p>
+<p><strong>Решение build vs use:</strong> для стандартных интеграций (Jira, GitHub, Slack) — сначала оценить community серверы. Строить кастомный — только для специфической бизнес-логики.</p>
+
+<h3 id="d2-5">2.5 — Выбор и роутинг инструментов: Grep vs Glob</h3>
+
+<div class="callout tip">
+  <div class="callout-title">💡 Ключевое различие</div>
+  <strong>Grep</strong> — ищет по <em>содержимому</em> файлов.<br>
+  <strong>Glob</strong> — ищет файлы по <em>именам и путям</em>.
+</div>
+
+<table>
+  <tr><th>Задача</th><th>Инструмент</th></tr>
+  <tr><td>Найти файлы, вызывающие функцию</td><td>Grep</td></tr>
+  <tr><td>Найти все тестовые файлы <code>**/*.test.tsx</code></td><td>Glob</td></tr>
+  <tr><td>Найти все импорты модуля</td><td>Grep</td></tr>
+  <tr><td>Найти все конфиги <code>**/config.*</code></td><td>Glob</td></tr>
+</table>
+
+<h4>Edit vs Read+Write</h4>
+<p><strong>Edit</strong> — точечные изменения по уникальному тексту. Быстро, экономит токены. Пробуй первым. <strong>Read+Write</strong> — только когда Edit не может найти уникальный якорный текст.</p>
+
+<h4>Инкрементальное понимание</h4>
+<p>Никогда не читай все файлы заранее. Правило: Grep → найти точки входа → Read нужных файлов → Grep снова → Read только необходимого.</p>
 
 <hr>
 
-<!-- ===== ДОМЕН 4 ===== -->
-<div class="domain-header">
-  <div class="domain-num">Домен 4</div>
-  <h2 style="border:none;padding:0;margin:6px 0 4px;">Промпт-инжиниринг и структурированный вывод</h2>
-  <div class="domain-weight">20% от экзамена · 6 задач</div>
+<h2 id="domain3">ДОМЕН 3 — Конфигурация и воркфлоу Claude Code (20%)</h2>
+
+<h3 id="d3-1">3.1 — Иерархия CLAUDE.md</h3>
+<table>
+  <tr><th>Уровень</th><th>Путь</th><th>Видимость</th><th>Что хранить</th></tr>
+  <tr><td><strong>Пользователь</strong></td><td><code>~/.claude/CLAUDE.md</code></td><td>Только ты, не в git</td><td>Личные предпочтения</td></tr>
+  <tr><td><strong>Проект</strong></td><td><code>.claude/CLAUDE.md</code> / корневой <code>CLAUDE.md</code></td><td>Всей команде через git</td><td>Командные стандарты</td></tr>
+  <tr><td><strong>Директория</strong></td><td>CLAUDE.md в поддиректории</td><td>Только в этой директории</td><td>Конвенции пакета</td></tr>
+</table>
+
+<div class="callout danger">
+  <div class="callout-title">🚫 Любимая ловушка экзамена</div>
+  Разработчик А работает давно — всё соблюдается. Разработчик Б только клонировал репо — несогласованное поведение.<br><br>
+  <strong>Причина:</strong> конвенции в <code>~/.claude/CLAUDE.md</code> разработчика А (уровень пользователя). Не версионируется, не передаётся через git.<br>
+  <strong>Фикс:</strong> перенести в <code>.claude/CLAUDE.md</code> (уровень проекта).
 </div>
 
-<!-- 4.1 -->
-<span id="d4t1" class="section-id"></span>
-<div class="task-header"><span class="task-num">4.1</span><h3>Системные промпты: явные критерии vs расплывчатые инструкции</h3></div>
+<p><code>/memory</code> — только показывает загруженные файлы. <strong>Не загружает.</strong> Конфиги загружаются автоматически при старте.</p>
 
-<p>Главная ошибка в production промпт-инжиниринге — опора на расплывчатые инструкции. «Будь консервативен», «сообщай только о высоконадёжных находках», «используй своё лучшее суждение» — у модели нет actionable boundary для принятия решений.</p>
+<h3 id="d3-2">3.2 — Команды и скиллы</h3>
 
-<p><strong>Правильный подход — явные категориальные критерии:</strong></p>
-<pre><code>// Неверно
-"Review this code. Be conservative. Only report high-confidence findings."
+<h4>Slash-команды: два уровня</h4>
+<table>
+  <tr><th>Расположение</th><th>Область видимости</th><th>Что хранить</th></tr>
+  <tr><td><code>.claude/commands/</code></td><td>Проект (git, общий)</td><td>Командные воркфлоу: /review, /deploy-check</td></tr>
+  <tr><td><code>~/.claude/commands/</code></td><td>Пользователь (личный)</td><td>Личные шорткаты</td></tr>
+</table>
 
-// Верно
-"Flag comments only when claimed behaviour contradicts actual code behaviour.
-Report bugs and security vulnerabilities.
-Skip minor style preferences and local patterns."</code></pre>
-
-<h4>Проблема false positives и доверие</h4>
-<p>Высокий процент false positives в одной категории разрушает доверие разработчиков <strong>ко всем категориям</strong>. 40% ошибок в «documentation mismatch» — и разработчики перестают читать security findings, даже если те 98% точны. Доверие не категорийное — оно сквозное.</p>
-
-<p><strong>Контринтуитивный но эффективный фикс:</strong> временно отключить категории с высоким false positive пока улучшаешь для них критерии. Немедленно восстанавливает доверие к работающим категориям.</p>
-
-<h4>Калибровка severity через примеры кода, не prose:</h4>
-<pre><code>// Prose (недостаточно)
-Critical: Issues that could cause system failures or data loss
-
-// Code examples (правильно)
-Critical — Unsanitised user input in SQL query:
-query = f"SELECT * FROM users WHERE id = {user_input}"
-Minor — Inconsistent variable naming:
-userName vs user_name in the same module</code></pre>
-
-<h4>Почему confidence-based filtering не работает:</h4>
-<p>«Сообщай только о высоконадёжных находках» — заманчиво, но LLM self-reported confidence плохо откалиброван. Модель часто очень уверена в неверных находках и неуверена в верных. Confidence полезен для <strong>маршрутизации</strong> (отправить на human review), но не заменяет явные критерии.</p>
-
-<p><strong>Иерархия: явные критерии первыми</strong>, confidence-routing вторым.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>«Be conservative» или «only report high-confidence findings» как валидные улучшения промпта</li>
-    <li>Confidence thresholds исправляют проблемы false positive</li>
-    <li>Держать все review-категории активными пока итерируешь по высоко-false-positive категориям</li>
-  </ul>
-</div>
-
-<!-- 4.2 -->
-<span id="d4t2" class="section-id"></span>
-<div class="task-header"><span class="task-num">4.2</span><h3>Структурированный вывод</h3></div>
-
-<p>Иерархия надёжности для схема-совместимого вывода:</p>
-<ol>
-  <li><strong><code>tool_use</code> с JSON-схемами</strong> — полностью устраняет синтаксические ошибки JSON</li>
-  <li><strong>Prompt-based JSON</strong> — модель может генерировать некорректный JSON</li>
-</ol>
-
-<h4>tool_choice — три режима (критично для экзамена):</h4>
-<p><code>"auto"</code> — модель может вернуть текст вместо вызова инструмента. Без гарантии структурированного вывода.</p>
-<p><code>"any"</code> — модель ОБЯЗАНА вызвать инструмент, выбирает какой. Гарантирует структурированный вывод при неизвестном типе документа (несколько схем экстракции).</p>
-<p><code>{"type": "tool", "name": "..."}</code> — модель ОБЯЗАНА вызвать конкретный инструмент. Для обязательных первых шагов.</p>
-
-<h4>Что tool_use НЕ предотвращает (главная ловушка):</h4>
-<p>Синтаксические ошибки — да, устраняет. Но <strong>семантические ошибки — нет:</strong>
+<h4>Скиллы: воркфлоу по запросу</h4>
+<p>Живут в <code>.claude/skills/</code>. <strong>Не загружаются автоматически</strong> — только по явному вызову. Три важных опции frontmatter:</p>
 <ul>
-  <li>Расхождения в суммах (строки не складываются до итога)</li>
-  <li>Данные в неверных полях</li>
-  <li>Выдуманные значения для обязательных полей, которых нет в документе</li>
-</ul></p>
-
-<h4>Дизайн схемы против выдумывания данных:</h4>
-<p>Когда поле обязательное — модель под давлением производить значение даже если его нет в документе. Решение: делай поля <strong>optional/nullable</strong> когда исходник может не содержать информацию. Так модель честно вернёт <code>null</code> вместо правдоподобно звучащего выдуманного значения.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Считать что tool_use предотвращает ВСЕ ошибки экстракции</li>
-    <li>Путать <code>"auto"</code> и <code>"any"</code> — auto не гарантирует tool call</li>
-    <li>Делать все поля обязательными для полноты данных — давит на модель выдумывать значения</li>
-  </ul>
-</div>
-
-<!-- 4.3 -->
-<span id="d4t3" class="section-id"></span>
-<div class="task-header"><span class="task-num">4.3</span><h3>Цепочки промптов и validation-retry</h3></div>
-
-<p>Правильный retry-паттерн отправляет три компонента обратно в модель:</p>
-<ol>
-  <li><strong>Оригинальный документ</strong> — чтобы модель могла его переизучить</li>
-  <li><strong>Неудавшаяся экстракция</strong> — чтобы видела что произвела</li>
-  <li><strong>Конкретная ошибка валидации</strong> — чтобы точно знала что пошло не так</li>
-</ol>
-
-<pre><code>const retryMessages = [{
-  role: "user",
-  content: `Оригинальный документ:\n${originalDocument}\n\n` +
-    `Твоя экстракция:\n${JSON.stringify(failedExtraction)}\n\n` +
-    `Ошибка: Строки суммируются в £450, но stated_total = £500. ` +
-    `Переэкстрагируй, убедившись что все строки учтены.`
-}];</code></pre>
-
-<h4>Граница эффективности retry:</h4>
-<p><strong>Retry работает для:</strong> несоответствие формата, структурные ошибки, перепутанные поля, математические ошибки (пропущена строка).</p>
-<p><strong>Retry НЕ работает для:</strong> информации реально отсутствующей в документе, данных из внешнего документа, которого нет у модели.</p>
-
-<h4>Self-correction в схеме:</h4>
-<p>Поля <code>calculated_total</code> vs <code>stated_total</code> создают автоматический флаг расхождения без внешней логики. <code>conflict_detected: true</code> — когда документ содержит противоречивую информацию.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Считать что retry всегда работает для ошибок экстракции</li>
-    <li>Делать retry без включения конкретной ошибки валидации — модель повторит ту же ошибку</li>
-    <li>Полагаться только на валидацию схемы без семантических проверок</li>
-  </ul>
-</div>
-
-<!-- 4.4 -->
-<span id="d4t4" class="section-id"></span>
-<div class="task-header"><span class="task-num">4.4</span><h3>Few-shot примеры</h3></div>
-
-<p>Few-shot примеры — самая эффективная техника для достижения последовательного вывода. Не больше инструкций, не confidence thresholds, не регулировка temperature.</p>
-
-<h4>Три триггера для применения few-shot:</h4>
-<ol>
-  <li><strong>Подробные инструкции дают непоследовательное форматирование.</strong> Больше инструкций не поможет. Несколько примеров точного формата — помогут.</li>
-  <li><strong>Непоследовательные суждения по неоднозначным случаям.</strong> Один и тот же паттерн флагируется как «critical» в одном файле и «minor» в другом. Нужны примеры с рассуждением.</li>
-  <li><strong>Экстракция возвращает пустые поля для данных, которые есть в документе.</strong> Информация присутствует но в неожиданном формате — в нарративном тексте а не таблице.</li>
-</ol>
-
-<h4>Как строить эффективные примеры:</h4>
-<p><strong>2–4 целевых примера</strong> — меньше двух не устанавливает паттерн, больше четырёх тратит токены без пропорциональной пользы.</p>
-<p><strong>Каждый пример должен показывать рассуждение</strong> — не просто пары input-output. Почему выбрано именно это действие, а не правдоподобные альтернативы. Модель учится обобщать суждение, а не просто совпадать с конкретными случаями.</p>
-
-<h4>Few-shot vs другие техники:</h4>
-<table>
-  <tr><th>Проблема</th><th>Правильная техника</th></tr>
-  <tr><td>Непоследовательное форматирование</td><td>Few-shot примеры</td></tr>
-  <tr><td>Некорректный JSON</td><td>tool_use + JSON-схемы</td></tr>
-  <tr><td>Выдуманные значения для отсутствующих полей</td><td>Nullable поля в схеме</td></tr>
-  <tr><td>Неверный выбор инструмента</td><td>Лучшие описания (первым), потом few-shot</td></tr>
-  <tr><td>Пустые поля для данных из нарратива</td><td>Few-shot примеры с нарративной экстракцией</td></tr>
-  <tr><td>Сумма не совпадает с итогом</td><td>Validation-retry цикл</td></tr>
-</table>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>«Добавить больше детальных инструкций» когда вывод непоследователен</li>
-    <li>Думать что few-shot учат только буквальному pattern-matching — с рассуждением модель обобщает на новые случаи</li>
-    <li>Confidence thresholds для исправления непоследовательных суждений</li>
-  </ul>
-</div>
-
-<!-- 4.5 -->
-<span id="d4t5" class="section-id"></span>
-<div class="task-header"><span class="task-num">4.5</span><h3>Batch API</h3></div>
-
-<p>Ключевые факты Message Batches API:</p>
-<ul>
-  <li><strong>50% экономия</strong> по сравнению с синхронными вызовами</li>
-  <li><strong>До 24 часов</strong> на обработку — нет гарантированного SLA задержки</li>
-  <li><strong>Нет мультиходовых tool calls</strong> внутри одного batch-запроса</li>
-  <li><strong>Поля <code>custom_id</code></strong> для корреляции пар запрос/ответ</li>
+  <li><code>context: fork</code> — изолирует подробный вывод в sub-agent. Обязателен для сканирования кодовой базы и брейнсторминга.</li>
+  <li><code>allowed-tools</code> — ограничивает инструменты. Read-only анализ не должен иметь Write или Bash.</li>
+  <li><code>argument-hint</code> — просит ввести параметры при вызове без аргументов.</li>
 </ul>
 
-<h4>Главное правило:</h4>
-<table>
-  <tr><th>Тип workflow</th><th>API</th></tr>
-  <tr><td>Блокирующие проверки (разработчики ждут)</td><td>Реальное время (синхронный)</td></tr>
-  <tr><td>Ночные отчёты о техдолге</td><td>Batch API</td></tr>
-  <tr><td>Еженедельный аудит</td><td>Batch API</td></tr>
-  <tr><td>Ночная генерация тестов</td><td>Batch API</td></tr>
-</table>
+<div class="traps">
+  <div class="trap"><strong>Ловушка:</strong> командный /review в <code>~/.claude/commands/</code> — будет только у тебя.</div>
+  <div class="trap"><strong>Ловушка:</strong> скиллы загружаются автоматически как CLAUDE.md — нет, только по явному вызову.</div>
+  <div class="trap"><strong>Ловушка:</strong> скилл с подробным выводом без <code>context: fork</code> — засоряет контекст.</div>
+</div>
 
-<h4>Расчёт SLA:</h4>
-<p>SLA 30 часов минус максимум 24 часа обработки = 6 часов буфер. Батч нужно отправить минимум за 30 часов до дедлайна.</p>
+<h3 id="d3-3">3.3 — Path-specific правила</h3>
+<p>Правила с привязкой к путям — для условного применения конвенций по типу файлов. Живут в <code>.claude/rules/</code> с YAML frontmatter:</p>
+<pre><code>---
+paths: ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts"]
+---
+# Конвенции для тестов
+- Используй describe/it блоки
+- Happy path + error case в каждом файле
+- Factory функции для тест-данных</code></pre>
 
-<h4>Обработка ошибок в батче:</h4>
+<p>Тест-файлы в 50+ директориях. CLAUDE.md в каждой = 50+ копий, кошмар сопровождения. Path-specific правила с glob: <strong>один файл, универсальное покрытие.</strong></p>
+<p>Корневой CLAUDE.md загружается всегда — Terraform-конвенции тратят токены при редактировании React. Path-specific правила загружаются только при редактировании совпадающих файлов — более экономно.</p>
+
+<h3 id="d3-4">3.4 — Plan-режим vs прямое выполнение</h3>
+
+<h4>Когда план-режим</h4>
+<ul>
+  <li>Масштабные изменения: рефакторинг монолита</li>
+  <li>Несколько валидных подходов к реализации</li>
+  <li>Архитектурные решения</li>
+  <li>Изменения в множестве файлов</li>
+  <li>Нужно исследование перед изменениями</li>
+</ul>
+
+<h4>Когда прямое выполнение</h4>
+<ul>
+  <li>Чёткий стек-трейс, одна функция, известное решение</li>
+  <li>Ограниченный охват: одна функция, один файл</li>
+</ul>
+
+<div class="callout tip">
+  <div class="callout-title">💡 Ключевое</div>
+  Решение — не о сложности, а о <strong>неоднозначности</strong>. Сложный, но чётко определённый баг (конкретный стек-трейс) — прямое выполнение. Простая фича с тремя возможными архитектурами — план-режим.
+</div>
+
+<h4>Гибридный паттерн: план → выполнение</h4>
+<p>Фаза плана: исследовать, понять зависимости, спроектировать стратегию. Фаза выполнения: реализовать запланированный подход. Экзамен проверяет умение распознавать этот паттерн.</p>
+
+<h3 id="d3-5">3.5 — Техники итеративной доработки</h3>
+
+<h4>Иерархия техник</h4>
 <ol>
-  <li>Найти упавшие по <code>custom_id</code></li>
-  <li>Переотправить только упавшие с модификациями (увеличенный max_tokens, разбивка больших документов)</li>
-  <li>Отрабатывать промпты на sample-сете ПЕРЕД отправкой полного батча</li>
+  <li><strong>Конкретные примеры ввода/вывода</strong> — при непоследовательной интерпретации. 2–3 примера «было → стало» устанавливают паттерн надёжнее любого текстового описания.</li>
+  <li><strong>Test-driven итерация</strong> — для сложных трансформаций. Сбои тестов дают конкретную обратную связь «Expected X, got Y».</li>
+  <li><strong>Interview-паттерн</strong> — в незнакомых доменах. Просим Claude задать вопросы перед реализацией — выявляет соображения, которые мы бы упустили.</li>
 </ol>
 
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Переводить всё на batch для экономии — блокирующие workflow должны оставаться синхронными</li>
-    <li>Считать что batch результаты придут быстро — дизайнируй под 24-часовой максимум</li>
-    <li>Использовать batch для workflow требующих мультиходовых tool calls</li>
-  </ul>
+<h4>Батчевый vs последовательный фидбек</h4>
+<ul>
+  <li><strong>Одно сообщение</strong> — когда правки взаимодействуют (исправление A влияет на B).</li>
+  <li><strong>Последовательно</strong> — когда проблемы независимы.</li>
+</ul>
+
+<h3 id="d3-6">3.6 — Интеграция CI/CD</h3>
+
+<div class="callout danger">
+  <div class="callout-title">🚫 Флаг -p — Вопрос 10 официального сборника</div>
+  Claude Code ждёт ввода с клавиатуры. В CI — нет клавиатуры. Без <code>-p</code> задача зависает навсегда.
+  <br><br>
+  <code>claude -p "Проанализируй pull request"</code> — правильно.<br>
+  Не <code>CLAUDE_HEADLESS=true</code>, не <code>--batch</code> — они не существуют.
 </div>
 
-<!-- 4.6 -->
-<span id="d4t6" class="section-id"></span>
-<div class="task-header"><span class="task-num">4.6</span><h3>Валидация вывода и независимый review</h3></div>
+<h4>Ключевые практики CI/CD</h4>
+<ul>
+  <li><strong>Структурированный вывод:</strong> <code>--output-format json</code> + <code>--json-schema</code> для машиночитаемого вывода и инлайн комментариев в PR.</li>
+  <li><strong>Изоляция контекста:</strong> отдельный инстанс для ревью — не тот, что генерировал код. Независимый взгляд эффективнее.</li>
+  <li><strong>Инкрементальное ревью:</strong> включать предыдущие находки в контекст, репортировать только новые/неисправленные. Дублирующие комментарии убивают доверие разработчиков.</li>
+</ul>
 
-<p>Модель, проверяющая собственный вывод в той же сессии, имеет структурный недостаток: сохраняет рассуждательный контекст от генерации. Она уже «знает» почему сделала каждый выбор и с меньшей вероятностью поставит их под сомнение.</p>
-
-<p><strong>Независимый инстанс</strong> — отдельный вызов Claude без предыдущего рассуждательного контекста — оценивает вывод свежим взглядом. Значительно эффективнее в нахождении тонких проблем.</p>
-
-<pre><code>// Антипаттерн: self-review в той же сессии
-messages: [
-  { role: "user", content: "Напиши функцию обработки заказов" },
-  { role: "assistant", content: generatedCode },
-  { role: "user", content: "Теперь проверь свой код на баги" }
-  // Модель сохраняет рассуждения — менее вероятно найдёт свои ошибки
-]
-
-// Правильно: независимый инстанс review
-messages: [
-  { role: "user",
-    content: `Проверь этот код на баги:\n\n${generatedCode}` }
-  // Свежий инстанс без предыдущего контекста
-]</code></pre>
-
-<h4>Мультипроходная архитектура review:</h4>
-<p><strong>Проход 1: Локальный анализ по файлу.</strong> Каждый файл анализируется отдельно. Гарантирует равномерную глубину.</p>
-<p><strong>Проход 2: Кросс-файловая интеграция.</strong> Отдельный вызов со всеми per-file находками для проверки data flow, несогласованного API-использования, противоречий между файлами.</p>
-
-<h4>Confidence-based routing:</h4>
-<p>Высоконадёжные находки → напрямую разработчикам. Низконадёжные → на human review. Но <strong>сырые confidence scores не откалиброваны</strong>. Нужна калибровка по размеченным валидационным сетам — тогда thresholds надёжны для маршрутизации.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Self-review в той же сессии как жизнеспособная стратегия</li>
-    <li>Один проход для большого multi-file review</li>
-    <li>Переход на модель с большим контекстом как фикс attention dilution</li>
-    <li>Сырые неоткалиброванные confidence scores для автоматической маршрутизации</li>
-  </ul>
-</div>
+<table>
+  <tr><th>Тип воркфлоу</th><th>API</th><th>Причина</th></tr>
+  <tr><td>Блокирующие пре-мерж проверки</td><td>Синхронный</td><td>Разработчики ждут</td></tr>
+  <tr><td>Ночные отчёты о техдолге</td><td>Batch API (50% экономии)</td><td>Не зависит от задержки</td></tr>
+</table>
 
 <hr>
 
-<!-- ===== ДОМЕН 5 ===== -->
-<div class="domain-header">
-  <div class="domain-num">Домен 5</div>
-  <h2 style="border:none;padding:0;margin:6px 0 4px;">Управление контекстом и надёжность</h2>
-  <div class="domain-weight">15% от экзамена · 6 задач</div>
+<h2 id="domain4">ДОМЕН 4 — Промпт-инжиниринг и структурированный вывод (20%)</h2>
+
+<h3 id="d4-1">4.1 — Системные промпты</h3>
+<p>Самая большая ошибка в продакшн промпт-инжиниринге — расплывчатые инструкции. «Будь консервативным», «здравый смысл», «высококонфидентные находки» — не дают модели ничего конкретного.</p>
+
+<table>
+  <tr><th>Неправильно</th><th>Правильно</th></tr>
+  <tr><td>«Проверь код. Будь консервативным.»</td><td>«Помечай комментарии только когда задокументированное поведение противоречит реальному коду. Репортируй баги и уязвимости. Пропускай стилевые предпочтения.»</td></tr>
+</table>
+
+<h4>Проблема доверия при высоком false positive rate</h4>
+<p>Высокий false positive в одной категории разрушает доверие ко <em>всем</em>. <strong>Фикс:</strong> временно отключить проблемную категорию, улучшать её промпты с конкретными примерами кода, включать только после улучшения точности.</p>
+
+<div class="traps">
+  <div class="trap"><strong>Ловушка:</strong> «будь консервативным» или «репортируй только высококонфидентные находки» — расплывчато, не помогает.</div>
+  <div class="trap"><strong>Ловушка:</strong> пороги уверенности модели — самооценка уверенности LLM плохо откалибрована.</div>
+  <div class="trap"><strong>Ловушка:</strong> держать все категории активными при итерации на высоко-false-positive категории.</div>
 </div>
 
-<!-- 5.1 -->
-<span id="d5t1" class="section-id"></span>
-<div class="task-header"><span class="task-num">5.1</span><h3>Управление контекстным окном</h3></div>
+<h3 id="d4-2">4.2 — Структурированный вывод</h3>
 
-<h4>Ловушка прогрессивного суммаризирования</h4>
-<p>Суммаризировать ранние ходы для экономии токенов — ловушка. Прогрессивное суммаризирование <strong>систематически уничтожает критическую информацию</strong>: числовые значения, даты, номера заказов, суммы.</p>
+<h4>Иерархия надёжности</h4>
+<ol>
+  <li><strong><code>tool_use</code> с JSON-схемами</strong> — устраняет синтаксические ошибки JSON</li>
+  <li><strong>Промпт-based JSON</strong> — может генерировать невалидный JSON</li>
+</ol>
 
-<p>«Клиент хочет возврат £247.83 за заказ #8891 от 3 марта» → суммаризируется в «Клиент хочет возврат за недавний заказ». Все три факта нужные для обработки — потеряны.</p>
+<div class="callout warn">
+  <div class="callout-title">⚠️ Что tool_use НЕ предотвращает</div>
+  Семантические ошибки: несоответствие суммы, значения в неправильных полях, выдуманные значения для обязательных полей при отсутствии данных в источнике.
+</div>
 
-<h4>Блок постоянных фактов кейса (persistent case facts block)</h4>
-<p>Самый важный паттерн в управлении контекстом. Транзакционные факты (суммы, даты, номера заказов) выносятся в структурированный блок, который <strong>включается в каждый промпт и никогда не суммаризируется</strong>.</p>
+<p><strong>Опциональные/nullable поля:</strong> если документ может не содержать информацию — поле должно быть nullable. Обязательное поле давит на модель выдумывать значения.</p>
+
+<h4>Паттерны дизайна схемы</h4>
+<ul>
+  <li><strong>"unclear" в enum</strong> — для истинно неоднозначных случаев</li>
+  <li><strong>"other" + detail string</strong> — для расширяемой категоризации</li>
+  <li><strong>Нормализация форматов в промпте</strong> — «все даты в ISO 8601»</li>
+</ul>
+
+<h3 id="d4-3">4.3 — Цепочки промптов: validation-retry паттерн</h3>
+
+<h4>Правильный повтор с обратной связью об ошибке</h4>
+<pre><code>{
+  "role": "user",
+  "content": "Исходный документ:\n" + originalDoc + "\n\n" +
+    "Твоё извлечение:\n" + JSON.stringify(failed) + "\n\n" +
+    "Ошибка: сумма позиций £450, но stated_total £500. " +
+    "Переизвлеки, убедись что все позиции включены."
+}</code></pre>
+
+<h4>Когда повторы помогают, когда — нет</h4>
+<table>
+  <tr><th>Повторы помогают</th><th>Повторы НЕ помогают</th></tr>
+  <tr><td>Несоответствие форматов</td><td>Информация отсутствует в источнике</td></tr>
+  <tr><td>Значения в неправильных полях</td><td>Данные только во внешнем документе</td></tr>
+  <tr><td>Пропущены позиции (математика)</td><td>Требуются недоступные знания</td></tr>
+</table>
+
+<h4>Self-correction в схеме</h4>
+<ul>
+  <li><code>calculated_total</code> vs <code>stated_total</code> — автоматический флаг расхождения без внешней логики</li>
+  <li><code>conflict_detected: boolean</code> — документ содержит противоречивую информацию</li>
+</ul>
+
+<h3 id="d4-4">4.4 — Few-shot и примеры</h3>
+<p>Few-shot примеры — наиболее эффективная техника для согласованного вывода. Не больше инструкций, не пороги уверенности.</p>
+
+<h4>Три триггера</h4>
+<ol>
+  <li>Детальные инструкции дают несогласованное форматирование</li>
+  <li>Непоследовательные суждения в неоднозначных случаях</li>
+  <li>Пустые поля для информации, которая есть в документе</li>
+</ol>
+
+<h4>Правила конструкции</h4>
+<ul>
+  <li><strong>2–4 примера</strong> — меньше не устанавливают паттерн, больше — напрасные токены</li>
+  <li><strong>Показывай рассуждение</strong> — не только пары ввод/вывод. Рассуждение учит обобщать на новые случаи</li>
+  <li><strong>Покрывай проваливающиеся сценарии</strong> — если падает на нарративном тексте, примеры с нарративом</li>
+</ul>
+
+<h3 id="d4-5">4.5 — Batch API</h3>
+
+<h4>Факты (обязательно знать)</h4>
+<ul>
+  <li>50% экономии vs синхронный API</li>
+  <li>До 24 часов — без гарантированного SLA</li>
+  <li>Нет мультиповоротных tool calls внутри батча</li>
+  <li><code>custom_id</code> для сопоставления запрос/ответ</li>
+</ul>
+
+<div class="callout warn">
+  <div class="callout-title">⚠️ Вопрос 11 официального сборника</div>
+  Менеджер предлагает перевести всё на Batch API. Правильный ответ: только латентно-терпимые воркфлоу. Блокирующие пре-мерж проверки — синхронный API.
+</div>
+
+<h4>Обработка сбоев батча</h4>
+<ol>
+  <li>Определить сбои по <code>custom_id</code></li>
+  <li>Повторно отправить <strong>только</strong> упавшие с модификациями</li>
+  <li>До батч-обработки — отточить промпты на выборке из 5–10 документов</li>
+</ol>
+
+<h3 id="d4-6">4.6 — Валидация вывода: независимые инстансы ревью</h3>
+
+<p>Модель, ревьюящая собственный вывод в той же сессии, сохраняет контекст рассуждений — менее склонна оспаривать свои решения. Независимый инстанс без предыдущего контекста оценивает код свежим взглядом.</p>
+
+<h4>Многопроходная архитектура</h4>
+<ol>
+  <li><strong>Per-file проходы</strong> — каждый файл изолированно, полный бюджет внимания</li>
+  <li><strong>Интеграционный проход</strong> — все per-file находки + проверка кросс-файловых проблем</li>
+</ol>
+
+<h4>Роутинг на основе уверенности</h4>
+<p>Высокоуверенные → разработчикам напрямую. Низкоуверенные → на человеческое ревью. Обязательно: <strong>калибровать на размеченных датасетах</strong> перед использованием для роутинга.</p>
+
+<hr>
+
+<h2 id="domain5">ДОМЕН 5 — Управление контекстом и надёжность (15%)</h2>
+
+<h3 id="d5-1">5.1 — Управление контекстным окном</h3>
+
+<h4>Ловушка прогрессивной суммаризации</h4>
+<p>Клиент: «Хочу возврат $247.83 по заказу #8891 от 3 марта». После суммаризации: «Клиент хочет возврат». Сумма, номер заказа и дата — исчезли.</p>
+
+<div class="callout tip">
+  <div class="callout-title">💡 Блок постоянных фактов кейса — главный паттерн домена 5</div>
+  Извлекай транзакционные факты (суммы, даты, номера заказов) в структурированный блок, который включается в каждый промпт вне суммаризованной истории. Этот блок никогда не суммируется.
+</div>
 
 <pre><code>{
   "caseFactsBlock": {
@@ -1036,206 +678,137 @@ messages: [
     "issues": [{
       "orderId": "#8891",
       "orderDate": "2024-03-03",
-      "refundAmount": "£247.83",
+      "refundAmount": "$247.83",
       "status": "pending_refund"
     }]
   }
 }</code></pre>
 
-<h4>Эффект «потерянного в середине»</h4>
-<p>Модели надёжно обрабатывают информацию в начале и конце длинного ввода. Находки, закопанные в середине — могут быть пропущены или получить меньше веса.</p>
-<p><strong>Фикс структурный, не промптовый:</strong> ключевые саммари в начале агрегированных вводов, явные заголовки секций на всём протяжении.</p>
+<h4>Эффект «потерян в середине»</h4>
+<p>Модели надёжно обрабатывают начало и конец. Находки в середине — могут быть упущены. <strong>Структурный фикс:</strong> ключевые саммари — в начало агрегированных вводов, детали — с явными заголовками разделов.</p>
 
-<h4>Обрезка результатов инструментов:</h4>
-<p>Lookup заказа может вернуть 40+ полей: внутренние аудит-метки, складские коды, ID перевозчика. Нужно 5 полей. Остальные 35 потребляют токены в каждом последующем ходу по мере роста истории. Обрезай verbose tool outputs до нужных полей <strong>до</strong> того как они накапливаются в контексте.</p>
+<h4>Обрезка результатов инструментов</h4>
+<p>Запрос заказа — 40+ полей, нужно 5. Остальные 35 накапливаются в каждом ходу. Обрезай до нужных полей в PostToolUse хуке или в самом инструменте — до попадания в историю.</p>
 
-<div class="tip"><strong>Claude API — stateless.</strong> Каждый запрос должен включать полную историю диалога. Сервер не хранит состояние.</div>
+<h3 id="d5-2">5.2 — Калибровка эскалации</h3>
 
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Думать что прогрессивное суммаризирование безопасно для транзакционных данных</li>
-    <li>Считать что «потерянный в середине» эффект решается промптом «обращать внимание на всё»</li>
-    <li>Оставлять полные результаты инструментов в контексте «вдруг пригодятся»</li>
-    <li>Думать что историю диалога можно выборочно усекать без последствий</li>
-  </ul>
-</div>
-
-<!-- 5.2 -->
-<span id="d5t2" class="section-id"></span>
-<div class="task-header"><span class="task-num">5.2</span><h3>Калибровка эскалации</h3></div>
-
-<h4>Три валидных триггера эскалации:</h4>
+<h4>Три валидных триггера</h4>
 <ol>
-  <li><strong>Клиент явно просит человека.</strong> Эскалировать немедленно. НЕ пытаться решить сначала. Абсолютное правило без исключений.</li>
-  <li><strong>Исключения или пробелы в политике.</strong> Запрос выходит за рамки задокументированной политики. Отличие от нарушения: нарушение имеет задокументированный ответ («нет»), пробел — политика молчит.</li>
-  <li><strong>Невозможность продвинуться вперёд.</strong> Агент попробовал решить и не смог. Инструменты вернули неисправимые ошибки, нет доступа к нужным системам. Требует реальной попытки, не «возможно не смогу».</li>
+  <li><strong>Явный запрос человека.</strong> «Хочу говорить с живым» → немедленная эскалация. Никакого «сначала дайте попробую».</li>
+  <li><strong>Пробелы в политике</strong> (не нарушения). Нарушение (возврат за пределами окна) — задокументированный ответ «нет». Пробел — политика молчит, нужна эскалация.</li>
+  <li><strong>Невозможность продвинуться.</strong> Агент пробовал и не смог — не «возможно, не смогу».</li>
 </ol>
 
-<h4>Два ненадёжных триггера:</h4>
-<p><strong>Sentiment-based эскалация.</strong> Обнаружение фрустрации не коррелирует со сложностью кейса. Разъярённый клиент с простой задержкой доставки — легко решается. Спокойный клиент с пробелом в политике — нужна эскалация.</p>
-<p><strong>Self-reported confidence scores.</strong> LLM-уверенность плохо откалибрована. Модель часто чрезмерно уверена на сложных кейсах и неуверена на простых — именно тот паттерн сбоев, который описывает экзамен.</p>
-
-<h4>Нюанс фрустрации:</h4>
-<p>Фрустрированный клиент с решаемым вопросом → предложить решение, не эскалировать. Если после предложения помощи клиент повторяет просьбу о человеке → эскалировать. Если с самого начала «хочу человека» → немедленная эскалация.</p>
-
-<h4>Неоднозначное совпадение клиентов:</h4>
-<p>Когда инструмент возвращает несколько совпадений — запрашивать дополнительные идентификаторы. Никогда не выбирать эвристически (самый последний, самый активный). Риск: приватность данных и неверные действия.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Sentiment-based эскалация кажется разумной — но фустрация не коррелирует со сложностью</li>
-    <li>Self-reported confidence как надёжный сигнал эскалации</li>
-    <li>Пытаться решить вопрос перед тем как выполнить явную просьбу о человеке</li>
-    <li>Выбор из неоднозначных совпадений по эвристике «самый последний»</li>
-  </ul>
+<h4>Два ненадёжных триггера</h4>
+<div class="traps">
+  <div class="trap"><strong>Эскалация по настроению.</strong> Фрустрация не коррелирует со сложностью. Разъярённый клиент с простой задержкой доставки — легко разрешить. Спокойный клиент с пробелом в политике — нужна эскалация.</div>
+  <div class="trap"><strong>Самооценка уверенности модели.</strong> LLM часто уверены в сложных случаях и сомневаются в простых — именно обратный паттерн нужен. Это основной сбой, который тестирует экзамен.</div>
 </div>
 
-<!-- 5.3 -->
-<span id="d5t3" class="section-id"></span>
-<div class="task-header"><span class="task-num">5.3</span><h3>Распространение ошибок в мультиагентных системах</h3></div>
+<h3 id="d5-3">5.3 — Структурированное распространение ошибок</h3>
 
-<p>Структурированный контекст ошибки должен включать 4 элемента:</p>
+<h4>Структурированный контекст ошибки включает</h4>
 <ol>
-  <li><strong>Тип сбоя:</strong> transient, validation, business, permission</li>
-  <li><strong>Что было попытано:</strong> конкретный запрос, параметры, целевая система</li>
-  <li><strong>Частичные результаты до сбоя:</strong> если нашли 3 из 5 источников до таймаута — эти 3 ценны</li>
-  <li><strong>Потенциальные альтернативы:</strong> субагент знает свой домен — может предложить другую БД, расширить поисковый запрос</li>
+  <li>Тип сбоя: transient/validation/business/permission</li>
+  <li>Что было попытано: запрос, параметры, целевая система</li>
+  <li>Частичные результаты до сбоя</li>
+  <li>Потенциальные альтернативные подходы</li>
 </ol>
 
-<h4>Два антипаттерна:</h4>
-<p><strong>Тихое подавление:</strong> возвращать пустые результаты, отмеченные как успешные. Самый плохой антипаттерн. Координатор думает что поиск выполнился и ничего не нашёл — не будет retry, не попробует альтернативы, продукт будет выглядеть полным но с тихими пробелами.</p>
-<p><strong>Прерывание workflow:</strong> один субагент падает — весь пайплайн крашится. Выбрасывает результаты всех успешно завершившихся субагентов. Непропорциональная реакция.</p>
-
-<h4>Access failure vs валидный пустой результат (снова):</h4>
-<p>Смешивание двух ситуаций ведёт к: либо никогда не делать retry когда нужно, либо зря делать retry на запросах которые всегда вернут ноль.</p>
-
-<h4>Аннотации покрытия:</h4>
-<p>Синтез должен помечать какие темы хорошо подкреплены, а какие имеют пробелы из-за недоступных источников. Это лучше чем тихое умалчивание темы.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Поймать таймаут и вернуть пустые результаты как успешные — тихое подавление</li>
-    <li>Прерывать весь пайплайн когда один субагент падает</li>
-    <li>Возвращать generic «search unavailable» без структурированного контекста</li>
-    <li>Делать retry на валидном пустом результате</li>
-  </ul>
+<div class="traps">
+  <div class="trap"><strong>Тихое подавление:</strong> вернуть пустые результаты как успех. Координатор не повторит, не попробует альтернативы — синтез с молчаливыми пробелами. Самый опасный антипаттерн.</div>
+  <div class="trap"><strong>Завершение воркфлоу:</strong> убить весь пайплайн из-за одного сбоя. Остальные субагенты завершились успешно — их результаты выброшены.</div>
 </div>
 
-<!-- 5.4 -->
-<span id="d5t4" class="section-id"></span>
-<div class="task-header"><span class="task-num">5.4</span><h3>Деградация контекста при исследовании кода</h3></div>
+<h3 id="d5-4">5.4 — Деградация контекста при исследовании кодовой базы</h3>
 
-<p>Деградация контекста — специфический сбой при длительном исследовании кодовой базы. Симптом: агент начинает ссылаться на «типичные паттерны репозитория» вместо конкретных классов, методов и цепочек зависимостей, которые обнаружил ранее.</p>
+<p>Агент начинает ссылаться на «типичные паттерны» вместо конкретного класса <code>OrderRepository</code> и цепочек зависимостей. Это не проблема лимита токенов — это потеря хватки на конкретных находках из-за накопления объёмного вывода.</p>
 
-<div class="warn"><strong>Критично:</strong> Деградация контекста — это НЕ проблема лимита токенов. Увеличение контекстного окна не поможет. Модель теряет конкретные детали когда они закапываются под более свежим verbose выводом.</div>
+<h4>Два инструмента</h4>
+<ul>
+  <li><strong>Черновики (scratchpad files):</strong> агент записывает ключевые находки в файл и обращается при последующих вопросах. Вне контекста — иммунны к деградации.</li>
+  <li><strong>Делегирование субагентам:</strong> субагенты работают изолированно, возвращают структурированные саммари. Главный агент остаётся чистым.</li>
+</ul>
 
-<h4>Scratchpad файлы — основная митигация:</h4>
-<p>Агент записывает ключевые находки в файл и обращается к нему для последующих вопросов. Это сохраняет знание вне диалогового контекста, делая его невосприимчивым к деградации.</p>
+<h4>Восстановление через манифесты</h4>
+<p>Каждый агент экспортирует состояние в файл-манифест: что исследовано, ключевые находки, следующие шаги. При восстановлении — загрузить манифест, продолжить с места остановки.</p>
 
-<h4>Делегирование субагентам:</h4>
-<p>Порождать субагентов для конкретных задач исследования. Каждый субагент работает в изолированном контексте — может исследовать verbose без засорения контекста основного агента. Возвращает структурированное саммари координатору.</p>
-<p><strong>Это не только про параллелизацию — это про изоляцию контекста.</strong></p>
-
-<h4>Инжекция саммари между фазами:</h4>
-<p>После Фазы 1 — суммаризировать находки перед порождением Фазы 2 субагентов. Инжектировать в их начальный контекст. Предотвращает «cold start» когда Фаза 2 дублирует исследование Фазы 1.</p>
-
-<h4>Команда /compact:</h4>
-<p>Суммаризирует диалог для освобождения пространства. Использовать проактивно в длинных сессиях, а не только когда контекст исчерпан.</p>
-
-<h4>Crash recovery через манифесты состояния:</h4>
-<p>Каждый агент экспортирует текущее состояние в файл-манифест: что исследовано, ключевые находки, текущая фаза, следующие шаги. При возобновлении — координатор загружает манифест и инжектирует в промпты агентов.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Увеличение контекстного окна как решение деградации контекста</li>
-    <li>Считать что делегирование субагентам только про параллелизацию, а не изоляцию</li>
-    <li>Перезапускать сессию без сохранения состояния</li>
-    <li>Использовать /compact только по достижению лимита</li>
-  </ul>
+<div class="callout warn">
+  <div class="callout-title">⚠️ Ловушка</div>
+  «Перейти на модель с большим контекстом» — неверный ответ. Большее окно всё равно заполнится объёмным выводом. Проблема архитектурная.
 </div>
 
-<!-- 5.5 -->
-<span id="d5t5" class="section-id"></span>
-<div class="task-header"><span class="task-num">5.5</span><h3>Точность по сегментам и человеческий review</h3></div>
+<h3 id="d5-5">5.5 — Метрики и человеческое ревью</h3>
 
 <h4>Ловушка агрегированных метрик</h4>
-<p>Система показывает 97% общую точность. Но за этим скрывается: стандартные счета — 99.5%, рукописные чеки — 60%, отсканированные PDF — 72%, международные форматы — 45%.</p>
-<p>Агрегат маскирует сегменты где система проваливается. И именно эти сегменты часто имеют наибольший бизнес-impact.</p>
+<p>Система сообщает 97% точности. Но: рукописные квитанции — 60%, отсканированные PDF — 72%, международные форматы — 45%. Агрегат хорош, потому что доминируют стандартные счета.</p>
 
-<div class="warn"><strong>Правило:</strong> всегда валидировать точность по типу документа И по полю перед автоматизацией. Никогда не принимать решение об автоматизации на основе агрегированных метрик.</div>
-
-<h4>Стратифицированная случайная выборка:</h4>
-<p>Выбирать репрезентативные выборки из каждого страта (тип документа, диапазон confidence, тип поля) для человеческой верификации.</p>
-<p><strong>Критично: нужно семплировать высоконадёжные экстракции</strong>, а не только низконадёжные. Низконадёжные и так идут на human review. Если модель разовьёт новый паттерн ошибки в высоконадёжных экстракциях — только стратифицированная выборка его поймает.</p>
-
-<h4>Калибровка confidence по полям:</h4>
-<p>Сырые confidence scores не откалиброваны. 0.90 для дат может означать 94% реальной точности, 0.90 для сумм — только 82%. Калибровка требует размеченных validation сетов с ground truth данными.</p>
-
-<h4>Приоритизация ёмкости рецензентов:</h4>
-<p>Не распределяй ёмкость рецензентов равномерно — это трата времени на высоконадёжные элементы. Направляй ограниченную ёмкость на наиболее неопределённые элементы динамически.</p>
-
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>97% общая точность — достаточная база для автоматизации всех высоконадёжных экстракций</li>
-    <li>Семплировать только низконадёжные экстракции для human review</li>
-    <li>Использовать сырые confidence scores без калибровки</li>
-    <li>Равномерное распределение ёмкости рецензентов</li>
-  </ul>
+<div class="callout danger">
+  <div class="callout-title">🚫 Правило</div>
+  Всегда валидируй точность по <strong>типу документа И сегменту поля</strong> перед автоматизацией. Никогда не на основе агрегата.
 </div>
 
-<!-- 5.6 -->
-<span id="d5t6" class="section-id"></span>
-<div class="task-header"><span class="task-num">5.6</span><h3>Атрибуция данных в мультиагентном синтезе</h3></div>
+<h4>Стратифицированная выборка</h4>
+<p>Обязательно включай <strong>высокоуверенные извлечения</strong> в выборку. Низкоуверенные уже идут на ревью. Если модель разовьёт новый паттерн ошибок для высокоуверенных — только стратифицированная выборка это поймает.</p>
 
-<p>Каждая находка в мультиагентной исследовательской системе обязана сохранять происхождение. Структура:</p>
+<h4>Приоритизация ревьюеров</h4>
+<p>Сначала — самые неопределённые элементы. Равномерное распределение тратит время на высокоуверенные извлечения. Динамическая очередь по убыванию неопределённости.</p>
 
+<h3 id="d5-6">5.6 — Провенанс информации</h3>
+
+<h4>Структурированный маппинг утверждение-источник</h4>
 <pre><code>{
-  "claim": "Инвестиции в возобновляемую энергию достигли $495 млрд в 2023",
+  "claim": "Глобальные инвестиции в ВИЭ достигли $495 млрд в 2023 году",
   "sourceUrl": "https://example.com/iea-report-2024",
   "documentName": "IEA World Energy Investment Report 2024",
-  "relevantExcerpt": "Общие инвестиции составили около $495 млрд...",
+  "relevantExcerpt": "Общий объём инвестиций составил ~$495 млрд в 2023 году",
   "publicationDate": "2024-06-15"
 }</code></pre>
 
-<h4>Атрибуция умирает при суммаризации:</h4>
-<p>Когда синтез-агент объединяет находки, он естественно сжимает и перефразирует. Без явных инструкций сохранять маппинги claim-source — результат будет «Инвестиции в возобновляемую энергию значительно выросли» — без суммы, источника, даты. Downstream агенты обязаны явно сохранять и объединять эти маппинги.</p>
+<p>Атрибуция гибнет при суммаризации без явных инструкций по её сохранению. Синтез-агент обязан поддерживать маппинги при объединении находок.</p>
 
-<h4>Обработка конфликтующих источников:</h4>
-<p>Когда два надёжных источника сообщают разные цифры за один период — <strong>аннотировать оба значения с полной атрибуцией</strong>. Никогда не выбирать произвольно (не «берём более свежий», не «усредним»).</p>
+<h4>Конфликтующие источники</h4>
+<p>Источник A: рост 12%. Источник B: рост 8%. <strong>Неправильно:</strong> выбрать более свежий или усреднить. <strong>Правильно:</strong> аннотировать оба с полной атрибуцией, предоставить потребителю решать.</p>
 
-<h4>Временная осведомлённость:</h4>
-<p>Разные даты публикации объясняют разные цифры — это не противоречие, это тренд. Источник 2023: 8% роста. Источник 2024: 12% роста. Без дат выглядит как конфликт. С датами — рассказывает историю роста. <strong>Требуй даты публикации во всех структурированных выводах.</strong></p>
+<h4>Временной контекст</h4>
+<p>Источник 2023 года — 8%, источник 2024 — 12%. Без дат публикации это выглядит как противоречие. С датами — это тренд. Требуй даты во всех структурированных выводах.</p>
 
-<h4>Рендеринг под тип контента:</h4>
+<h4>Рендеринг по типу контента</h4>
 <table>
-  <tr><th>Тип контента</th><th>Формат</th></tr>
+  <tr><th>Тип контента</th><th>Лучший формат</th></tr>
   <tr><td>Финансовые данные</td><td>Таблицы</td></tr>
-  <tr><td>Новости, текущие события</td><td>Prose (абзацы)</td></tr>
+  <tr><td>Новости и текущие события</td><td>Проза</td></tr>
   <tr><td>Технические находки</td><td>Структурированные списки</td></tr>
 </table>
 
-<div class="exam-trap">
-  <div class="exam-trap-title">Ловушки экзамена</div>
-  <ul>
-    <li>Выбирать более свежий источник при конфликте двух надёжных источников</li>
-    <li>Считать разные цифры из разных источников противоречием без учёта дат публикации</li>
-    <li>Позволять синтез-агенту перефразировать без сохранения маппинга claim-source</li>
-    <li>Рендерить весь контент в одном формате (всё prose или всё таблицы)</li>
-  </ul>
+<div class="traps">
+  <div class="trap"><strong>Ловушка:</strong> выбирать самый свежий источник при конфликте — уничтожает информацию.</div>
+  <div class="trap"><strong>Ловушка:</strong> разные числа из разных источников = противоречия. Разные даты объясняют разные числа — это тренд.</div>
+  <div class="trap"><strong>Ловушка:</strong> синтез-агент перефразирует без сохранения маппингов — атрибуция погибает.</div>
 </div>
 
 <hr>
 
-<p style="color:var(--muted);font-size:.8rem;text-align:center;margin-top:40px;">
-  Перевод: <a href="https://claudecertificationguide.com" target="_blank">claudecertificationguide.com</a> — независимый community guide, не аффилирован с Anthropic · Март 2026
+<p style="text-align:center; color: var(--muted); font-size: 13px; padding: 40px 0 20px;">
+  Перевод <a href="https://claudecertificationguide.com" target="_blank">claudecertificationguide.com</a> — независимый community guide, не аффилирован с Anthropic.
 </p>
 
 </main>
 </div>
+
+<script>
+  const sections = document.querySelectorAll('[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+</script>
 </body>
 </html>
