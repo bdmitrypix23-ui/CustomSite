@@ -1,841 +1,1329 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AURA — Деликатная коллекция</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --primary: #FFB6C1;
-      --primary-dark: #FF9EAD;
-      --bg-light: #FFF5F7;
-      --bg-fade: #FFFAF9;
-      --accent-lavender: #E6D5F0;
-      --accent-warm: #E8B4CB;
-      --text-dark: #4A3040;
-      --text-secondary: #6B5B6F;
-      --white: #FFFFFF;
-      --border: #F0E5E9;
-      --shadow-soft: 0 4px 20px rgba(74, 48, 64, 0.08);
-      --shadow-medium: 0 8px 32px rgba(74, 48, 64, 0.12);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Nunito', sans-serif;
-      background-color: var(--bg-light);
-      color: var(--text-dark);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* HEADER */
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(10px);
-      padding: 1.2rem 2rem;
-      z-index: 1000;
-      box-shadow: var(--shadow-soft);
-    }
-
-    nav {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #FFB6C1, #E6D5F0);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 2rem;
-    }
-
-    nav a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-      position: relative;
-    }
-
-    nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--primary);
-      transition: width 0.3s ease;
-    }
-
-    nav a:hover {
-      color: var(--primary);
-    }
-
-    nav a:hover::after {
-      width: 100%;
-    }
-
-    @media (max-width: 768px) {
-      nav ul {
-        display: none;
-      }
-      header {
-        padding: 1rem 1.5rem;
-      }
-      .logo {
-        font-size: 1.4rem;
-      }
-    }
-
-    /* HERO */
-    .hero {
-      padding-top: 120px;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--bg-light) 0%, #FFF8FB 50%, var(--accent-lavender) 100%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(255, 182, 193, 0.3), transparent);
-      border-radius: 50%;
-      top: 10%;
-      right: 10%;
-      animation: float 6s ease-in-out infinite;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      width: 250px;
-      height: 250px;
-      background: radial-gradient(circle, rgba(230, 213, 240, 0.2), transparent);
-      border-radius: 50%;
-      bottom: 5%;
-      left: 5%;
-      animation: float 8s ease-in-out infinite reverse;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(20px); }
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      max-width: 600px;
-      animation: fadeInUp 0.8s ease 0.2s both;
-    }
-
-    .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 4rem;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 1.5rem;
-      line-height: 1.1;
-    }
-
-    .hero p {
-      font-size: 1.2rem;
-      color: var(--text-secondary);
-      margin-bottom: 2.5rem;
-      font-weight: 300;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 1rem 2.5rem;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      text-decoration: none;
-      border-radius: 50px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
-      box-shadow: var(--shadow-soft);
-      font-size: 1rem;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-medium);
-    }
-
-    .btn-secondary {
-      background: white;
-      color: var(--primary);
-      border: 2px solid var(--primary);
-    }
-
-    .btn-secondary:hover {
-      background: var(--bg-light);
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-      .hero p {
-        font-size: 1rem;
-      }
-      .hero::before,
-      .hero::after {
-        width: 200px;
-        height: 200px;
-      }
-    }
-
-    /* SECTIONS */
-    section {
-      padding: 6rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
-      color: var(--text-dark);
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-
-    .section-subtitle {
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 1.1rem;
-      margin-bottom: 3rem;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    /* PHILOSOPHY */
-    #philosophy {
-      background: linear-gradient(180deg, white 0%, var(--bg-fade) 100%);
-    }
-
-    .philosophy-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-top: 3rem;
-    }
-
-    .philosophy-card {
-      background: white;
-      padding: 2.5rem;
-      border-radius: 15px;
-      box-shadow: var(--shadow-soft);
-      border-top: 4px solid var(--primary);
-      transition: all 0.3s ease;
-      opacity: 0;
-      animation: slideInUp 0.6s ease forwards;
-    }
-
-    @keyframes slideInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .philosophy-card:nth-child(1) { animation-delay: 0.2s; }
-    .philosophy-card:nth-child(2) { animation-delay: 0.4s; }
-    .philosophy-card:nth-child(3) { animation-delay: 0.6s; }
-
-    .philosophy-card:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-medium);
-      border-top-color: var(--primary-dark);
-    }
-
-    .philosophy-card h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      color: var(--primary);
-      margin-bottom: 1rem;
-    }
-
-    .philosophy-card p {
-      color: var(--text-secondary);
-      line-height: 1.8;
-    }
-
-    /* CATALOGUE */
-    #catalogue {
-      background: var(--accent-lavender);
-    }
-
-    .catalogue-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 2rem;
-      margin-top: 3rem;
-    }
-
-    .donor-card {
-      background: white;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: var(--shadow-soft);
-      transition: all 0.4s ease;
-      cursor: pointer;
-      opacity: 0;
-      animation: scaleIn 0.5s ease forwards;
-    }
-
-    @keyframes scaleIn {
-      from {
-        opacity: 0;
-        transform: scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    .donor-card:nth-child(1) { animation-delay: 0.1s; }
-    .donor-card:nth-child(2) { animation-delay: 0.2s; }
-    .donor-card:nth-child(3) { animation-delay: 0.3s; }
-    .donor-card:nth-child(4) { animation-delay: 0.4s; }
-
-    .donor-card:hover {
-      transform: translateY(-10px);
-      box-shadow: var(--shadow-medium);
-    }
-
-    .donor-avatar {
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(135deg, var(--primary), var(--accent-lavender));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 3rem;
-      color: white;
-    }
-
-    .donor-info {
-      padding: 1.5rem;
-    }
-
-    .donor-info h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      color: var(--text-dark);
-      margin-bottom: 0.5rem;
-    }
-
-    .donor-meta {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-    }
-
-    .donor-desc {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-
-    /* PROCESS */
-    #process {
-      background: white;
-    }
-
-    .process-steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-top: 3rem;
-      position: relative;
-    }
-
-    .process-step {
-      text-align: center;
-      opacity: 0;
-      animation: fadeInUp 0.6s ease forwards;
-    }
-
-    .process-step:nth-child(1) { animation-delay: 0.2s; }
-    .process-step:nth-child(2) { animation-delay: 0.4s; }
-    .process-step:nth-child(3) { animation-delay: 0.6s; }
-
-    .step-number {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--accent-warm));
-      color: white;
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.5rem;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .process-step h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      color: var(--text-dark);
-      margin-bottom: 1rem;
-    }
-
-    .process-step p {
-      color: var(--text-secondary);
-      line-height: 1.7;
-    }
-
-    @media (max-width: 768px) {
-      .process-steps {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* FAQ */
-    #faq {
-      background: var(--bg-fade);
-    }
-
-    .faq-container {
-      max-width: 700px;
-      margin: 3rem auto 0;
-    }
-
-    .faq-item {
-      background: white;
-      margin-bottom: 1.5rem;
-      border-radius: 12px;
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-    }
-
-    .faq-question {
-      padding: 1.5rem;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 600;
-      color: var(--text-dark);
-      user-select: none;
-      transition: all 0.3s ease;
-    }
-
-    .faq-question:hover {
-      background: var(--bg-light);
-      color: var(--primary);
-    }
-
-    .faq-toggle {
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      transition: transform 0.3s ease;
-    }
-
-    .faq-item.active .faq-toggle {
-      transform: rotate(180deg);
-    }
-
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      padding: 0 1.5rem;
-      color: var(--text-secondary);
-      line-height: 1.7;
-    }
-
-    .faq-item.active .faq-answer {
-      max-height: 300px;
-      padding: 0 1.5rem 1.5rem;
-    }
-
-    /* FOOTER */
-    footer {
-      background: var(--text-dark);
-      color: white;
-      padding: 3rem 2rem;
-      text-align: center;
-    }
-
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .footer-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      margin-bottom: 1.5rem;
-      background: linear-gradient(135deg, var(--primary), var(--accent-lavender));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 2rem 0;
-      flex-wrap: wrap;
-    }
-
-    .social-links a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
-
-    .social-links a:hover {
-      text-decoration: underline;
-    }
-
-    .footer-bottom {
-      margin-top: 2rem;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(255, 182, 193, 0.2);
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    /* SCROLL ANIMATIONS */
-    .fade-in {
-      opacity: 0;
-      animation: fadeInUp 0.6s ease forwards;
-    }
-
-    /* MOBILE */
-    @media (max-width: 768px) {
-      section {
-        padding: 4rem 1.5rem;
-      }
-
-      h2 {
-        font-size: 1.8rem;
-      }
-
-      .hero h1 {
-        font-size: 2rem;
-      }
-
-      nav ul {
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .philosophy-grid,
-      .catalogue-grid,
-      .process-steps {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRYPTOFLAME - Премиальное Крипто-Казино</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --accent-red: #e63946;
+            --accent-orange: #f0942c;
+            --accent-green: #00bfa5;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border-glow: rgba(230, 57, 70, 0.3);
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(0px);
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom-color: var(--border-glow);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .logo {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--accent-red);
+            text-transform: uppercase;
+            text-shadow: 0 0 20px var(--border-glow);
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-red);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .lang-select {
+            background: transparent;
+            border: 1px solid var(--text-secondary);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            transition: var(--transition);
+        }
+
+        .lang-select:hover {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 10px var(--border-glow);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-outline {
+            border: 1.5px solid var(--text-primary);
+            background: transparent;
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+            box-shadow: inset 0 0 15px rgba(230, 57, 70, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--accent-red);
+            color: var(--text-primary);
+            border: none;
+            box-shadow: 0 0 20px var(--border-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #d62828;
+            box-shadow: 0 0 30px var(--border-glow);
+            transform: translateY(-2px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            margin-top: 70px;
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #1a0a0a 50%, var(--bg-primary) 100%);
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(230, 57, 70, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 10%;
+            right: 5%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(240, 148, 44, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: 10%;
+            left: 5%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+
+        .hero-content {
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0 3rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-glow);
+            border-bottom: 1px solid var(--border-glow);
+            opacity: 0;
+            animation: slideUp 1s ease-out 0.3s forwards;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: slideUp 1s ease-out 0.6s forwards;
+        }
+
+        .btn-large {
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+        }
+
+        /* ===== WELCOME BONUS ===== */
+        .welcome-bonus {
+            padding: 4rem 2rem;
+            background: var(--bg-secondary);
+            position: relative;
+        }
+
+        .welcome-bonus-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .bonus-card {
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, #2a1515 100%);
+            border: 2px solid;
+            border-image: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-orange) 100%) 1;
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            animation: fadeInScale 0.8s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .bonus-card h2 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-red);
+        }
+
+        .bonus-amount {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--accent-orange);
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .bonus-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 2rem 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .feature-icon {
+            width: 30px;
+            height: 30px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-primary);
+            font-weight: 700;
+        }
+
+        .feature-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ===== GAMES CAROUSEL ===== */
+        .games-section {
+            padding: 4rem 2rem;
+            background: var(--bg-primary);
+        }
+
+        .games-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .games-carousel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            overflow: hidden;
+        }
+
+        .game-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-card:hover {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 30px var(--border-glow);
+            transform: translateY(-10px);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(240, 148, 44, 0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .game-info {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 3;
+        }
+
+        .game-name {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-provider {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== LIVE STATS ===== */
+        .live-stats {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, #2a0a0a 100%);
+            border-top: 1px solid var(--border-glow);
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        .stats-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-box {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stat-box:hover {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 20px var(--border-glow);
+            transform: scale(1.05);
+        }
+
+        .stat-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+            margin-bottom: 0.5rem;
+            animation: countUp 2s ease-out;
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stat-title {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== CATEGORIES ===== */
+        .categories {
+            padding: 4rem 2rem;
+            background: var(--bg-primary);
+        }
+
+        .categories-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .category-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .category-card:hover {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 25px var(--border-glow);
+            transform: translateY(-8px);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-name {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-count {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== FEATURES ===== */
+        .features {
+            padding: 4rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            border-radius: 8px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-red);
+            background: rgba(26, 26, 26, 0.9);
+            box-shadow: 0 0 20px var(--border-glow);
+        }
+
+        .feature-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-red);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ===== CRYPTO ===== */
+        .crypto {
+            padding: 4rem 2rem;
+            background: var(--bg-primary);
+            text-align: center;
+        }
+
+        .crypto-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .crypto-icons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .crypto-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-glow);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 2.5rem;
+        }
+
+        .crypto-icon:hover {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 25px var(--border-glow);
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .crypto-name {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 3rem 2rem;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-glow);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--accent-red);
+            margin-bottom: 1rem;
+            font-family: 'Chakra Petch', sans-serif;
+        }
+
+        .footer-section a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-red);
+            padding-left: 5px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-glow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            border-color: var(--accent-red);
+            background: var(--accent-red);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-glow);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .legal-links {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legal-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .legal-links a:hover {
+            color: var(--accent-red);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                margin-top: 60px;
+                padding: 3rem 1.5rem;
+                min-height: auto;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .bonus-card {
+                padding: 2rem;
+            }
+
+            .bonus-card h2 {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .games-carousel {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .feature-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .crypto-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero .stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem 0;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .bonus-features {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .games-carousel {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .legal-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header>
-    <nav>
-      <div class="logo">AURA</div>
-      <ul>
-        <li><a href="#philosophy">Философия</a></li>
-        <li><a href="#catalogue">Каталог</a></li>
-        <li><a href="#process">Процесс</a></li>
-        <li><a href="#faq">Вопросы</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>AURA</h1>
-      <p>Деликатная коллекция высочайшего качества. Для тех, кто ценит исключительность и заботу о деталях.</p>
-      <a href="#catalogue" class="btn">Узнать больше</a>
-    </div>
-  </section>
-
-  <!-- PHILOSOPHY -->
-  <section id="philosophy">
-    <h2>Наша философия</h2>
-    <p class="section-subtitle">Мы верим, что красота, забота и качество — это основа всего, что мы делаем.</p>
-
-    <div class="philosophy-grid">
-      <div class="philosophy-card">
-        <h3>✓ Качество</h3>
-        <p>Каждый донор проходит тщательный отбор и медицинское обследование. Мы гарантируем чистоту и безопасность.</p>
-      </div>
-      <div class="philosophy-card">
-        <h3>✓ Забота</h3>
-        <p>Процесс организован с максимальным комфортом для всех сторон. Конфиденциальность — абсолютный приоритет.</p>
-      </div>
-      <div class="philosophy-card">
-        <h3>✓ Этика</h3>
-        <p>Мы уважаем достоинство каждого. Справедливое вознаграждение и полная прозрачность в отношениях.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CATALOGUE -->
-  <section id="catalogue">
-    <h2>Наша коллекция</h2>
-    <p class="section-subtitle">Лучшие доноры, отобранные с особой тщательностью.</p>
-
-    <div class="catalogue-grid">
-      <div class="donor-card">
-        <div class="donor-avatar">💝</div>
-        <div class="donor-info">
-          <h3>Александр</h3>
-          <div class="donor-meta">24 года • Студент</div>
-          <p class="donor-desc">Здоровый образ жизни, регулярные обследования. Любит искусство и философию.</p>
+    <!-- HEADER -->
+    <header id="header">
+        <div class="header-content">
+            <div class="logo">⚡ CRYPTOFLAME</div>
+            <nav>
+                <a href="#games">Казино</a>
+                <a href="#categories">Спорт</a>
+                <a href="#features">Преимущества</a>
+                <a href="#crypto">Крипто</a>
+            </nav>
+            <div class="header-actions">
+                <select class="lang-select">
+                    <option>РУ</option>
+                    <option>EN</option>
+                    <option>ES</option>
+                </select>
+                <button class="btn btn-outline">Войти</button>
+                <button class="btn btn-primary">Играть</button>
+            </div>
         </div>
-      </div>
+    </header>
 
-      <div class="donor-card">
-        <div class="donor-avatar">🌸</div>
-        <div class="donor-info">
-          <h3>Максим</h3>
-          <div class="donor-meta">22 года • Дизайнер</div>
-          <p class="donor-desc">Творческая натура, спортсмен. Полное обследование, все анализы в норме.</p>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Играй. Выигрывай. Крипто.</h1>
+            <p>Премиальное казино с мгновенными выплатами и честной игрой на каждую ставку</p>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">24,583</div>
+                    <div class="stat-label">Онлайн сейчас</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">$2.3M</div>
+                    <div class="stat-label">Выплачено за 24ч</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">99.1%</div>
+                    <div class="stat-label">Процент выплат</div>
+                </div>
+            </div>
+
+            <div class="hero-actions">
+                <button class="btn btn-primary btn-large">Получить бонус 100%</button>
+                <button class="btn btn-outline btn-large">Узнать больше</button>
+            </div>
         </div>
-      </div>
+    </section>
 
-      <div class="donor-card">
-        <div class="donor-avatar">🎀</div>
-        <div class="donor-info">
-          <h3>Виталий</h3>
-          <div class="donor-meta">26 лет • Разработчик</div>
-          <p class="donor-desc">Ответственный, пунктуальный. Здоров, прошёл все необходимые проверки.</p>
+    <!-- WELCOME BONUS -->
+    <section class="welcome-bonus">
+        <div class="welcome-bonus-container">
+            <div class="bonus-card">
+                <h2>🎁 Добро пожаловать!</h2>
+                <div class="bonus-amount">100% НА ПЕРВЫЙ ДЕПОЗИТ — ДО 1 BTC</div>
+
+                <div class="bonus-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">Без минимального вейджера</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">Мгновенный вывод средств</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">Provably Fair сертификат</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-large">Начать игру</button>
+            </div>
         </div>
-      </div>
+    </section>
 
-      <div class="donor-card">
-        <div class="donor-avatar">💐</div>
-        <div class="donor-info">
-          <h3>Даниил</h3>
-          <div class="donor-meta">23 года • Музыкант</div>
-          <p class="donor-desc">Гармоничный, уравновешенный. Регулярное медицинское наблюдение.</p>
+    <!-- GAMES CAROUSEL -->
+    <section class="games-section" id="games">
+        <div class="games-container">
+            <h2 class="section-title">Популярные игры</h2>
+            <div class="games-carousel">
+                <div class="game-card">
+                    <div class="game-image"></div>
+                    <div class="game-info">
+                        <div class="game-name">Cosmic Spin</div>
+                        <div class="game-provider">NetEnt</div>
+                        <div class="game-stats">
+                            <span>RTP: 96.5%</span>
+                            <span>⭐ 4.8</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-card">
+                    <div class="game-image"></div>
+                    <div class="game-info">
+                        <div class="game-name">Bitcoin Bonanza</div>
+                        <div class="game-provider">Pragmatic Play</div>
+                        <div class="game-stats">
+                            <span>RTP: 97.2%</span>
+                            <span>⭐ 4.9</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-card">
+                    <div class="game-image"></div>
+                    <div class="game-info">
+                        <div class="game-name">Dragon Crash</div>
+                        <div class="game-provider">Spribe</div>
+                        <div class="game-stats">
+                            <span>RTP: 98.0%</span>
+                            <span>⭐ 4.7</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-card">
+                    <div class="game-image"></div>
+                    <div class="game-info">
+                        <div class="game-name">Ether Quest</div>
+                        <div class="game-provider">iSoftBet</div>
+                        <div class="game-stats">
+                            <span>RTP: 96.8%</span>
+                            <span>⭐ 4.6</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- PROCESS -->
-  <section id="process">
-    <h2>Как это работает</h2>
-    <p class="section-subtitle">Простой и деликатный процесс в три шага.</p>
-
-    <div class="process-steps">
-      <div class="process-step">
-        <div class="step-number">1</div>
-        <h3>Выбор</h3>
-        <p>Изучите нашу коллекцию и выберите подходящего донора. Полная информация и фотографии доступны.</p>
-      </div>
-
-      <div class="process-step">
-        <div class="step-number">2</div>
-        <h3>Заказ</h3>
-        <p>Свяжитесь с нами, обсудите детали. Конфиденциальность гарантирована на всех этапах.</p>
-      </div>
-
-      <div class="process-step">
-        <div class="step-number">3</div>
-        <h3>Доставка</h3>
-        <p>Безопасная, дискретная доставка в удобное для вас время и место.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq">
-    <h2>Часто задаваемые вопросы</h2>
-    <p class="section-subtitle">Ответы на волнующие вас вопросы.</p>
-
-    <div class="faq-container">
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Насколько безопасен и анонимен процесс?</span>
-          <div class="faq-toggle">⊕</div>
+    <!-- LIVE STATS TICKER -->
+    <section class="live-stats">
+        <div class="stats-container">
+            <h2 class="section-title">Статистика в реальном времени</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" data-target="2.847">2,847</div>
+                    <div class="stat-title">Текущий джекпот BTC</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" data-target="15432">15,432</div>
+                    <div class="stat-title">Активных игроков</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" data-target="847500">$847,500</div>
+                    <div class="stat-title">Крупнейший выигрыш</div>
+                </div>
+            </div>
         </div>
-        <div class="faq-answer">
-          Полная конфиденциальность — наш основной принцип. Все данные защищены, передача информации — только по защищённым каналам. Доноры и клиенты остаются анонимны друг для друга.
+    </section>
+
+    <!-- GAME CATEGORIES -->
+    <section class="categories" id="categories">
+        <div class="categories-container">
+            <h2 class="section-title">Категории игр</h2>
+            <div class="category-grid">
+                <div class="category-card">
+                    <div class="category-icon">🎰</div>
+                    <div class="category-name">Слоты</div>
+                    <div class="category-count">847 игр</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">♠️</div>
+                    <div class="category-name">Live Casino</div>
+                    <div class="category-count">42 игры</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">📈</div>
+                    <div class="category-name">Краш</div>
+                    <div class="category-count">12 игр</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🎲</div>
+                    <div class="category-name">Кости</div>
+                    <div class="category-count">8 игр</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">⛏️</div>
+                    <div class="category-name">Мины</div>
+                    <div class="category-count">5 игр</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">📍</div>
+                    <div class="category-name">Плинко</div>
+                    <div class="category-count">6 игр</div>
+                </div>
+            </div>
         </div>
-      </div>
+    </section>
 
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Какие медицинские проверки проходят доноры?</span>
-          <div class="faq-toggle">⊕</div>
+    <!-- FEATURES -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <h2 class="section-title">Почему CRYPTOFLAME?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-card-icon">🔐</div>
+                    <h3>Provably Fair</h3>
+                    <p>Все игры прошли независимую верификацию. Честность каждого раунда подтверждена криптографически.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">⏱️</div>
+                    <h3>Мгновенные выплаты</h3>
+                    <p>Выводи крипто за секунды. Без верификации, без задержек. Твои выигрыши — твои сразу.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">🌍</div>
+                    <h3>24/7 Поддержка</h3>
+                    <p>Команда готова помочь в любую секунду. Чат, email, telegram — выбирай удобный канал.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">🚀</div>
+                    <h3>Без KYC</h3>
+                    <p>Регистрация за 30 секунд. Никаких документов, никаких вопросов. Играй анонимно.</p>
+                </div>
+            </div>
         </div>
-        <div class="faq-answer">
-          Все доноры проходят полное медицинское обследование: анализы на инфекции, генетические тесты, оценка здоровья. Результаты обновляются регулярно. Мы работаем с сертифицированными лабораториями.
+    </section>
+
+    <!-- ACCEPTED CRYPTO -->
+    <section class="crypto" id="crypto">
+        <div class="crypto-container">
+            <h2 class="section-title">Принимаем крипто</h2>
+            <div class="crypto-icons">
+                <div class="crypto-icon" title="Bitcoin">
+                    <span>₿</span>
+                    <div class="crypto-name">BTC</div>
+                </div>
+                <div class="crypto-icon" title="Ethereum">
+                    <span>Ξ</span>
+                    <div class="crypto-name">ETH</div>
+                </div>
+                <div class="crypto-icon" title="USDT">
+                    <span>₮</span>
+                    <div class="crypto-name">USDT</div>
+                </div>
+                <div class="crypto-icon" title="Litecoin">
+                    <span>Ł</span>
+                    <div class="crypto-name">LTC</div>
+                </div>
+                <div class="crypto-icon" title="Dogecoin">
+                    <span>Ð</span>
+                    <div class="crypto-name">DOGE</div>
+                </div>
+                <div class="crypto-icon" title="Solana">
+                    <span>◎</span>
+                    <div class="crypto-name">SOL</div>
+                </div>
+            </div>
         </div>
-      </div>
+    </section>
 
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Каков процесс доставки и хранения?</span>
-          <div class="faq-toggle">⊕</div>
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>CRYPTOFLAME</h4>
+                    <a href="#">О нас</a>
+                    <a href="#">Блог</a>
+                    <a href="#">Карьера</a>
+                    <a href="#">Контакты</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Игры</h4>
+                    <a href="#">Слоты</a>
+                    <a href="#">Live Casino</a>
+                    <a href="#">Краш</a>
+                    <a href="#">Спорт</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Поддержка</h4>
+                    <a href="#">Помощь</a>
+                    <a href="#">FAQ</a>
+                    <a href="#">Статус</a>
+                    <a href="#">API</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Следи за нами</h4>
+                    <div class="footer-socials">
+                        <a href="#" class="social-link" title="Twitter">𝕏</a>
+                        <a href="#" class="social-link" title="Telegram">✈️</a>
+                        <a href="#" class="social-link" title="Discord">👾</a>
+                        <a href="#" class="social-link" title="YouTube">▶️</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="legal-links">
+                    <a href="#">18+ | Играй ответственно</a>
+                    <a href="#">Лицензия Curacao #5536/JAZ</a>
+                    <a href="#">Условия использования</a>
+                    <a href="#">Политика приватности</a>
+                </div>
+                <p>&copy; 2026 CRYPTOFLAME. Все права защищены. Провайдер азартных игр премиум-класса.</p>
+            </div>
         </div>
-        <div class="faq-answer">
-          Материал упаковывается в специальные криоконтейнеры с поддержанием оптимальной температуры. Доставка осуществляется в соответствии с медицинскими стандартами. Вы получите инструкции по правильному хранению.
-        </div>
-      </div>
+    </footer>
 
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Какова стоимость услуги?</span>
-          <div class="faq-toggle">⊕</div>
-        </div>
-        <div class="faq-answer">
-          Цены зависят от выбранного донора и объёма заказа. Средняя стоимость — от 15000₽. При первом заказе доступна скидка 10%. Все расходы прозрачны, скрытых платежей нет.
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-content">
-      <div class="footer-logo">AURA</div>
-      <p style="margin-bottom: 1.5rem; opacity: 0.9;">Деликатная коллекция для особенных людей</p>
-
-      <div class="social-links">
-        <a href="#">Instagram</a>
-        <a href="#">Telegram</a>
-        <a href="#">WhatsApp</a>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2025 AURA. Все права защищены.</p>
-        <p style="margin-top: 0.5rem; font-size: 0.85rem;">Сайт создан для образовательных целей</p>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // Intersection Observer для анимаций при скролле
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver(function(entries) {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('fade-in');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    // Наблюдать за секциями
-    document.querySelectorAll('section h2').forEach(el => {
-      observer.observe(el);
-    });
-
-    // FAQ Аккордеон
-    document.querySelectorAll('.faq-question').forEach(question => {
-      question.addEventListener('click', function() {
-        const faqItem = this.parentElement;
-        const isActive = faqItem.classList.contains('active');
-
-        // Закрыть все открытые
-        document.querySelectorAll('.faq-item.active').forEach(item => {
-          if (item !== faqItem) {
-            item.classList.remove('active');
-          }
+    <script>
+        // HEADER SCROLL EFFECT
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
 
-        // Переключить текущий
-        faqItem.classList.toggle('active');
-      });
-    });
+        // INTERSECTION OBSERVER FOR ANIMATIONS
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-    // Smooth scroll для навигации
-    document.querySelectorAll('nav a').forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        if (targetSection) {
-          targetSection.scrollIntoView({ behavior: 'smooth' });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section-title').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // COUNTUP ANIMATION
+        function countUp(element, target, duration = 2000) {
+            const start = 0;
+            const range = target - start;
+            const increment = range / (duration / 16);
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+
+                if (element.textContent.includes('$')) {
+                    element.textContent = '$' + Math.floor(current).toLocaleString();
+                } else if (element.textContent.includes('.')) {
+                    element.textContent = current.toFixed(3);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 16);
         }
-      });
-    });
 
-    // Fade-in для героя при загрузке
-    window.addEventListener('load', function() {
-      document.querySelector('.hero-content').style.opacity = '1';
-    });
-  </script>
+        // TRIGGER COUNTUP ON SCROLL
+        const statBoxes = document.querySelectorAll('.stat-value');
+        const statsSection = document.querySelector('.live-stats');
+        let countUpTriggered = false;
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !countUpTriggered) {
+                    countUpTriggered = true;
+                    statBoxes.forEach(el => {
+                        const target = parseFloat(el.getAttribute('data-target'));
+                        const rawText = el.getAttribute('data-target');
+
+                        let finalTarget = target;
+                        if (rawText.includes('$')) {
+                            finalTarget = parseInt(rawText.replace('$', '').replace(',', ''));
+                        } else if (rawText.includes('.')) {
+                            finalTarget = parseFloat(rawText);
+                        } else {
+                            finalTarget = parseInt(rawText.replace(',', ''));
+                        }
+
+                        countUp(el, finalTarget);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+
+        // SMOOTH SCROLL BEHAVIOR
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // HOVER GLOW EFFECT ON BUTTONS
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                this.style.setProperty('--x', x + 'px');
+                this.style.setProperty('--y', y + 'px');
+            });
+        });
+    </script>
 </body>
 </html>
