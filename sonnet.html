@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VORTEX — Криптоказино нового поколения</title>
+  <meta name="description" content="Более 3000 игр, мгновенные выплаты, Provably Fair. Играй, выигрывай, крипто." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── CSS VARIABLES ─────────────────────────────── */
+    :root {
+      --bg:          #0a0a0a;
+      --bg-card:     #111111;
+      --bg-section:  #0f0f0f;
+      --bg-elevated: #1a1a1a;
+      --accent:      #e63946;
+      --accent-dim:  rgba(230, 57, 70, 0.15);
+      --accent-glow: rgba(230, 57, 70, 0.4);
+      --gold:        #f0942c;
+      --gold-dim:    rgba(240, 148, 44, 0.15);
+      --success:     #00bfa5;
+      --text:        #ffffff;
+      --text-muted:  #b0b0b0;
+      --text-faint:  #666666;
+      --border:      rgba(255, 255, 255, 0.06);
+      --glass:       rgba(255, 255, 255, 0.03);
+      --radius-sm:   6px;
+      --radius-md:   12px;
+      --radius-lg:   20px;
+      --font-head:   'Chakra Petch', 'Arial Narrow', Arial, sans-serif;
+      --font-body:   'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+      --font-mono:   'JetBrains Mono', 'Courier New', monospace;
+      --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ─── RESET ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { border: none; cursor: pointer; font-family: var(--font-body); }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── REDUCED MOTION ────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ─── UTILITIES ─────────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── HEADER ─────────────────────────────────────── */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 24px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid transparent;
+      transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+      will-change: transform;
+    }
+    .header.scrolled {
+      background: rgba(10, 10, 10, 0.88);
+      border-bottom-color: var(--border);
+    }
+    @supports (backdrop-filter: blur(12px)) {
+      .header.scrolled { backdrop-filter: blur(12px); background: rgba(10, 10, 10, 0.72); }
+    }
+    .header-inner {
+      width: 100%;
+      max-width: 1260px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    .logo {
+      font-family: var(--font-head);
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+    .logo span { color: var(--accent); }
+
+    .nav { display: flex; gap: 4px; margin-left: auto; }
+    .nav a {
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .nav a:hover { color: var(--text); background: var(--glass); }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: 16px;
+      flex-shrink: 0;
+    }
+    .lang-btn {
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .lang-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+    .btn-login {
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-login:hover { background: var(--glass); border-color: rgba(255,255,255,0.3); }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 9px 20px;
+      border-radius: var(--radius-sm);
+      border: none;
+      letter-spacing: 0.03em;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.15s;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.18) 50%, transparent 65%);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+    .btn-primary:hover::after { transform: translateX(100%); }
+    .btn-primary:hover { box-shadow: 0 0 32px var(--accent-glow); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* burger */
+    .burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      padding: 6px;
+      margin-left: auto;
+    }
+    .burger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+    .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 68px; left: 0; right: 0;
+      background: rgba(10, 10, 10, 0.97);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px 24px;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 99;
+    }
+    @supports (backdrop-filter: blur(12px)) {
+      .mobile-menu { backdrop-filter: blur(12px); }
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      padding: 12px 16px;
+      font-size: 15px;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      transition: color 0.2s, background 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--text); background: var(--glass); }
+    .mobile-menu .mobile-actions { display: flex; gap: 10px; margin-top: 12px; padding: 0 16px; }
+    .mobile-menu .mobile-actions .btn-login,
+    .mobile-menu .mobile-actions .btn-primary { flex: 1; text-align: center; }
+
+    /* ─── HERO ────────────────────────────────────────── */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 68px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Atmospheric background layers */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(230, 57, 70, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 85% 80%, rgba(240, 148, 44, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 10% 60%, rgba(230, 57, 70, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    /* Animated glow particles */
+    .hero-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(0px);
+      will-change: transform, opacity;
+      animation: float linear infinite;
+    }
+    .particle:nth-child(1)  { width: 3px; height: 3px; background: var(--accent); top: 20%; left: 15%; opacity: 0.7; animation-duration: 8s; animation-delay: 0s; }
+    .particle:nth-child(2)  { width: 2px; height: 2px; background: var(--gold); top: 35%; left: 80%; opacity: 0.5; animation-duration: 11s; animation-delay: -3s; }
+    .particle:nth-child(3)  { width: 4px; height: 4px; background: var(--accent); top: 60%; left: 25%; opacity: 0.4; animation-duration: 14s; animation-delay: -6s; }
+    .particle:nth-child(4)  { width: 2px; height: 2px; background: #fff; top: 75%; left: 65%; opacity: 0.3; animation-duration: 9s; animation-delay: -1s; }
+    .particle:nth-child(5)  { width: 3px; height: 3px; background: var(--gold); top: 50%; left: 50%; opacity: 0.5; animation-duration: 13s; animation-delay: -5s; }
+    .particle:nth-child(6)  { width: 2px; height: 2px; background: var(--accent); top: 15%; left: 60%; opacity: 0.6; animation-duration: 10s; animation-delay: -2s; }
+    .particle:nth-child(7)  { width: 5px; height: 5px; background: rgba(230,57,70,0.3); top: 80%; left: 40%; opacity: 1; filter: blur(2px); animation-duration: 16s; animation-delay: -8s; }
+    .particle:nth-child(8)  { width: 3px; height: 3px; background: var(--success); top: 45%; left: 10%; opacity: 0.4; animation-duration: 12s; animation-delay: -4s; }
+    .particle:nth-child(9)  { width: 2px; height: 2px; background: #fff; top: 25%; left: 90%; opacity: 0.25; animation-duration: 15s; animation-delay: -7s; }
+    .particle:nth-child(10) { width: 4px; height: 4px; background: var(--accent); top: 90%; left: 75%; opacity: 0.35; animation-duration: 11s; animation-delay: -9s; }
+
+    @keyframes float {
+      0%   { transform: translateY(0) translateX(0) scale(1); }
+      33%  { transform: translateY(-30px) translateX(12px) scale(1.1); }
+      66%  { transform: translateY(-15px) translateX(-8px) scale(0.9); }
+      100% { transform: translateY(0) translateX(0) scale(1); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 60px 0 40px;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.6s var(--ease-out) 0.2s forwards;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(42px, 7vw, 80px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.7s var(--ease-out) 0.35s forwards;
+    }
+    .hero-title .line-accent {
+      color: var(--accent);
+      text-shadow: 0 0 40px rgba(230, 57, 70, 0.5);
+    }
+    .hero-title .line-gold { color: var(--gold); }
+    .hero-sub {
+      font-size: clamp(15px, 1.8vw, 18px);
+      color: var(--text-muted);
+      max-width: 520px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp 0.7s var(--ease-out) 0.5s forwards;
+    }
+    .hero-sub strong { color: var(--text); font-weight: 600; }
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s var(--ease-out) 0.65s forwards;
+    }
+    .btn-hero {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-head);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border-radius: var(--radius-sm);
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.25s, transform 0.15s;
+      box-shadow: 0 0 30px var(--accent-glow), 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .btn-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    .btn-hero:hover { transform: translateY(-2px); box-shadow: 0 0 50px var(--accent-glow), 0 8px 30px rgba(0,0,0,0.5); }
+    .btn-hero:hover::after { transform: translateX(100%); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 13px 24px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 64px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s var(--ease-out) 0.8s forwards;
+    }
+    .hero-stat { display: flex; flex-direction: column; gap: 4px; }
+    .hero-stat-value {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .hero-stat-value.live { color: var(--success); }
+    .hero-stat-label {
+      font-size: 12px;
+      color: var(--text-faint);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .live-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--success);
+      border-radius: 50%;
+      margin-right: 6px;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── BONUS ───────────────────────────────────────── */
+    .bonus-section {
+      padding: 80px 0;
+      background: var(--bg-section);
+    }
+    .bonus-card {
+      position: relative;
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 48px 52px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: center;
+    }
+    /* gradient border via pseudo-element */
+    .bonus-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-lg);
+      padding: 1px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gold) 50%, transparent 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+    .bonus-card::after {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(230,57,70,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .bonus-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .bonus-title {
+      font-family: var(--font-head);
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .bonus-title span { color: var(--accent); }
+    .bonus-amount {
+      font-family: var(--font-mono);
+      font-size: clamp(18px, 3vw, 26px);
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 28px;
+    }
+    .bonus-checks { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .bonus-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .check-icon {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: rgba(0, 191, 165, 0.12);
+      border: 1px solid rgba(0, 191, 165, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 10px;
+      color: var(--success);
+    }
+    .bonus-visual {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .bonus-badge {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(230,57,70,0.2) 0%, transparent 70%);
+      border: 1px solid rgba(230,57,70,0.3);
+      box-shadow: 0 0 60px rgba(230,57,70,0.15);
+    }
+    .bonus-badge-pct {
+      font-family: var(--font-head);
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      text-shadow: 0 0 30px var(--accent-glow);
+    }
+    .bonus-badge-text {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* ─── GAMES CAROUSEL ─────────────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      gap: 16px;
+    }
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .section-link {
+      font-size: 13px;
+      color: var(--accent);
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    .section-link:hover { opacity: 0.75; }
+
+    .games-section { padding: 80px 0; }
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .game-card {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: transform 0.25s var(--ease-out), box-shadow 0.25s;
+      will-change: transform;
+      cursor: pointer;
+    }
+    .game-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 0 0 1px var(--accent), 0 8px 32px rgba(230,57,70,0.2);
+    }
+    .game-thumb {
+      height: 140px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* CSS gradient placeholder for game thumbnails */
+    .game-thumb-bg {
+      position: absolute;
+      inset: 0;
+    }
+    .g1 { background: linear-gradient(135deg, #1a0a1a 0%, #3d0c2a 40%, #2a0a1a 100%); }
+    .g2 { background: linear-gradient(135deg, #0a1a1a 0%, #0c3d35 40%, #0a2a1a 100%); }
+    .g3 { background: linear-gradient(135deg, #1a1a0a 0%, #3d380c 40%, #2a270a 100%); }
+    .g4 { background: linear-gradient(135deg, #0a0a1a 0%, #0c1a3d 40%, #0a112a 100%); }
+    .g5 { background: linear-gradient(135deg, #1a0f0a 0%, #3d200c 40%, #2a160a 100%); }
+    .g6 { background: linear-gradient(135deg, #0f0a1a 0%, #1e0c3d 40%, #160a2a 100%); }
+
+    .game-thumb-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-size: 28px;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      color: rgba(255,255,255,0.1);
+      user-select: none;
+    }
+    .game-rtp {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(0,0,0,0.6);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--success);
+      padding: 3px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+    .game-info { padding: 12px 14px 14px; }
+    .game-name {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .game-provider { font-size: 11px; color: var(--text-faint); }
+
+    /* ─── JACKPOT STATS ───────────────────────────────── */
+    .stats-section {
+      padding: 60px 0;
+      background: linear-gradient(to right, #0d0d0d, #111111, #0d0d0d);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .stat-block {
+      padding: 32px 40px;
+      text-align: center;
+      position: relative;
+    }
+    .stat-block + .stat-block::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 20%; bottom: 20%;
+      width: 1px;
+      background: var(--border);
+    }
+    .stat-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: clamp(24px, 3.5vw, 38px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    .stat-value.jackpot { color: var(--gold); text-shadow: 0 0 20px rgba(240,148,44,0.4); }
+    .stat-value.players { color: var(--success); }
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ─── CATEGORIES ──────────────────────────────────── */
+    .categories-section { padding: 80px 0; background: var(--bg-section); }
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .cat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px 24px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      cursor: pointer;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s var(--ease-out);
+      will-change: transform;
+    }
+    .cat-card:hover {
+      border-color: rgba(230, 57, 70, 0.4);
+      box-shadow: 0 0 20px rgba(230, 57, 70, 0.1), inset 0 0 20px rgba(230,57,70,0.03);
+      transform: translateY(-2px);
+    }
+    .cat-icon {
+      width: 52px; height: 52px;
+      border-radius: var(--radius-sm);
+      background: var(--accent-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+      transition: background 0.25s;
+    }
+    .cat-card:hover .cat-icon { background: rgba(230, 57, 70, 0.2); }
+    .cat-name {
+      font-family: var(--font-head);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 3px;
+    }
+    .cat-count { font-size: 12px; color: var(--text-faint); }
+
+    /* ─── FEATURES ────────────────────────────────────── */
+    .features-section { padding: 80px 0; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .feature-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 28px 24px;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    @supports (backdrop-filter: blur(8px)) {
+      .feature-card { backdrop-filter: blur(8px); }
+    }
+    .feature-card:hover {
+      border-color: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+    }
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+    .feature-title {
+      font-family: var(--font-head);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .feature-text { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    /* ─── CRYPTO ──────────────────────────────────────── */
+    .crypto-section {
+      padding: 60px 0;
+      background: var(--bg-section);
+      border-top: 1px solid var(--border);
+    }
+    .crypto-title {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .crypto-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .crypto-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-width: 80px;
+    }
+    .crypto-item:hover {
+      border-color: rgba(255,255,255,0.12);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .crypto-icon {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .crypto-btc  { background: rgba(247,147,26,0.15); color: #f7931a; }
+    .crypto-eth  { background: rgba(98,126,234,0.15); color: #627eea; }
+    .crypto-usdt { background: rgba(38,161,123,0.15); color: #26a17b; }
+    .crypto-ltc  { background: rgba(191,202,213,0.15); color: #bfcad5; }
+    .crypto-doge { background: rgba(194,155,60,0.15); color: #c29b3c; }
+    .crypto-sol  { background: rgba(153,69,255,0.15); color: #9945ff; }
+    .crypto-name { font-size: 11px; color: var(--text-faint); letter-spacing: 0.05em; }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    footer {
+      background: #080808;
+      border-top: 1px solid var(--border);
+      padding: 48px 0 32px;
+    }
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+    .footer-brand .logo { font-size: 22px; margin-bottom: 12px; }
+    .footer-tagline { font-size: 13px; color: var(--text-faint); line-height: 1.6; max-width: 220px; }
+    .footer-nav-title {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 16px;
+    }
+    .footer-nav-links { display: flex; flex-direction: column; gap: 10px; }
+    .footer-nav-links a {
+      font-size: 14px;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+    .footer-nav-links a:hover { color: var(--text); }
+    .footer-socials { display: flex; gap: 10px; margin-top: 20px; }
+    .social-btn {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-faint);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .social-btn:hover { border-color: rgba(255,255,255,0.15); color: var(--text); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-legal { font-size: 12px; color: var(--text-faint); }
+    .footer-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+    .badge {
+      font-size: 11px;
+      color: var(--text-faint);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3px 8px;
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 1200px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 1024px) {
+      .categories-grid { grid-template-columns: repeat(2, 1fr); }
+      .bonus-card { grid-template-columns: 1fr; }
+      .bonus-visual { display: none; }
+    }
+    @media (max-width: 768px) {
+      .nav { display: none; }
+      .header-actions { display: none; }
+      .burger { display: flex; }
+      .stats-grid { grid-template-columns: 1fr; gap: 0; }
+      .stat-block + .stat-block::before { display: none; }
+      .stat-block {
+        border-top: 1px solid var(--border);
+        padding: 24px 20px;
+      }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+      .bonus-card { padding: 32px 24px; }
+      .hero-stats { gap: 24px; }
+      .games-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .categories-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .hero-cta { flex-direction: column; }
+      .btn-hero, .btn-ghost { width: 100%; text-align: center; }
+      .games-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .hero-stats { flex-direction: column; gap: 20px; }
+    }
+    @media (max-width: 360px) {
+      .games-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ░░░ HEADER ░░░ -->
+  <header class="header" role="banner">
+    <div class="header-inner">
+      <a href="#" class="logo" aria-label="VORTEX — главная">VORT<span>EX</span></a>
+
+      <nav class="nav" aria-label="Основная навигация">
+        <a href="#games">Казино</a>
+        <a href="#sports">Спорт</a>
+        <a href="#bonus">Акции</a>
+        <a href="#features">Provably Fair</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="lang-btn" aria-label="Выбор языка">RU <span aria-hidden="true">▾</span></button>
+        <button class="btn-login" aria-label="Войти в аккаунт">Войти</button>
+        <button class="btn-primary" aria-label="Начать играть">Играть</button>
+      </div>
+
+      <button class="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- mobile nav -->
+  <nav id="mobile-menu" class="mobile-menu" aria-label="Мобильное меню" hidden>
+    <a href="#games">Казино</a>
+    <a href="#sports">Спорт</a>
+    <a href="#bonus">Акции</a>
+    <a href="#features">Provably Fair</a>
+    <div class="mobile-actions">
+      <button class="btn-login">Войти</button>
+      <button class="btn-primary">Играть</button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ░░░ HERO ░░░ -->
+    <section class="hero" aria-label="Главный экран">
+      <div class="hero-particles" aria-hidden="true">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+      </div>
+
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span aria-hidden="true">◆</span> Certified Provably Fair
+          </div>
+
+          <h1 class="hero-title">
+            Играй.<br>
+            <span class="line-accent">Выигрывай.</span><br>
+            <span class="line-gold">Крипто.</span>
+          </h1>
+
+          <p class="hero-sub">
+            <strong>Более 3&thinsp;000 игр</strong> — слоты, лайв-казино, краш и дайс.
+            Мгновенные выплаты в Bitcoin и 5 других криптовалютах.
+            Без верификации, без границ.
+          </p>
+
+          <div class="hero-cta">
+            <button class="btn-hero" aria-label="Получить приветственный бонус 100%">
+              Получить бонус 100%
+            </button>
+            <button class="btn-ghost" aria-label="Посмотреть все игры">
+              Смотреть игры →
+            </button>
+          </div>
+
+          <div class="hero-stats" aria-label="Статистика платформы">
+            <div class="hero-stat">
+              <div class="hero-stat-value live">
+                <span class="live-dot" aria-hidden="true"></span><span
+                  class="countup"
+                  data-target="24583"
+                  data-suffix=""
+                  aria-label="24583 игрока онлайн">24,583</span>
+              </div>
+              <div class="hero-stat-label">Онлайн сейчас</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-value">
+                $<span
+                  class="countup"
+                  data-target="2.3"
+                  data-decimals="1"
+                  data-suffix="M"
+                  aria-label="2.3 миллиона долларов выплат за 24 часа">2.3M</span>
+              </div>
+              <div class="hero-stat-label">Выплат за 24ч</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-value">
+                <span
+                  class="countup"
+                  data-target="99.1"
+                  data-decimals="1"
+                  data-suffix="%"
+                  aria-label="99.1% RTP выплат">99.1%</span>
+              </div>
+              <div class="hero-stat-label">Средний RTP</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░░ BONUS ░░░ -->
+    <section class="bonus-section reveal" id="bonus" aria-label="Приветственный бонус">
+      <div class="container">
+        <div class="bonus-card">
+          <div class="bonus-content">
+            <div class="bonus-label">Приветственный бонус</div>
+            <h2 class="bonus-title">100% на первый<br><span>депозит</span></h2>
+            <div class="bonus-amount">До 1 BTC / 5&thinsp;000 USDT</div>
+            <ul class="bonus-checks" aria-label="Условия бонуса">
+              <li class="bonus-check">
+                <span class="check-icon" aria-hidden="true">✓</span>
+                Без вейджера — забери и выводи сразу
+              </li>
+              <li class="bonus-check">
+                <span class="check-icon" aria-hidden="true">✓</span>
+                Мгновенный вывод — до 15 минут
+              </li>
+              <li class="bonus-check">
+                <span class="check-icon" aria-hidden="true">✓</span>
+                Provably Fair — честность верифицируется
+              </li>
+            </ul>
+            <button class="btn-hero" aria-label="Забрать бонус 100% на первый депозит">
+              Забрать бонус
+            </button>
+          </div>
+          <div class="bonus-visual" aria-hidden="true">
+            <div class="bonus-badge">
+              <div class="bonus-badge-pct">×2</div>
+              <div class="bonus-badge-text">первый депозит</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░░ GAMES ░░░ -->
+    <section class="games-section reveal" id="games" aria-label="Популярные игры">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Топ игры</h2>
+          <a href="#" class="section-link" aria-label="Смотреть все игры">Все игры →</a>
+        </div>
+        <div class="games-grid" role="list" aria-label="Список популярных игр">
+          <article class="game-card" role="listitem" tabindex="0" aria-label="Игра: Midnight Reels">
+            <div class="game-thumb">
+              <div class="game-thumb-bg g1"></div>
+              <div class="game-thumb-label" aria-hidden="true">MR</div>
+              <div class="game-rtp" aria-label="RTP 97.4%">RTP 97.4%</div>
+            </div>
+            <div class="game-info">
+              <div class="game-name">Midnight Reels</div>
+              <div class="game-provider">Pragmatic Play</div>
+            </div>
+          </article>
+          <article class="game-card" role="listitem" tabindex="0" aria-label="Игра: Emerald Rush">
+            <div class="game-thumb">
+              <div class="game-thumb-bg g2"></div>
+              <div class="game-thumb-label" aria-hidden="true">ER</div>
+              <div class="game-rtp" aria-label="RTP 96.8%">RTP 96.8%</div>
+            </div>
+            <div class="game-info">
+              <div class="game-name">Emerald Rush</div>
+              <div class="game-provider">Play'n GO</div>
+            </div>
+          </article>
+          <article class="game-card" role="listitem" tabindex="0" aria-label="Игра: Gold Vaults">
+            <div class="game-thumb">
+              <div class="game-thumb-bg g3"></div>
+              <div class="game-thumb-label" aria-hidden="true">GV</div>
+              <div class="game-rtp" aria-label="RTP 98.1%">RTP 98.1%</div>
+            </div>
+            <div class="game-info">
+              <div class="game-name">Gold Vaults</div>
+              <div class="game-provider">NetEnt</div>
+            </div>
+          </article>
+          <article class="game-card" role="listitem" tabindex="0" aria-label="Игра: Deep Blue Live">
+            <div class="game-thumb">
+              <div class="game-thumb-bg g4"></div>
+              <div class="game-thumb-label" aria-hidden="true">DB</div>
+              <div class="game-rtp" aria-label="RTP 99.5%">RTP 99.5%</div>
+            </div>
+            <div class="game-info">
+              <div class="game-name">Deep Blue Live</div>
+              <div class="game-provider">Evolution</div>
+            </div>
+          </article>
+          <article class="game-card" role="listitem" tabindex="0" aria-label="Игра: Ember Crash">
+            <div class="game-thumb">
+              <div class="game-thumb-bg g5"></div>
+              <div class="game-thumb-label" aria-hidden="true">EC</div>
+              <div class="game-rtp" aria-label="RTP 97.0%">RTP 97.0%</div>
+            </div>
+            <div class="game-info">
+              <div class="game-name">Ember Crash</div>
+              <div class="game-provider">Spribe</div>
+            </div>
+          </article>
+          <article class="game-card" role="listitem" tabindex="0" aria-label="Игра: Neon Dice">
+            <div class="game-thumb">
+              <div class="game-thumb-bg g6"></div>
+              <div class="game-thumb-label" aria-hidden="true">ND</div>
+              <div class="game-rtp" aria-label="RTP 99.0%">RTP 99.0%</div>
+            </div>
+            <div class="game-info">
+              <div class="game-name">Neon Dice</div>
+              <div class="game-provider">VORTEX Originals</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░░ JACKPOT STATS ░░░ -->
+    <section class="stats-section" aria-label="Статистика платформы в реальном времени">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-block reveal">
+            <div class="stat-icon" aria-hidden="true">₿</div>
+            <div class="stat-value jackpot">
+              <span
+                class="countup"
+                data-target="47.382"
+                data-decimals="3"
+                data-prefix=""
+                data-suffix=" BTC"
+                aria-label="Текущий джекпот 47.382 биткоина">47.382 BTC</span>
+            </div>
+            <div class="stat-label">Текущий джекпот</div>
+          </div>
+          <div class="stat-block reveal">
+            <div class="stat-icon" aria-hidden="true"><span aria-hidden="true">●</span></div>
+            <div class="stat-value players">
+              <span
+                class="countup"
+                data-target="24583"
+                aria-label="24583 активных игроков">24,583</span>
+            </div>
+            <div class="stat-label">Активных игроков</div>
+          </div>
+          <div class="stat-block reveal">
+            <div class="stat-icon" aria-hidden="true">$</div>
+            <div class="stat-value">
+              $<span
+                class="countup"
+                data-target="284730"
+                aria-label="Крупнейший выигрыш 284730 долларов">284,730</span>
+            </div>
+            <div class="stat-label">Крупнейший выигрыш</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░░ CATEGORIES ░░░ -->
+    <section class="categories-section reveal" id="sports" aria-label="Категории игр">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Категории</h2>
+        </div>
+        <div class="categories-grid" role="list" aria-label="Список категорий игр">
+          <div class="cat-card" role="listitem" tabindex="0" aria-label="Слоты — 2400 игр">
+            <div class="cat-icon" aria-hidden="true"><span aria-hidden="true">🎰</span></div>
+            <div>
+              <div class="cat-name">Слоты</div>
+              <div class="cat-count">2&thinsp;400+ игр</div>
+            </div>
+          </div>
+          <div class="cat-card" role="listitem" tabindex="0" aria-label="Live Casino — 180 игр">
+            <div class="cat-icon" aria-hidden="true"><span aria-hidden="true">🃏</span></div>
+            <div>
+              <div class="cat-name">Live Casino</div>
+              <div class="cat-count">180+ столов</div>
+            </div>
+          </div>
+          <div class="cat-card" role="listitem" tabindex="0" aria-label="Crash — 12 игр">
+            <div class="cat-icon" aria-hidden="true"><span aria-hidden="true">📈</span></div>
+            <div>
+              <div class="cat-name">Crash</div>
+              <div class="cat-count">12 вариантов</div>
+            </div>
+          </div>
+          <div class="cat-card" role="listitem" tabindex="0" aria-label="Dice — оригинальные игры">
+            <div class="cat-icon" aria-hidden="true"><span aria-hidden="true">🎲</span></div>
+            <div>
+              <div class="cat-name">Dice</div>
+              <div class="cat-count">Оригинальные</div>
+            </div>
+          </div>
+          <div class="cat-card" role="listitem" tabindex="0" aria-label="Mines — стратегические игры">
+            <div class="cat-icon" aria-hidden="true"><span aria-hidden="true">💎</span></div>
+            <div>
+              <div class="cat-name">Mines</div>
+              <div class="cat-count">Стратегия</div>
+            </div>
+          </div>
+          <div class="cat-card" role="listitem" tabindex="0" aria-label="Plinko — 8 вариантов">
+            <div class="cat-icon" aria-hidden="true"><span aria-hidden="true">⬡</span></div>
+            <div>
+              <div class="cat-name">Plinko</div>
+              <div class="cat-count">8 вариантов</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░░ FEATURES ░░░ -->
+    <section class="features-section reveal" id="features" aria-label="Преимущества платформы">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Почему VORTEX</h2>
+        </div>
+        <div class="features-grid" role="list" aria-label="Список преимуществ">
+          <div class="feature-card" role="listitem">
+            <div class="feature-icon" aria-hidden="true"><span aria-hidden="true">🔐</span></div>
+            <div class="feature-title">Provably Fair</div>
+            <p class="feature-text">Каждый бросок и спин верифицируется криптографически. Ты можешь проверить честность любого раунда самостоятельно.</p>
+          </div>
+          <div class="feature-card" role="listitem">
+            <div class="feature-icon" aria-hidden="true"><span aria-hidden="true">⚡</span></div>
+            <div class="feature-title">24/7 Поддержка</div>
+            <p class="feature-text">Живой чат на русском и 12 других языках. Среднее время ответа — 45 секунд. Мы здесь всегда.</p>
+          </div>
+          <div class="feature-card" role="listitem">
+            <div class="feature-icon" aria-hidden="true"><span aria-hidden="true">💸</span></div>
+            <div class="feature-title">Мгновенные выплаты</div>
+            <p class="feature-text">Вывод обрабатывается автоматически. От запроса до получения — в среднем 8 минут на любую сумму.</p>
+          </div>
+          <div class="feature-card" role="listitem">
+            <div class="feature-icon" aria-hidden="true"><span aria-hidden="true">🎭</span></div>
+            <div class="feature-title">Без KYC</div>
+            <p class="feature-text">Никаких паспортов, селфи и анкет. Создай аккаунт за 30 секунд — только email и пароль.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░░ CRYPTO ░░░ -->
+    <section class="crypto-section reveal" aria-label="Принимаемые криптовалюты">
+      <div class="container">
+        <div class="crypto-title">Принимаем криптовалюты</div>
+        <div class="crypto-row" role="list" aria-label="Список криптовалют">
+          <div class="crypto-item" role="listitem" aria-label="Bitcoin (BTC)">
+            <div class="crypto-icon crypto-btc" aria-hidden="true">BTC</div>
+            <div class="crypto-name">Bitcoin</div>
+          </div>
+          <div class="crypto-item" role="listitem" aria-label="Ethereum (ETH)">
+            <div class="crypto-icon crypto-eth" aria-hidden="true">ETH</div>
+            <div class="crypto-name">Ethereum</div>
+          </div>
+          <div class="crypto-item" role="listitem" aria-label="Tether (USDT)">
+            <div class="crypto-icon crypto-usdt" aria-hidden="true">USDT</div>
+            <div class="crypto-name">Tether</div>
+          </div>
+          <div class="crypto-item" role="listitem" aria-label="Litecoin (LTC)">
+            <div class="crypto-icon crypto-ltc" aria-hidden="true">LTC</div>
+            <div class="crypto-name">Litecoin</div>
+          </div>
+          <div class="crypto-item" role="listitem" aria-label="Dogecoin (DOGE)">
+            <div class="crypto-icon crypto-doge" aria-hidden="true">DOGE</div>
+            <div class="crypto-name">Dogecoin</div>
+          </div>
+          <div class="crypto-item" role="listitem" aria-label="Solana (SOL)">
+            <div class="crypto-icon crypto-sol" aria-hidden="true">SOL</div>
+            <div class="crypto-name">Solana</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ░░░ FOOTER ░░░ -->
+  <footer aria-label="Подвал сайта">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="logo">VORT<span>EX</span></div>
+          <p class="footer-tagline">Премиальное криптоказино нового поколения. Честно, быстро, анонимно.</p>
+          <div class="footer-socials" aria-label="Социальные сети">
+            <a href="#" class="social-btn" aria-label="Twitter / X">X</a>
+            <a href="#" class="social-btn" aria-label="Telegram">TG</a>
+            <a href="#" class="social-btn" aria-label="Discord">DC</a>
+          </div>
+        </div>
+
+        <nav aria-label="Игры и продукты">
+          <div class="footer-nav-title">Казино</div>
+          <ul class="footer-nav-links">
+            <li><a href="#">Все игры</a></li>
+            <li><a href="#">Слоты</a></li>
+            <li><a href="#">Live Casino</a></li>
+            <li><a href="#">Оригинальные игры</a></li>
+            <li><a href="#">Турниры</a></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Информация">
+          <div class="footer-nav-title">Информация</div>
+          <ul class="footer-nav-links">
+            <li><a href="#">Provably Fair</a></li>
+            <li><a href="#">Бонусы</a></li>
+            <li><a href="#">Партнёрская программа</a></li>
+            <li><a href="#">Условия использования</a></li>
+            <li><a href="#">Ответственная игра</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-legal">
+          <span aria-hidden="true">⚠</span> <strong>18+</strong> · Играйте ответственно ·
+          VORTEX лицензирован по лицензии Curaçao eGaming #1668/JAZ ·
+          <span aria-hidden="true">©</span> 2026 VORTEX Group Ltd. Все права защищены.
+        </div>
+        <div class="footer-badges" aria-label="Сертификаты">
+          <span class="badge">18+</span>
+          <span class="badge">Provably Fair</span>
+          <span class="badge">SSL Secured</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      'use strict'
+
+      // ─── STICKY HEADER ───────────────────────────────
+      const header = document.querySelector('.header')
+      const onScroll = () => {
+        header.classList.toggle('scrolled', window.scrollY > 20)
+      }
+      window.addEventListener('scroll', onScroll, { passive: true })
+      onScroll()
+
+      // ─── BURGER MENU ─────────────────────────────────
+      const burger = document.querySelector('.burger')
+      const mobileMenu = document.getElementById('mobile-menu')
+      burger.addEventListener('click', () => {
+        const isOpen = burger.classList.toggle('open')
+        burger.setAttribute('aria-expanded', String(isOpen))
+        mobileMenu.classList.toggle('open', isOpen)
+        mobileMenu.hidden = !isOpen
+      })
+      // close on nav link click
+      mobileMenu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          burger.classList.remove('open')
+          burger.setAttribute('aria-expanded', 'false')
+          mobileMenu.classList.remove('open')
+          mobileMenu.hidden = true
+        })
+      })
+
+      // ─── COUNTUP ─────────────────────────────────────
+      function animateCountUp(el) {
+        const raw = el.dataset.target
+        const target = parseFloat(raw)
+        const decimals = parseInt(el.dataset.decimals ?? '0', 10)
+        const suffix = el.dataset.suffix ?? ''
+        const duration = 2000
+        const start = performance.now()
+
+        const fmt = (v) => {
+          if (decimals > 0) return v.toFixed(decimals) + suffix
+          return Math.round(v).toLocaleString('ru-RU').replace(/\u00a0/g, ',') + suffix
+        }
+
+        const tick = (now) => {
+          const elapsed = now - start
+          const progress = Math.min(elapsed / duration, 1)
+          // easeOutExpo
+          const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress)
+          el.textContent = fmt(target * ease)
+          if (progress < 1) requestAnimationFrame(tick)
+          else el.textContent = fmt(target)
+        }
+
+        requestAnimationFrame(tick)
+      }
+
+      // ─── INTERSECTION OBSERVER ────────────────────────
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+      // reveal sections
+      const revealEls = document.querySelectorAll('.reveal')
+      const revealObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+            revealObs.unobserve(entry.target)
+          }
+        })
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
+
+      revealEls.forEach(el => {
+        if (prefersReduced) {
+          el.classList.add('visible')
+        } else {
+          revealObs.observe(el)
+        }
+      })
+
+      // countup on visibility
+      const countEls = document.querySelectorAll('.countup')
+      const countObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            if (!prefersReduced) {
+              animateCountUp(entry.target)
+            }
+            countObs.unobserve(entry.target)
+          }
+        })
+      }, { threshold: 0.5 })
+
+      countEls.forEach(el => countObs.observe(el))
+
+      // staggered reveal for grids
+      const staggerGroups = [
+        '.games-grid .game-card',
+        '.categories-grid .cat-card',
+        '.features-grid .feature-card',
+        '.crypto-row .crypto-item',
+      ]
+      staggerGroups.forEach(selector => {
+        const items = document.querySelectorAll(selector)
+        items.forEach((item, i) => {
+          item.style.opacity = '0'
+          item.style.transform = 'translateY(20px)'
+          item.style.transition = `opacity 0.5s ease ${i * 0.06}s, transform 0.5s ease ${i * 0.06}s`
+        })
+        const groupObs = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const idx = Array.from(entry.target.parentElement.children).indexOf(entry.target)
+              setTimeout(() => {
+                if (prefersReduced) {
+                  entry.target.style.transition = 'none'
+                }
+                entry.target.style.opacity = '1'
+                entry.target.style.transform = 'translateY(0)'
+              }, prefersReduced ? 0 : idx * 60)
+              groupObs.unobserve(entry.target)
+            }
+          })
+        }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' })
+
+        items.forEach(item => groupObs.observe(item))
+      })
+
+      // ─── JACKPOT LIVE TICK ────────────────────────────
+      // Slowly increment jackpot every few seconds to feel "live"
+      const jackpotEl = document.querySelector('.stat-value.jackpot .countup')
+      if (jackpotEl) {
+        let jackpot = 47.382
+        setInterval(() => {
+          jackpot += (Math.random() * 0.003)
+          jackpotEl.textContent = jackpot.toFixed(3) + ' BTC'
+        }, 3800)
+      }
+
+      // ─── KEYBOARD NAV FOR CARDS ───────────────────────
+      document.querySelectorAll('.game-card, .cat-card').forEach(card => {
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            card.click()
+          }
+        })
+      })
+    })()
+  </script>
+
+</body>
+</html>
