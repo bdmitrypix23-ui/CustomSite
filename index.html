@@ -23,7 +23,7 @@
             --accent-orange: #f0942c;
             --accent-green: #00bfa5;
             --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
+            --text-secondary: #b0b0b0;
             --border-glow: rgba(230, 57, 70, 0.3);
             --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
@@ -43,7 +43,7 @@
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Outfit', 'Helvetica Neue', sans-serif;
             background-color: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
@@ -58,15 +58,20 @@
             right: 0;
             z-index: 1000;
             background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(0px);
             border-bottom: 1px solid transparent;
             transition: all 0.3s ease;
         }
 
         header.scrolled {
             background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
             border-bottom-color: var(--border-glow);
+        }
+
+        @supports (backdrop-filter: blur(1px)) {
+            header.scrolled {
+                background: rgba(10, 10, 10, 0.85);
+                backdrop-filter: blur(10px);
+            }
         }
 
         .header-content {
@@ -80,13 +85,43 @@
         }
 
         .logo {
-            font-family: 'Chakra Petch', sans-serif;
+            font-family: 'Chakra Petch', 'Arial Narrow', sans-serif;
             font-size: 24px;
             font-weight: 700;
             letter-spacing: 2px;
             color: var(--accent-red);
             text-transform: uppercase;
             text-shadow: 0 0 20px var(--border-glow);
+        }
+
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            width: 30px;
+            height: 24px;
+            justify-content: center;
+        }
+
+        .burger-menu span {
+            width: 100%;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .burger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translateY(10px);
+        }
+
+        .burger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translateY(-10px);
         }
 
         nav {
@@ -118,6 +153,40 @@
             width: 100%;
         }
 
+        nav.mobile-menu {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-glow);
+            max-height: calc(100vh - 70px);
+            overflow-y: auto;
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        nav.mobile-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        nav.mobile-menu a {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav.mobile-menu a::after {
+            display: none;
+        }
+
         .header-actions {
             display: flex;
             gap: 1rem;
@@ -131,7 +200,7 @@
             padding: 0.5rem 1rem;
             border-radius: 4px;
             cursor: pointer;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Outfit', 'Helvetica Neue', sans-serif;
             transition: var(--transition);
         }
 
@@ -144,7 +213,7 @@
             padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 4px;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Outfit', 'Helvetica Neue', sans-serif;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
@@ -219,6 +288,7 @@
             top: 10%;
             right: 5%;
             animation: float 6s ease-in-out infinite;
+            will-change: transform;
         }
 
         .hero::after {
@@ -231,6 +301,7 @@
             bottom: 10%;
             left: 5%;
             animation: float 8s ease-in-out infinite reverse;
+            will-change: transform;
         }
 
         @keyframes float {
@@ -258,7 +329,7 @@
         }
 
         .hero h1 {
-            font-family: 'Chakra Petch', sans-serif;
+            font-family: 'Chakra Petch', 'Arial Narrow', sans-serif;
             font-size: clamp(2.5rem, 6vw, 4rem);
             font-weight: 700;
             line-height: 1.2;
@@ -294,7 +365,7 @@
         }
 
         .stat-number {
-            font-family: 'IBM Plex Mono', monospace;
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--accent-red);
@@ -337,11 +408,28 @@
         .bonus-card {
             background: linear-gradient(135deg, var(--bg-tertiary) 0%, #2a1515 100%);
             border: 2px solid;
-            border-image: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-orange) 100%) 1;
             border-radius: 8px;
             padding: 3rem;
             text-align: center;
             animation: fadeInScale 0.8s ease-out;
+            position: relative;
+            isolation: isolate;
+        }
+
+        .bonus-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-orange) 100%);
+            border-radius: 8px;
+            padding: 2px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .bonus-card > * {
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes fadeInScale {
@@ -356,14 +444,14 @@
         }
 
         .bonus-card h2 {
-            font-family: 'Chakra Petch', sans-serif;
+            font-family: 'Chakra Petch', 'Arial Narrow', sans-serif;
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
             color: var(--accent-red);
         }
 
         .bonus-amount {
-            font-family: 'IBM Plex Mono', monospace;
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
             font-size: 1.8rem;
             color: var(--accent-orange);
             font-weight: 700;
@@ -414,7 +502,7 @@
         }
 
         .section-title {
-            font-family: 'Chakra Petch', sans-serif;
+            font-family: 'Chakra Petch', 'Arial Narrow', sans-serif;
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 3rem;
@@ -488,7 +576,7 @@
         }
 
         .game-name {
-            font-family: 'Chakra Petch', sans-serif;
+            font-family: 'Chakra Petch', 'Arial Narrow', sans-serif;
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
@@ -542,12 +630,13 @@
         }
 
         .stat-value {
-            font-family: 'IBM Plex Mono', monospace;
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
             font-size: 2.2rem;
             font-weight: 700;
             color: var(--accent-orange);
             margin-bottom: 0.5rem;
             animation: countUp 2s ease-out;
+            letter-spacing: 0.05em;
         }
 
         @keyframes countUp {
@@ -602,7 +691,7 @@
         }
 
         .category-name {
-            font-family: 'Chakra Petch', sans-serif;
+            font-family: 'Chakra Petch', 'Arial Narrow', sans-serif;
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
@@ -652,7 +741,7 @@
         }
 
         .feature-card h3 {
-            font-family: 'Chakra Petch', sans-serif;
+            font-family: 'Chakra Petch', 'Arial Narrow', sans-serif;
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
             color: var(--accent-red);
@@ -679,9 +768,16 @@
         .crypto-icons {
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 3rem;
             flex-wrap: wrap;
             margin-top: 2rem;
+        }
+
+        .crypto-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
         }
 
         .crypto-icon {
@@ -691,7 +787,6 @@
             border: 1px solid var(--border-glow);
             border-radius: 50%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
@@ -708,9 +803,9 @@
         .crypto-name {
             font-size: 0.8rem;
             color: var(--text-secondary);
-            margin-top: 0.5rem;
             text-transform: uppercase;
             font-weight: 600;
+            white-space: nowrap;
         }
 
         /* ===== FOOTER ===== */
@@ -735,7 +830,7 @@
         .footer-section h4 {
             color: var(--accent-red);
             margin-bottom: 1rem;
-            font-family: 'Chakra Petch', sans-serif;
+            font-family: 'Chakra Petch', 'Arial Narrow', sans-serif;
         }
 
         .footer-section a {
@@ -770,6 +865,9 @@
             color: var(--text-primary);
             text-decoration: none;
             transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
         }
 
         .social-link:hover {
@@ -809,8 +907,16 @@
                 padding: 0 1rem;
             }
 
+            .burger-menu {
+                display: flex;
+            }
+
             nav {
                 display: none;
+            }
+
+            nav.mobile-menu {
+                display: flex;
             }
 
             .hero {
@@ -864,6 +970,26 @@
                 gap: 0.5rem;
             }
 
+            .lang-select {
+                display: none;
+            }
+
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 12px;
+            }
+
+            .crypto-icons {
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .crypto-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
+
             .hero h1 {
                 font-size: 1.5rem;
             }
@@ -910,6 +1036,12 @@
                 gap: 1rem;
             }
         }
+
+        @media (max-width: 360px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -917,12 +1049,23 @@
     <header id="header">
         <div class="header-content">
             <div class="logo">⚡ CRYPTOFLAME</div>
-            <nav>
+            <nav id="desktopNav">
                 <a href="#games">Казино</a>
                 <a href="#categories">Спорт</a>
                 <a href="#features">Преимущества</a>
                 <a href="#crypto">Крипто</a>
             </nav>
+            <nav id="mobileNav" class="mobile-menu">
+                <a href="#games">Казино</a>
+                <a href="#categories">Спорт</a>
+                <a href="#features">Преимущества</a>
+                <a href="#crypto">Крипто</a>
+            </nav>
+            <div class="burger-menu" id="burgerMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <div class="header-actions">
                 <select class="lang-select">
                     <option>РУ</option>
@@ -967,7 +1110,7 @@
     <section class="welcome-bonus">
         <div class="welcome-bonus-container">
             <div class="bonus-card">
-                <h2>🎁 Добро пожаловать!</h2>
+                <h2><span aria-hidden="true">🎁</span> Добро пожаловать!</h2>
                 <div class="bonus-amount">100% НА ПЕРВЫЙ ДЕПОЗИТ — ДО 1 BTC</div>
 
                 <div class="bonus-features">
@@ -1049,15 +1192,15 @@
             <h2 class="section-title">Статистика в реальном времени</h2>
             <div class="stats-grid">
                 <div class="stat-box">
-                    <div class="stat-value" data-target="2.847">2,847</div>
+                    <div class="stat-value" data-target="2847" data-format="btc">0</div>
                     <div class="stat-title">Текущий джекпот BTC</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-value" data-target="15432">15,432</div>
+                    <div class="stat-value" data-target="15432" data-format="number">0</div>
                     <div class="stat-title">Активных игроков</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-value" data-target="847500">$847,500</div>
+                    <div class="stat-value" data-target="847500" data-format="usd">0</div>
                     <div class="stat-title">Крупнейший выигрыш</div>
                 </div>
             </div>
@@ -1070,32 +1213,32 @@
             <h2 class="section-title">Категории игр</h2>
             <div class="category-grid">
                 <div class="category-card">
-                    <div class="category-icon">🎰</div>
+                    <div class="category-icon"><span aria-hidden="true">🎰</span></div>
                     <div class="category-name">Слоты</div>
                     <div class="category-count">847 игр</div>
                 </div>
                 <div class="category-card">
-                    <div class="category-icon">♠️</div>
+                    <div class="category-icon"><span aria-hidden="true">♠️</span></div>
                     <div class="category-name">Live Casino</div>
                     <div class="category-count">42 игры</div>
                 </div>
                 <div class="category-card">
-                    <div class="category-icon">📈</div>
+                    <div class="category-icon"><span aria-hidden="true">📈</span></div>
                     <div class="category-name">Краш</div>
                     <div class="category-count">12 игр</div>
                 </div>
                 <div class="category-card">
-                    <div class="category-icon">🎲</div>
+                    <div class="category-icon"><span aria-hidden="true">🎲</span></div>
                     <div class="category-name">Кости</div>
                     <div class="category-count">8 игр</div>
                 </div>
                 <div class="category-card">
-                    <div class="category-icon">⛏️</div>
+                    <div class="category-icon"><span aria-hidden="true">⛏️</span></div>
                     <div class="category-name">Мины</div>
                     <div class="category-count">5 игр</div>
                 </div>
                 <div class="category-card">
-                    <div class="category-icon">📍</div>
+                    <div class="category-icon"><span aria-hidden="true">📍</span></div>
                     <div class="category-name">Плинко</div>
                     <div class="category-count">6 игр</div>
                 </div>
@@ -1109,22 +1252,22 @@
             <h2 class="section-title">Почему CRYPTOFLAME?</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-card-icon">🔐</div>
+                    <div class="feature-card-icon"><span aria-hidden="true">🔐</span></div>
                     <h3>Provably Fair</h3>
                     <p>Все игры прошли независимую верификацию. Честность каждого раунда подтверждена криптографически.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-card-icon">⏱️</div>
+                    <div class="feature-card-icon"><span aria-hidden="true">⏱️</span></div>
                     <h3>Мгновенные выплаты</h3>
                     <p>Выводи крипто за секунды. Без верификации, без задержек. Твои выигрыши — твои сразу.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-card-icon">🌍</div>
+                    <div class="feature-card-icon"><span aria-hidden="true">🌍</span></div>
                     <h3>24/7 Поддержка</h3>
                     <p>Команда готова помочь в любую секунду. Чат, email, telegram — выбирай удобный канал.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-card-icon">🚀</div>
+                    <div class="feature-card-icon"><span aria-hidden="true">🚀</span></div>
                     <h3>Без KYC</h3>
                     <p>Регистрация за 30 секунд. Никаких документов, никаких вопросов. Играй анонимно.</p>
                 </div>
@@ -1137,28 +1280,40 @@
         <div class="crypto-container">
             <h2 class="section-title">Принимаем крипто</h2>
             <div class="crypto-icons">
-                <div class="crypto-icon" title="Bitcoin">
-                    <span>₿</span>
+                <div class="crypto-item" aria-label="Bitcoin">
+                    <div class="crypto-icon" title="Bitcoin">
+                        <span>₿</span>
+                    </div>
                     <div class="crypto-name">BTC</div>
                 </div>
-                <div class="crypto-icon" title="Ethereum">
-                    <span>Ξ</span>
+                <div class="crypto-item" aria-label="Ethereum">
+                    <div class="crypto-icon" title="Ethereum">
+                        <span>Ξ</span>
+                    </div>
                     <div class="crypto-name">ETH</div>
                 </div>
-                <div class="crypto-icon" title="USDT">
-                    <span>₮</span>
+                <div class="crypto-item" aria-label="USDT">
+                    <div class="crypto-icon" title="USDT">
+                        <span>₮</span>
+                    </div>
                     <div class="crypto-name">USDT</div>
                 </div>
-                <div class="crypto-icon" title="Litecoin">
-                    <span>Ł</span>
+                <div class="crypto-item" aria-label="Litecoin">
+                    <div class="crypto-icon" title="Litecoin">
+                        <span>Ł</span>
+                    </div>
                     <div class="crypto-name">LTC</div>
                 </div>
-                <div class="crypto-icon" title="Dogecoin">
-                    <span>Ð</span>
+                <div class="crypto-item" aria-label="Dogecoin">
+                    <div class="crypto-icon" title="Dogecoin">
+                        <span>Ð</span>
+                    </div>
                     <div class="crypto-name">DOGE</div>
                 </div>
-                <div class="crypto-icon" title="Solana">
-                    <span>◎</span>
+                <div class="crypto-item" aria-label="Solana">
+                    <div class="crypto-icon" title="Solana">
+                        <span>◎</span>
+                    </div>
                     <div class="crypto-name">SOL</div>
                 </div>
             </div>
@@ -1193,10 +1348,10 @@
                 <div class="footer-section">
                     <h4>Следи за нами</h4>
                     <div class="footer-socials">
-                        <a href="#" class="social-link" title="Twitter">𝕏</a>
-                        <a href="#" class="social-link" title="Telegram">✈️</a>
-                        <a href="#" class="social-link" title="Discord">👾</a>
-                        <a href="#" class="social-link" title="YouTube">▶️</a>
+                        <a href="#" class="social-link" title="Twitter">X</a>
+                        <a href="#" class="social-link" title="Telegram">TG</a>
+                        <a href="#" class="social-link" title="Discord">DS</a>
+                        <a href="#" class="social-link" title="YouTube">YT</a>
                     </div>
                 </div>
             </div>
@@ -1224,6 +1379,22 @@
             }
         });
 
+        // MOBILE MENU TOGGLE
+        const burgerMenu = document.getElementById('burgerMenu');
+        const mobileNav = document.getElementById('mobileNav');
+
+        burgerMenu.addEventListener('click', () => {
+            burgerMenu.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+        });
+
+        mobileNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                burgerMenu.classList.remove('active');
+                mobileNav.classList.remove('active');
+            });
+        });
+
         // INTERSECTION OBSERVER FOR ANIMATIONS
         const observerOptions = {
             threshold: 0.1,
@@ -1246,8 +1417,8 @@
             observer.observe(el);
         });
 
-        // COUNTUP ANIMATION
-        function countUp(element, target, duration = 2000) {
+        // COUNTUP ANIMATION WITH FORMAT SUPPORT
+        function countUp(element, target, format = 'number', duration = 2000) {
             const start = 0;
             const range = target - start;
             const increment = range / (duration / 16);
@@ -1260,13 +1431,18 @@
                     clearInterval(timer);
                 }
 
-                if (element.textContent.includes('$')) {
-                    element.textContent = '$' + Math.floor(current).toLocaleString();
-                } else if (element.textContent.includes('.')) {
-                    element.textContent = current.toFixed(3);
+                let displayValue = '';
+                const numValue = Math.floor(current);
+
+                if (format === 'btc') {
+                    displayValue = (numValue / 1000).toFixed(3) + ' BTC';
+                } else if (format === 'usd') {
+                    displayValue = '$' + numValue.toLocaleString();
                 } else {
-                    element.textContent = Math.floor(current).toLocaleString();
+                    displayValue = numValue.toLocaleString();
                 }
+
+                element.textContent = displayValue;
             }, 16);
         }
 
@@ -1280,19 +1456,9 @@
                 if (entry.isIntersecting && !countUpTriggered) {
                     countUpTriggered = true;
                     statBoxes.forEach(el => {
-                        const target = parseFloat(el.getAttribute('data-target'));
-                        const rawText = el.getAttribute('data-target');
-
-                        let finalTarget = target;
-                        if (rawText.includes('$')) {
-                            finalTarget = parseInt(rawText.replace('$', '').replace(',', ''));
-                        } else if (rawText.includes('.')) {
-                            finalTarget = parseFloat(rawText);
-                        } else {
-                            finalTarget = parseInt(rawText.replace(',', ''));
-                        }
-
-                        countUp(el, finalTarget);
+                        const target = parseInt(el.getAttribute('data-target'));
+                        const format = el.getAttribute('data-format') || 'number';
+                        countUp(el, target, format);
                     });
                 }
             });
