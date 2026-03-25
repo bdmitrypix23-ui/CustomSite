@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REDSHIFT — Крипто-казино нового поколения</title>
+  <meta name="description" content="REDSHIFT — премиальное крипто-казино. Provably Fair, мгновенные выплаты, без KYC.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ========== CSS VARIABLES ========== */
+    :root {
+      --bg-deep: #060606;
+      --bg-base: #0a0a0a;
+      --bg-card: #111113;
+      --bg-card-hover: #18181c;
+      --bg-surface: #1a1a1f;
+
+      --red-deep: #8b1a1a;
+      --red-core: #c5282f;
+      --red-bright: #e8363e;
+      --red-glow: #ff4d55;
+
+      --gold-deep: #8b6914;
+      --gold-core: #d4a24c;
+      --gold-bright: #f0c060;
+
+      --cyan-success: #2dd4a8;
+      --cyan-glow: #3eebc0;
+
+      --text-primary: #f0f0f0;
+      --text-secondary: #a8a8b0;
+      --text-muted: #68687a;
+
+      --font-display: 'Cormorant Garamond', 'Georgia', serif;
+      --font-body: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+
+      --header-h: 72px;
+    }
+
+    /* ========== REDUCED MOTION ========== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ========== RESET ========== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ========== FOCUS VISIBLE ========== */
+    :focus-visible {
+      outline: 2px solid var(--red-bright);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* ========== UTILITY ========== */
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    @media (min-width: 768px) {
+      .container { padding: 0 40px; }
+    }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ========== REVEAL ANIMATIONS ========== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ========== PAGE LOAD ORCHESTRATION ========== */
+    @keyframes curtainReveal {
+      0% { clip-path: inset(0 0 100% 0); opacity: 0; }
+      100% { clip-path: inset(0 0 0 0); opacity: 1; }
+    }
+
+    @keyframes slideFromLeft {
+      0% { transform: translateX(-60px); opacity: 0; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes fadeScale {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(200, 40, 47, 0.15); }
+      50% { box-shadow: 0 0 40px rgba(200, 40, 47, 0.35); }
+    }
+
+    @keyframes diagonalShimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(1deg); }
+    }
+
+    @keyframes runeRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ========== HEADER ========== */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .site-header.scrolled {
+      background: rgba(6, 6, 6, 0.85);
+      box-shadow: 0 1px 0 rgba(197, 40, 47, 0.12);
+    }
+
+    @supports (backdrop-filter: blur(16px)) {
+      .site-header.scrolled {
+        backdrop-filter: blur(16px) saturate(1.2);
+        -webkit-backdrop-filter: blur(16px) saturate(1.2);
+        background: rgba(6, 6, 6, 0.7);
+      }
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    @media (min-width: 768px) {
+      .header-inner { padding: 0 40px; }
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideFromLeft 0.9s var(--ease-out-expo) both;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      position: relative;
+    }
+
+    .logo-mark svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .logo-text span {
+      color: var(--red-bright);
+    }
+
+    .nav-links {
+      display: none;
+      gap: 32px;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .nav-links { display: flex; }
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    @media (hover: hover) {
+      .nav-links a:hover { color: var(--text-primary); }
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--red-core);
+        transition: width 0.3s var(--ease-out-expo);
+      }
+      .nav-links a:hover::after { width: 100%; }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-ghost {
+      padding: 8px 18px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border: 1px solid rgba(168, 168, 176, 0.2);
+      border-radius: var(--radius-sm);
+      transition: color 0.3s, border-color 0.3s;
+    }
+
+    @media (hover: hover) {
+      .btn-ghost:hover {
+        color: var(--text-primary);
+        border-color: rgba(168, 168, 176, 0.5);
+      }
+    }
+
+    .btn-primary {
+      padding: 8px 22px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      background: var(--red-core);
+      border-radius: var(--radius-sm);
+      transition: background 0.3s, transform 0.2s;
+      will-change: transform;
+    }
+
+    @media (hover: hover) {
+      .btn-primary:hover {
+        background: var(--red-bright);
+        transform: translateY(-1px);
+      }
+    }
+
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-ghost.desktop-only { display: none; }
+    @media (min-width: 768px) {
+      .btn-ghost.desktop-only { display: inline-flex; }
+    }
+
+    /* Burger */
+    .burger {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 28px;
+      padding: 4px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    @media (min-width: 768px) {
+      .burger { display: none; }
+    }
+
+    .burger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 1px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .burger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .burger.active span:nth-child(2) { opacity: 0; }
+    .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* Mobile menu */
+    .mobile-menu {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(6, 6, 6, 0.97);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 999;
+    }
+
+    @supports (backdrop-filter: blur(20px)) {
+      .mobile-menu {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        background: rgba(6, 6, 6, 0.88);
+      }
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: color 0.3s;
+    }
+
+    .mobile-menu a:active { color: var(--red-bright); }
+
+    /* ========== HERO ========== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--header-h) + 40px) 20px 60px;
+      overflow: hidden;
+    }
+
+    /* Hero background layers */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(139, 26, 26, 0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(139, 26, 26, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 50% at 80% 70%, rgba(212, 162, 76, 0.05) 0%, transparent 50%);
+    }
+
+    /* CSS art: rotating geometric grid */
+    .hero-grid {
+      position: absolute;
+      inset: -20%;
+      opacity: 0.06;
+      background-image:
+        linear-gradient(var(--red-core) 1px, transparent 1px),
+        linear-gradient(90deg, var(--red-core) 1px, transparent 1px);
+      background-size: 80px 80px;
+      transform: perspective(600px) rotateX(60deg) scale(2.5);
+      transform-origin: center 70%;
+      mask-image: radial-gradient(ellipse 70% 50% at 50% 40%, black, transparent);
+      -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 40%, black, transparent);
+    }
+
+    /* Animated rune circles */
+    .hero-rune {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(197, 40, 47, 0.12);
+      animation: runeRotate 60s linear infinite;
+    }
+
+    .hero-rune:nth-child(1) {
+      width: 500px; height: 500px;
+      top: 10%; left: -10%;
+      border-style: dashed;
+      animation-duration: 80s;
+    }
+
+    .hero-rune:nth-child(2) {
+      width: 350px; height: 350px;
+      bottom: 5%; right: -5%;
+      animation-duration: 50s;
+      animation-direction: reverse;
+    }
+
+    .hero-rune:nth-child(3) {
+      width: 200px; height: 200px;
+      top: 20%; right: 15%;
+      border-color: rgba(212, 162, 76, 0.08);
+      animation-duration: 35s;
+    }
+
+    /* Diamond decorations */
+    .hero-diamond {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: var(--red-core);
+      transform: rotate(45deg);
+      opacity: 0.15;
+      animation: floatSlow 6s ease-in-out infinite;
+    }
+
+    .hero-diamond:nth-child(4) { top: 25%; left: 12%; animation-delay: -2s; }
+    .hero-diamond:nth-child(5) { top: 65%; right: 10%; animation-delay: -4s; width: 8px; height: 8px; background: var(--gold-core); }
+    .hero-diamond:nth-child(6) { bottom: 20%; left: 30%; animation-delay: -1s; width: 6px; height: 6px; }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 780px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(197, 40, 47, 0.1);
+      border: 1px solid rgba(197, 40, 47, 0.2);
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--red-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 28px;
+      animation: fadeScale 0.7s var(--ease-out-expo) 0.2s both;
+    }
+
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      background: var(--cyan-success);
+      border-radius: 50%;
+      animation: pulseGlow 2s ease-in-out infinite;
+      box-shadow: 0 0 8px var(--cyan-success);
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 6.5vw, 5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+      animation: curtainReveal 1s var(--ease-out-expo) 0.4s both;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--red-bright);
+      position: relative;
+    }
+
+    .hero h1 em::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--red-core), transparent);
+      border-radius: 2px;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--text-secondary);
+      font-weight: 300;
+      max-width: 560px;
+      margin: 0 auto 36px;
+      animation: curtainReveal 1s var(--ease-out-expo) 0.6s both;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 36px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, var(--red-core), var(--red-deep));
+      border-radius: var(--radius-md);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s var(--ease-out-back), box-shadow 0.3s;
+      will-change: transform;
+      animation: fadeScale 0.8s var(--ease-out-expo) 0.8s both;
+    }
+
+    .hero-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        105deg,
+        transparent 30%,
+        rgba(255,255,255,0.12) 50%,
+        transparent 70%
+      );
+      background-size: 200% 100%;
+      animation: diagonalShimmer 3s ease-in-out infinite;
+    }
+
+    @media (hover: hover) {
+      .hero-cta:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 32px rgba(197, 40, 47, 0.35);
+      }
+    }
+
+    .hero-cta-arrow {
+      transition: transform 0.3s ease;
+    }
+
+    @media (hover: hover) {
+      .hero-cta:hover .hero-cta-arrow {
+        transform: translateX(4px);
+      }
+    }
+
+    /* Hero stats */
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 56px;
+      animation: curtainReveal 0.9s var(--ease-out-expo) 1s both;
+    }
+
+    @media (max-width: 480px) {
+      .hero-stats { gap: 20px; flex-wrap: wrap; }
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-val {
+      font-family: var(--font-mono);
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .hero-stat-val .accent { color: var(--cyan-success); }
+
+    .hero-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 4px;
+    }
+
+    /* ========== SECTION COMMON ========== */
+    section {
+      padding: 80px 0;
+    }
+
+    @media (min-width: 768px) {
+      section { padding: 110px 0; }
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--red-core);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      font-weight: 300;
+      max-width: 540px;
+    }
+
+    .section-header {
+      margin-bottom: 48px;
+    }
+
+    @media (min-width: 768px) {
+      .section-header { margin-bottom: 64px; }
+    }
+
+    /* ========== WELCOME BONUS ========== */
+    .bonus {
+      position: relative;
+    }
+
+    .bonus-card {
+      position: relative;
+      padding: 48px 32px;
+      border-radius: var(--radius-lg);
+      background: var(--bg-card);
+      overflow: hidden;
+    }
+
+    /* Gradient border via pseudo-element */
+    .bonus-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-lg);
+      padding: 1.5px;
+      background: linear-gradient(135deg, var(--red-core), var(--gold-core), var(--red-deep));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .bonus-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(197, 40, 47, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    @media (min-width: 768px) {
+      .bonus-card {
+        padding: 64px 56px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 40px;
+        align-items: center;
+      }
+    }
+
+    .bonus-content { position: relative; z-index: 1; }
+
+    .bonus-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--gold-core);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 12px;
+    }
+
+    .bonus-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .bonus-title span { color: var(--gold-bright); }
+
+    .bonus-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      margin-bottom: 24px;
+    }
+
+    .bonus-perks {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .bonus-perk {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+
+    .bonus-perk-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cyan-success);
+    }
+
+    .bonus-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--bg-deep);
+      background: linear-gradient(135deg, var(--gold-core), var(--gold-bright));
+      border-radius: var(--radius-sm);
+      transition: transform 0.3s var(--ease-out-back), box-shadow 0.3s;
+      will-change: transform;
+    }
+
+    @media (hover: hover) {
+      .bonus-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(212, 162, 76, 0.3);
+      }
+    }
+
+    .bonus-visual {
+      position: relative;
+      z-index: 1;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .bonus-visual { display: flex; align-items: center; justify-content: center; }
+    }
+
+    .bonus-coin {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-deep), var(--gold-bright), var(--gold-deep));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--bg-deep);
+      box-shadow:
+        0 0 40px rgba(212, 162, 76, 0.2),
+        inset 0 -4px 12px rgba(0,0,0,0.3),
+        inset 0 4px 12px rgba(255,255,255,0.15);
+      animation: floatSlow 5s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    /* ========== GAME CARDS ========== */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media (min-width: 480px) {
+      .games-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    }
+
+    @media (min-width: 768px) {
+      .games-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      .games-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .game-card {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--bg-card);
+      transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s;
+      will-change: transform;
+    }
+
+    @media (hover: hover) {
+      .game-card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 12px 40px rgba(197, 40, 47, 0.15);
+      }
+
+      .game-card:hover .game-card-overlay {
+        opacity: 1;
+      }
+    }
+
+    .game-card-thumb {
+      aspect-ratio: 4 / 5;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* CSS placeholders for games */
+    .game-card-thumb-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .game-card:nth-child(1) .game-card-thumb-inner {
+      background: linear-gradient(135deg, #1a0a0a, #2d0f0f, #1a0a0a);
+    }
+    .game-card:nth-child(1) .game-card-thumb-inner::before {
+      content: '';
+      width: 80px; height: 80px;
+      border: 3px solid var(--red-core);
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(197,40,47,0.4), inset 0 0 20px rgba(197,40,47,0.2);
+    }
+
+    .game-card:nth-child(2) .game-card-thumb-inner {
+      background: linear-gradient(160deg, #0a1a12, #0f2d1a, #0a1a12);
+    }
+    .game-card:nth-child(2) .game-card-thumb-inner::before {
+      content: '';
+      width: 60px; height: 60px;
+      background: linear-gradient(135deg, var(--cyan-success), transparent);
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    }
+
+    .game-card:nth-child(3) .game-card-thumb-inner {
+      background: linear-gradient(135deg, #1a1a0a, #2d2d0f, #1a1a0a);
+    }
+    .game-card:nth-child(3) .game-card-thumb-inner::before {
+      content: '';
+      width: 70px; height: 70px;
+      border: 2px solid var(--gold-core);
+      transform: rotate(45deg);
+      box-shadow: 0 0 16px rgba(212,162,76,0.3);
+    }
+
+    .game-card:nth-child(4) .game-card-thumb-inner {
+      background: linear-gradient(200deg, #0a0a1a, #0f0f2d, #0a0a1a);
+    }
+    .game-card:nth-child(4) .game-card-thumb-inner::before {
+      content: '';
+      width: 50px; height: 50px;
+      background: conic-gradient(from 0deg, var(--red-core), var(--gold-core), var(--red-core));
+      border-radius: 50%;
+      filter: blur(1px);
+    }
+
+    .game-card:nth-child(5) .game-card-thumb-inner {
+      background: linear-gradient(135deg, #120a1a, #1f0f2d, #120a1a);
+    }
+    .game-card:nth-child(5) .game-card-thumb-inner::before {
+      content: '';
+      width: 80px; height: 60px;
+      border: 2px solid rgba(168, 130, 220, 0.5);
+      border-radius: 4px;
+      box-shadow: 0 0 16px rgba(168,130,220,0.2);
+    }
+
+    .game-card:nth-child(6) .game-card-thumb-inner {
+      background: linear-gradient(170deg, #1a100a, #2d1a0f, #1a100a);
+    }
+    .game-card:nth-child(6) .game-card-thumb-inner::before {
+      content: '';
+      width: 0; height: 0;
+      border-left: 35px solid transparent;
+      border-right: 35px solid transparent;
+      border-bottom: 60px solid rgba(212,162,76,0.3);
+      filter: drop-shadow(0 0 10px rgba(212,162,76,0.2));
+    }
+
+    .game-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(6, 6, 6, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .game-card-play {
+      padding: 10px 24px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      background: var(--red-core);
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .game-card-info {
+      padding: 14px 16px;
+    }
+
+    .game-card-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .game-card-provider {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* ========== LIVE STATS TICKER ========== */
+    .ticker {
+      background: var(--bg-card);
+      border-top: 1px solid rgba(197, 40, 47, 0.08);
+      border-bottom: 1px solid rgba(197, 40, 47, 0.08);
+      padding: 48px 0;
+    }
+
+    .ticker-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    @media (min-width: 768px) {
+      .ticker-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .ticker-item {
+      text-align: center;
+    }
+
+    .ticker-val {
+      font-family: var(--font-mono);
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .ticker-val .red { color: var(--red-bright); }
+    .ticker-val .green { color: var(--cyan-success); }
+    .ticker-val .gold { color: var(--gold-bright); }
+
+    .ticker-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ========== GAME CATEGORIES ========== */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .categories-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    }
+
+    .category-card {
+      position: relative;
+      padding: 32px 24px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.04);
+      text-align: center;
+      transition: background 0.3s, border-color 0.3s, transform 0.4s var(--ease-out-expo);
+      will-change: transform;
+      cursor: pointer;
+    }
+
+    @media (hover: hover) {
+      .category-card:hover {
+        background: var(--bg-card-hover);
+        border-color: rgba(197, 40, 47, 0.2);
+        transform: translateY(-4px);
+      }
+      .category-card:hover .category-icon { color: var(--red-bright); }
+    }
+
+    .category-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 14px;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+
+    .category-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .category-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .category-count {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* ========== FEATURES ========== */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 480px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      .features-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .feature-card {
+      padding: 32px 24px;
+      border-radius: var(--radius-md);
+      background: rgba(17, 17, 19, 0.6);
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    @supports (backdrop-filter: blur(12px)) {
+      .feature-card {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: rgba(17, 17, 19, 0.4);
+      }
+    }
+
+    @media (hover: hover) {
+      .feature-card:hover {
+        background: rgba(24, 24, 28, 0.8);
+        border-color: rgba(197, 40, 47, 0.15);
+      }
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      background: rgba(197, 40, 47, 0.08);
+      color: var(--red-bright);
+    }
+
+    .feature-icon svg { width: 22px; height: 22px; }
+
+    .feature-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ========== CRYPTO SECTION ========== */
+    .crypto-section {
+      text-align: center;
+    }
+
+    .crypto-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .crypto-grid { gap: 32px; }
+    }
+
+    .crypto-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 20px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.04);
+      min-width: 90px;
+      transition: border-color 0.3s, transform 0.3s;
+      will-change: transform;
+    }
+
+    @media (hover: hover) {
+      .crypto-item:hover {
+        border-color: rgba(212, 162, 76, 0.3);
+        transform: translateY(-3px);
+      }
+    }
+
+    .crypto-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .crypto-icon svg { width: 100%; height: 100%; }
+
+    .crypto-name {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    /* ========== FOOTER ========== */
+    .site-footer {
+      padding: 56px 0 32px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-bottom: 40px;
+    }
+
+    @media (min-width: 768px) {
+      .footer-top { grid-template-columns: 2fr 1fr 1fr 1fr; }
+    }
+
+    .footer-brand .logo {
+      margin-bottom: 12px;
+      font-size: 1.4rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      max-width: 280px;
+      line-height: 1.6;
+    }
+
+    .footer-col h4 {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col a {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+
+    @media (hover: hover) {
+      .footer-col a:hover { color: var(--text-primary); }
+    }
+
+    .footer-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .footer-copy {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-socials a {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-muted);
+      transition: color 0.3s, border-color 0.3s;
+    }
+
+    @media (hover: hover) {
+      .footer-socials a:hover {
+        color: var(--text-primary);
+        border-color: rgba(255,255,255,0.2);
+      }
+    }
+
+    .footer-socials svg { width: 16px; height: 16px; }
+
+    .footer-18 {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-sm);
+    }
+
+    .footer-18 strong {
+      color: var(--red-bright);
+      font-weight: 700;
+    }
+
+    /* ========== DIVIDER ACCENTS ========== */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(197,40,47,0.15), transparent);
+      margin: 0;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <a href="#" class="logo" aria-label="REDSHIFT - На главную">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 2L28 10V22L16 30L4 22V10L16 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M16 8L22 12V20L16 24L10 20V12L16 8Z" fill="var(--red-core)"/>
+          </svg>
+        </span>
+        <span class="logo-text">RED<span>SHIFT</span></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Основная навигация">
+        <a href="#games">Casino</a>
+        <a href="#categories">Sports</a>
+        <a href="#bonus">Promotions</a>
+        <a href="#features">Provably Fair</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn-ghost desktop-only">Войти</button>
+        <button class="btn-primary">Регистрация</button>
+        <button class="burger" aria-label="Открыть меню" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" role="dialog" aria-label="Мобильное меню">
+    <a href="#games">Casino</a>
+    <a href="#categories">Sports</a>
+    <a href="#bonus">Promotions</a>
+    <a href="#features">Provably Fair</a>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="hero-grid"></div>
+      <div class="hero-rune"></div>
+      <div class="hero-rune"></div>
+      <div class="hero-rune"></div>
+      <div class="hero-diamond"></div>
+      <div class="hero-diamond"></div>
+      <div class="hero-diamond"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot" aria-hidden="true"></span>
+        Provably Fair Gaming
+      </div>
+      <h1>Ставки без<br>компромиссов.<br><em>Только крипто.</em></h1>
+      <p class="hero-sub">Мгновенные выплаты. Доказуемая честность. Полная анонимность. Казино, которому не нужно ваше доверие — только математика.</p>
+      <a href="#bonus" class="hero-cta">
+        Начать игру
+        <span class="hero-cta-arrow" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val" data-target="14832" data-suffix="">
+            <span class="accent">0</span>
+          </div>
+          <div class="hero-stat-label">Игроков онлайн</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val" data-target="2847560" data-prefix="$" data-suffix="">0</div>
+          <div class="hero-stat-label">Выплаты за 24ч</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val" data-target="98.7" data-suffix="%" data-decimals="1">
+            <span class="accent">0</span>
+          </div>
+          <div class="hero-stat-label">Процент выплат</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WELCOME BONUS ===== -->
+  <section class="bonus" id="bonus">
+    <div class="container">
+      <div class="bonus-card reveal">
+        <div class="bonus-content">
+          <div class="bonus-eyebrow">Welcome Package</div>
+          <h2 class="bonus-title">100% на первый депозит — до <span>1 BTC</span></h2>
+          <p class="bonus-subtitle">Удвоим ваш первый депозит. Без скрытых условий, без ожиданий.</p>
+          <div class="bonus-perks">
+            <div class="bonus-perk">
+              <span class="bonus-perk-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Вейджер x35 — один из самых низких на рынке
+            </div>
+            <div class="bonus-perk">
+              <span class="bonus-perk-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Моментальное зачисление на баланс
+            </div>
+            <div class="bonus-perk">
+              <span class="bonus-perk-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              200 фриспинов на топовые слоты
+            </div>
+            <div class="bonus-perk">
+              <span class="bonus-perk-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              VIP-статус с первого дня
+            </div>
+          </div>
+          <a href="#" class="bonus-cta">
+            Забрать бонус
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="bonus-visual" aria-hidden="true">
+          <div class="bonus-coin">B</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" aria-hidden="true">
+
+  <!-- ===== GAME CARDS ===== -->
+  <section class="games" id="games">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">Популярное</div>
+        <h2 class="section-title">Игры, которые выбирают</h2>
+        <p class="section-desc">Курируемая подборка с лучшим RTP. Каждая раздача проверяема.</p>
+      </div>
+      <div class="games-grid">
+        <a href="#" class="game-card reveal reveal-delay-1" aria-label="Играть в Crimson Roulette">
+          <div class="game-card-thumb">
+            <div class="game-card-thumb-inner" aria-hidden="true"></div>
+            <div class="game-card-overlay"><span class="game-card-play">Играть</span></div>
+          </div>
+          <div class="game-card-info"><div class="game-card-name">Crimson Roulette</div><div class="game-card-provider">REDSHIFT Originals</div></div>
+        </a>
+        <a href="#" class="game-card reveal reveal-delay-2" aria-label="Играть в Emerald Blackjack">
+          <div class="game-card-thumb">
+            <div class="game-card-thumb-inner" aria-hidden="true"></div>
+            <div class="game-card-overlay"><span class="game-card-play">Играть</span></div>
+          </div>
+          <div class="game-card-info"><div class="game-card-name">Emerald Blackjack</div><div class="game-card-provider">Evolution Gaming</div></div>
+        </a>
+        <a href="#" class="game-card reveal reveal-delay-3" aria-label="Играть в Golden Crash">
+          <div class="game-card-thumb">
+            <div class="game-card-thumb-inner" aria-hidden="true"></div>
+            <div class="game-card-overlay"><span class="game-card-play">Играть</span></div>
+          </div>
+          <div class="game-card-info"><div class="game-card-name">Golden Crash</div><div class="game-card-provider">REDSHIFT Originals</div></div>
+        </a>
+        <a href="#" class="game-card reveal reveal-delay-4" aria-label="Играть в Spectrum Slots">
+          <div class="game-card-thumb">
+            <div class="game-card-thumb-inner" aria-hidden="true"></div>
+            <div class="game-card-overlay"><span class="game-card-play">Играть</span></div>
+          </div>
+          <div class="game-card-info"><div class="game-card-name">Spectrum Slots</div><div class="game-card-provider">Pragmatic Play</div></div>
+        </a>
+        <a href="#" class="game-card reveal reveal-delay-5" aria-label="Играть в Violet Baccarat">
+          <div class="game-card-thumb">
+            <div class="game-card-thumb-inner" aria-hidden="true"></div>
+            <div class="game-card-overlay"><span class="game-card-play">Играть</span></div>
+          </div>
+          <div class="game-card-info"><div class="game-card-name">Violet Baccarat</div><div class="game-card-provider">Evolution Gaming</div></div>
+        </a>
+        <a href="#" class="game-card reveal reveal-delay-5" aria-label="Играть в Plinko Pyramid">
+          <div class="game-card-thumb">
+            <div class="game-card-thumb-inner" aria-hidden="true"></div>
+            <div class="game-card-overlay"><span class="game-card-play">Играть</span></div>
+          </div>
+          <div class="game-card-info"><div class="game-card-name">Plinko Pyramid</div><div class="game-card-provider">REDSHIFT Originals</div></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LIVE STATS TICKER ===== -->
+  <div class="ticker">
+    <div class="container">
+      <div class="ticker-grid">
+        <div class="ticker-item reveal">
+          <div class="ticker-val"><span class="countup red" data-target="1247893" data-prefix="$">0</span></div>
+          <div class="ticker-label">Выиграно сегодня</div>
+        </div>
+        <div class="ticker-item reveal reveal-delay-1">
+          <div class="ticker-val"><span class="countup green" data-target="38461">0</span></div>
+          <div class="ticker-label">Ставок за час</div>
+        </div>
+        <div class="ticker-item reveal reveal-delay-2">
+          <div class="ticker-val"><span class="countup gold" data-target="847" data-prefix="">0</span></div>
+          <div class="ticker-label">Игр доступно</div>
+        </div>
+        <div class="ticker-item reveal reveal-delay-3">
+          <div class="ticker-val"><span class="countup" data-target="142" data-suffix=" BTC">0</span></div>
+          <div class="ticker-label">Джекпот</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider" aria-hidden="true">
+
+  <!-- ===== GAME CATEGORIES ===== -->
+  <section class="categories" id="categories">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">Категории</div>
+        <h2 class="section-title">Найди свою игру</h2>
+      </div>
+      <div class="categories-grid">
+        <!-- Slots -->
+        <div class="category-card reveal reveal-delay-1" role="button" tabindex="0" aria-label="Слоты — 420 игр">
+          <div class="category-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="8" width="36" height="32" rx="4"/>
+              <line x1="18" y1="8" x2="18" y2="40"/>
+              <line x1="30" y1="8" x2="30" y2="40"/>
+              <circle cx="12" cy="24" r="3" fill="currentColor" stroke="none"/>
+              <circle cx="24" cy="20" r="3" fill="currentColor" stroke="none"/>
+              <circle cx="36" cy="24" r="3" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <div class="category-name">Слоты</div>
+          <div class="category-count">420 игр</div>
+        </div>
+        <!-- Live Casino -->
+        <div class="category-card reveal reveal-delay-2" role="button" tabindex="0" aria-label="Live Casino — 85 столов">
+          <div class="category-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="24" cy="24" r="18"/>
+              <ellipse cx="24" cy="24" rx="18" ry="6"/>
+              <line x1="24" y1="6" x2="24" y2="42"/>
+              <circle cx="24" cy="24" r="4" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <div class="category-name">Live Casino</div>
+          <div class="category-count">85 столов</div>
+        </div>
+        <!-- Crash -->
+        <div class="category-card reveal reveal-delay-3" role="button" tabindex="0" aria-label="Crash — 12 игр">
+          <div class="category-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6,38 18,28 26,18 34,8 42,4"/>
+              <line x1="6" y1="42" x2="42" y2="42"/>
+              <line x1="6" y1="42" x2="6" y2="6"/>
+              <circle cx="34" cy="8" r="3" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <div class="category-name">Crash</div>
+          <div class="category-count">12 игр</div>
+        </div>
+        <!-- Dice -->
+        <div class="category-card reveal reveal-delay-4" role="button" tabindex="0" aria-label="Dice — 8 игр">
+          <div class="category-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="8" y="8" width="32" height="32" rx="6" transform="rotate(5, 24, 24)"/>
+              <circle cx="16" cy="16" r="2.5" fill="currentColor" stroke="none"/>
+              <circle cx="32" cy="16" r="2.5" fill="currentColor" stroke="none"/>
+              <circle cx="24" cy="24" r="2.5" fill="currentColor" stroke="none"/>
+              <circle cx="16" cy="32" r="2.5" fill="currentColor" stroke="none"/>
+              <circle cx="32" cy="32" r="2.5" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <div class="category-name">Dice</div>
+          <div class="category-count">8 игр</div>
+        </div>
+        <!-- Mines -->
+        <div class="category-card reveal reveal-delay-5" role="button" tabindex="0" aria-label="Mines — 6 игр">
+          <div class="category-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="8" y="8" width="10" height="10" rx="2"/>
+              <rect x="20" y="8" width="10" height="10" rx="2"/>
+              <rect x="32" y="8" width="10" height="10" rx="2" fill="currentColor" opacity="0.3"/>
+              <rect x="8" y="20" width="10" height="10" rx="2"/>
+              <rect x="20" y="20" width="10" height="10" rx="2" fill="currentColor" opacity="0.3"/>
+              <rect x="32" y="20" width="10" height="10" rx="2"/>
+              <rect x="8" y="32" width="10" height="10" rx="2" fill="currentColor" opacity="0.3"/>
+              <rect x="20" y="32" width="10" height="10" rx="2"/>
+              <rect x="32" y="32" width="10" height="10" rx="2"/>
+            </svg>
+          </div>
+          <div class="category-name">Mines</div>
+          <div class="category-count">6 игр</div>
+        </div>
+        <!-- Plinko -->
+        <div class="category-card reveal reveal-delay-5" role="button" tabindex="0" aria-label="Plinko — 4 игры">
+          <div class="category-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="24" cy="8" r="3" fill="currentColor" stroke="none"/>
+              <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.4" stroke="none"/>
+              <circle cx="32" cy="18" r="2" fill="currentColor" opacity="0.4" stroke="none"/>
+              <circle cx="12" cy="28" r="2" fill="currentColor" opacity="0.4" stroke="none"/>
+              <circle cx="24" cy="28" r="2" fill="currentColor" opacity="0.4" stroke="none"/>
+              <circle cx="36" cy="28" r="2" fill="currentColor" opacity="0.4" stroke="none"/>
+              <rect x="6" y="38" width="8" height="6" rx="1"/>
+              <rect x="16" y="38" width="8" height="6" rx="1"/>
+              <rect x="26" y="38" width="8" height="6" rx="1"/>
+              <rect x="36" y="38" width="8" height="6" rx="1"/>
+            </svg>
+          </div>
+          <div class="category-name">Plinko</div>
+          <div class="category-count">4 игры</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" aria-hidden="true">
+
+  <!-- ===== FEATURES ===== -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header reveal" style="text-align: center; max-width: none;">
+        <div class="section-label" style="text-align: center;">Почему мы</div>
+        <h2 class="section-title" style="text-align: center;">Построено на прозрачности</h2>
+        <p class="section-desc" style="margin: 0 auto; text-align: center;">Мы не просим доверять. Мы даём инструменты для проверки.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="feature-title">Provably Fair</h3>
+          <p class="feature-desc">Каждая ставка верифицируема. Серверный сид, клиентский сид, nonce — всё открыто для аудита.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <h3 class="feature-title">24/7 Поддержка</h3>
+          <p class="feature-desc">Живой чат круглосуточно. Среднее время ответа — 47 секунд. Telegram, Discord, email.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <h3 class="feature-title">Мгновенные выплаты</h3>
+          <p class="feature-desc">Автоматический вывод до 2 BTC. Без ручной проверки, без задержек, без лимитов на количество.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-4">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </div>
+          <h3 class="feature-title">Без KYC</h3>
+          <p class="feature-desc">Никаких документов, фото, видеозвонков. Зарегистрировался — играй. Полная конфиденциальность.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" aria-hidden="true">
+
+  <!-- ===== ACCEPTED CRYPTO ===== -->
+  <section class="crypto-section">
+    <div class="container">
+      <div class="section-header reveal" style="text-align: center; max-width: none;">
+        <div class="section-label" style="text-align: center;">Валюты</div>
+        <h2 class="section-title" style="text-align: center;">Принимаем крипто</h2>
+        <p class="section-desc" style="margin: 0 auto; text-align: center;">Депозит и вывод в любой из поддерживаемых валют. Без конвертации, без комиссий.</p>
+      </div>
+      <div class="crypto-grid">
+        <!-- BTC -->
+        <div class="crypto-item reveal reveal-delay-1" aria-label="Bitcoin">
+          <div class="crypto-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="18" stroke="#F7931A" stroke-width="1.5"/>
+              <text x="20" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="16" font-weight="700" fill="#F7931A">B</text>
+            </svg>
+          </div>
+          <span class="crypto-name">BTC</span>
+        </div>
+        <!-- ETH -->
+        <div class="crypto-item reveal reveal-delay-2" aria-label="Ethereum">
+          <div class="crypto-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="18" stroke="#627EEA" stroke-width="1.5"/>
+              <path d="M20 8L12 22l8 4 8-4L20 8z" fill="#627EEA" opacity="0.6"/>
+              <path d="M12 22l8 4 8-4-8 10-8-10z" fill="#627EEA" opacity="0.9"/>
+            </svg>
+          </div>
+          <span class="crypto-name">ETH</span>
+        </div>
+        <!-- USDT -->
+        <div class="crypto-item reveal reveal-delay-3" aria-label="Tether USDT">
+          <div class="crypto-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="18" stroke="#26A17B" stroke-width="1.5"/>
+              <text x="20" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="14" font-weight="700" fill="#26A17B">T</text>
+            </svg>
+          </div>
+          <span class="crypto-name">USDT</span>
+        </div>
+        <!-- LTC -->
+        <div class="crypto-item reveal reveal-delay-4" aria-label="Litecoin">
+          <div class="crypto-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="18" stroke="#BFBBBB" stroke-width="1.5"/>
+              <text x="20" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="16" font-weight="700" fill="#BFBBBB">L</text>
+            </svg>
+          </div>
+          <span class="crypto-name">LTC</span>
+        </div>
+        <!-- DOGE -->
+        <div class="crypto-item reveal reveal-delay-5" aria-label="Dogecoin">
+          <div class="crypto-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="18" stroke="#C2A633" stroke-width="1.5"/>
+              <text x="20" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="16" font-weight="700" fill="#C2A633">D</text>
+            </svg>
+          </div>
+          <span class="crypto-name">DOGE</span>
+        </div>
+        <!-- SOL -->
+        <div class="crypto-item reveal reveal-delay-5" aria-label="Solana">
+          <div class="crypto-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="18" stroke="#9945FF" stroke-width="1.5"/>
+              <text x="20" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="14" font-weight="700" fill="#9945FF">S</text>
+            </svg>
+          </div>
+          <span class="crypto-name">SOL</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-mark" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none">
+                <path d="M16 2L28 10V22L16 30L4 22V10L16 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M16 8L22 12V20L16 24L10 20V12L16 8Z" fill="var(--red-core)"/>
+              </svg>
+            </span>
+            <span class="logo-text">RED<span>SHIFT</span></span>
+          </div>
+          <p>Крипто-казино нового поколения. Доказуемая честность, мгновенные выплаты, полная анонимность.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Казино</h4>
+          <ul>
+            <li><a href="#">Слоты</a></li>
+            <li><a href="#">Live Casino</a></li>
+            <li><a href="#">Crash</a></li>
+            <li><a href="#">Оригиналы</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Инфо</h4>
+          <ul>
+            <li><a href="#">Provably Fair</a></li>
+            <li><a href="#">Условия</a></li>
+            <li><a href="#">Приватность</a></li>
+            <li><a href="#">AML</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Поддержка</h4>
+          <ul>
+            <li><a href="#">Чат</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Telegram</a></li>
+            <li><a href="#">Discord</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">&copy; 2026 REDSHIFT. Все права защищены.</span>
+        <div class="footer-18" aria-label="Только для лиц старше 18 лет">
+          <strong>18+</strong> Играйте ответственно
+        </div>
+        <div class="footer-socials">
+          <a href="#" aria-label="Telegram">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0h-.056zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          </a>
+          <a href="#" aria-label="Discord">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          </a>
+          <a href="#" aria-label="Twitter / X">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ========== STICKY HEADER ========== */
+    ;(function() {
+      var header = document.querySelector('.site-header')
+      var scrolled = false
+
+      function checkScroll() {
+        var shouldBeScrolled = window.scrollY > 20
+        if (shouldBeScrolled !== scrolled) {
+          scrolled = shouldBeScrolled
+          header.classList.toggle('scrolled', scrolled)
+        }
+      }
+
+      window.addEventListener('scroll', checkScroll, { passive: true })
+      checkScroll()
+    })();
+
+    /* ========== BURGER MENU ========== */
+    ;(function() {
+      var burger = document.querySelector('.burger')
+      var menu = document.querySelector('.mobile-menu')
+      var links = menu.querySelectorAll('a')
+
+      function toggle() {
+        var isOpen = menu.classList.toggle('open')
+        burger.classList.toggle('active', isOpen)
+        burger.setAttribute('aria-expanded', String(isOpen))
+        document.body.style.overflow = isOpen ? 'hidden' : ''
+      }
+
+      burger.addEventListener('click', toggle)
+      links.forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (menu.classList.contains('open')) toggle()
+        })
+      })
+    })();
+
+    /* ========== INTERSECTION OBSERVER — REVEAL ========== */
+    ;(function() {
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      var reveals = document.querySelectorAll('.reveal')
+
+      if (prefersReducedMotion) {
+        reveals.forEach(function(el) { el.classList.add('visible') })
+        return
+      }
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' })
+
+      reveals.forEach(function(el) { observer.observe(el) })
+    })();
+
+    /* ========== COUNTUP WITH EASING ========== */
+    ;(function() {
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+      function easeOutExpo(t) {
+        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
+      }
+
+      function formatNum(n, decimals) {
+        if (decimals > 0) {
+          return n.toLocaleString('ru-RU', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })
+        }
+        return Math.round(n).toLocaleString('ru-RU')
+      }
+
+      function countUp(el) {
+        var target = parseFloat(el.getAttribute('data-target'))
+        var prefix = el.getAttribute('data-prefix') || ''
+        var suffix = el.getAttribute('data-suffix') || ''
+        var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10)
+        var duration = 2200
+        var start = null
+
+        if (prefersReducedMotion) {
+          el.textContent = prefix + formatNum(target, decimals) + suffix
+          return
+        }
+
+        function step(timestamp) {
+          if (!start) start = timestamp
+          var progress = Math.min((timestamp - start) / duration, 1)
+          var eased = easeOutExpo(progress)
+          var current = eased * target
+
+          el.textContent = prefix + formatNum(current, decimals) + suffix
+
+          if (progress < 1) {
+            requestAnimationFrame(step)
+          }
+        }
+
+        requestAnimationFrame(step)
+      }
+
+      /* Hero stats */
+      var heroStatEls = document.querySelectorAll('.hero-stat-val[data-target]')
+      heroStatEls.forEach(function(el) {
+        /* Hero stats animate on load after delay */
+        setTimeout(function() { countUp(el) }, 1200)
+      })
+
+      /* Ticker stats — animate on intersect */
+      var tickerEls = document.querySelectorAll('.countup[data-target]')
+      var tickerObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            countUp(entry.target)
+            tickerObserver.unobserve(entry.target)
+          }
+        })
+      }, { threshold: 0.3 })
+
+      tickerEls.forEach(function(el) { tickerObserver.observe(el) })
+    })();
+  </script>
+</body>
+</html>
