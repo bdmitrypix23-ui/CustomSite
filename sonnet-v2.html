@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KROVAVYY — Криптоказино</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Unbounded:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       CSS VARIABLES
+    ============================================================ */
+    :root {
+      --bg-deep:       #080808;
+      --bg-base:       #0c0c0c;
+      --bg-card:       #111114;
+      --bg-card-hover: #16161a;
+
+      --accent:        #c1121f;
+      --accent-glow:   rgba(193, 18, 31, 0.45);
+      --accent-light:  #e63946;
+      --gold:          #f4a261;
+      --gold-dim:      #c97d3e;
+
+      --text:          #ffffff;
+      --text-sec:      #b8b8c0;
+      --text-dim:      #6e6e7a;
+
+      --border:        rgba(255,255,255,0.07);
+      --border-card:   rgba(255,255,255,0.05);
+
+      --font-display:  'Bebas Neue', 'Impact', serif;
+      --font-body:     'Unbounded', 'Trebuchet MS', sans-serif;
+      --font-mono:     'JetBrains Mono', 'Courier New', monospace;
+
+      --radius:        12px;
+      --radius-lg:     20px;
+      --header-h:      68px;
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: var(--font-body);
+      border: none;
+      background: none;
+    }
+
+    img { display: block; max-width: 100%; }
+
+    /* ============================================================
+       ACCESSIBILITY
+    ============================================================ */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ============================================================
+       GLOBAL BACKGROUND PATTERN
+    ============================================================ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(193,18,31,0.12) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(244,162,97,0.05) 0%, transparent 60%),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 59px,
+          rgba(255,255,255,0.015) 59px,
+          rgba(255,255,255,0.015) 60px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 59px,
+          rgba(255,255,255,0.015) 59px,
+          rgba(255,255,255,0.015) 60px
+        );
+      pointer-events: none;
+    }
+
+    /* z-index stack */
+    header     { position: relative; z-index: 100; }
+    main       { position: relative; z-index: 1; }
+    footer     { position: relative; z-index: 1; }
+
+    /* ============================================================
+       REUSABLE UTILS
+    ============================================================ */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-inline: 24px;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 52px);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    /* Gradient border mixin (::before approach) */
+    .gb {
+      position: relative;
+      border-radius: var(--radius);
+    }
+    .gb::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      padding: 1.5px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gold) 100%);
+      border-radius: inherit;
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ============================================================
+       HEADER
+    ============================================================ */
+    header {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      background: rgba(8, 8, 8, 0.95); /* fallback */
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+    }
+
+    @supports (backdrop-filter: blur(1px)) {
+      header {
+        background: rgba(8, 8, 8, 0.75);
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+      }
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      width: 100%;
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-inline: 24px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .logo-icon {
+      width: 34px;
+      height: 34px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .logo-name {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .logo-name span {
+      color: var(--accent);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-link {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    @media (hover: hover) {
+      .nav-link:hover {
+        color: var(--text);
+        background: rgba(255,255,255,0.06);
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn-outline {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text);
+      padding: 8px 18px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    @media (hover: hover) {
+      .btn-outline:hover {
+        border-color: rgba(255,255,255,0.4);
+        background: rgba(255,255,255,0.05);
+      }
+    }
+
+    .btn-red {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      padding: 8px 20px;
+      background: var(--accent);
+      border-radius: 8px;
+      box-shadow: 0 0 20px var(--accent-glow);
+      transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+      will-change: transform;
+    }
+
+    @media (hover: hover) {
+      .btn-red:hover {
+        background: var(--accent-light);
+        box-shadow: 0 0 32px rgba(193,18,31,0.6);
+        transform: translateY(-1px);
+      }
+    }
+
+    /* Burger */
+    .burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      width: 28px;
+      height: 28px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .burger span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.active span:nth-child(2) { opacity: 0; }
+    .burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      right: 0;
+      background: rgba(8,8,8,0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px 24px;
+      z-index: 99;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    @supports (backdrop-filter: blur(1px)) {
+      .mobile-menu {
+        background: rgba(8,8,8,0.88);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu .nav-link {
+      font-size: 14px;
+      padding: 10px 12px;
+      display: block;
+    }
+
+    .mobile-menu-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .mobile-menu-actions .btn-outline,
+    .mobile-menu-actions .btn-red {
+      flex: 1;
+      text-align: center;
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      min-height: calc(100vh - var(--header-h));
+      display: flex;
+      align-items: center;
+      padding-block: 80px 100px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Geometric CSS art */
+    .hero-art {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hero-art::before {
+      content: '';
+      position: absolute;
+      right: -120px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(193,18,31,0.15) 0%, transparent 65%);
+      animation: pulse-glow 4s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    .hero-art::after {
+      content: '';
+      position: absolute;
+      right: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 320px;
+      height: 320px;
+      border: 1px solid rgba(193,18,31,0.2);
+      border-radius: 50%;
+      animation: spin-slow 20s linear infinite;
+      will-change: transform;
+    }
+
+    .hero-ring {
+      position: absolute;
+      right: 140px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 200px;
+      height: 200px;
+      border: 1px solid rgba(244,162,97,0.15);
+      border-radius: 50%;
+      animation: spin-slow 12s linear infinite reverse;
+      will-change: transform;
+    }
+
+    .hero-ring-inner {
+      position: absolute;
+      right: 190px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100px;
+      height: 100px;
+      border: 2px solid rgba(193,18,31,0.35);
+      border-radius: 50%;
+      box-shadow: 0 0 30px rgba(193,18,31,0.2) inset;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.6; transform: translateY(-50%) scale(1); }
+      50%       { opacity: 1;   transform: translateY(-50%) scale(1.05); }
+    }
+
+    @keyframes spin-slow {
+      from { transform: translateY(-50%) rotate(0deg); }
+      to   { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(193,18,31,0.12);
+      border: 1px solid rgba(193,18,31,0.3);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--accent-light);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      animation: fade-up 0.6s ease-out both;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      box-shadow: 0 0 8px var(--accent-light);
+      animation: blink 1.4s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 9vw, 92px);
+      letter-spacing: 0.04em;
+      line-height: 0.92;
+      margin-bottom: 24px;
+      animation: fade-up 0.6s ease-out 0.12s both;
+    }
+
+    .hero-title .line-red { color: var(--accent-light); }
+    .hero-title .line-gold { color: var(--gold); }
+
+    .hero-sub {
+      font-size: 15px;
+      color: var(--text-sec);
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 40px;
+      animation: fade-up 0.6s ease-out 0.22s both;
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 56px;
+      animation: fade-up 0.6s ease-out 0.32s both;
+    }
+
+    .btn-hero {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+      padding: 14px 32px;
+      background: var(--accent);
+      border-radius: 10px;
+      box-shadow: 0 0 30px var(--accent-glow);
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.15s;
+      will-change: transform;
+    }
+
+    /* Shimmer effect */
+    .btn-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 25%, rgba(255,255,255,0.18) 50%, transparent 75%);
+      transform: translateX(-100%);
+      animation: shimmer 2.4s ease-in-out 1s infinite;
+    }
+
+    @keyframes shimmer {
+      0%   { transform: translateX(-100%); }
+      40%, 100% { transform: translateX(150%); }
+    }
+
+    @media (hover: hover) {
+      .btn-hero:hover {
+        box-shadow: 0 0 50px rgba(193,18,31,0.7);
+        transform: translateY(-2px);
+      }
+    }
+
+    .btn-ghost {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+
+    @media (hover: hover) {
+      .btn-ghost:hover { color: var(--text); }
+    }
+
+    /* Hero stats */
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      animation: fade-up 0.6s ease-out 0.44s both;
+    }
+
+    .hero-stat {}
+
+    .hero-stat-val {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .hero-stat-val .accent { color: var(--accent-light); }
+
+    .hero-stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================================
+       WELCOME BONUS
+    ============================================================ */
+    .bonus-section {
+      padding-block: 80px;
+    }
+
+    .bonus-card {
+      position: relative;
+      background: linear-gradient(135deg, #111116 0%, #0e0e12 100%);
+      border-radius: var(--radius-lg);
+      padding: 52px 56px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .bonus-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      padding: 2px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gold) 100%);
+      border-radius: inherit;
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    /* Decorative glow blob */
+    .bonus-card::after {
+      content: '';
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(244,162,97,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .bonus-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .bonus-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 52px);
+      letter-spacing: 0.03em;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .bonus-subtitle {
+      font-family: var(--font-display);
+      font-size: clamp(18px, 2.5vw, 28px);
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      margin-bottom: 28px;
+    }
+
+    .bonus-checks {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .bonus-checks li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-sec);
+    }
+
+    .check-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(193,18,31,0.15);
+      border: 1px solid rgba(193,18,31,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 11px;
+      color: var(--accent-light);
+    }
+
+    .bonus-badge-wrap {
+      text-align: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bonus-pct {
+      font-family: var(--font-display);
+      font-size: clamp(80px, 10vw, 130px);
+      line-height: 1;
+      background: linear-gradient(135deg, var(--accent-light), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 20px rgba(193,18,31,0.4));
+    }
+
+    .bonus-pct-label {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-top: -8px;
+    }
+
+    /* ============================================================
+       LIVE STATS TICKER
+    ============================================================ */
+    .stats-section {
+      padding-block: 60px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .stat-item {
+      background: var(--bg-card);
+      padding: 36px 32px;
+      text-align: center;
+      animation: fade-up 0.6s ease-out both;
+    }
+
+    .stat-item:nth-child(1) { animation-delay: 0.1s; }
+    .stat-item:nth-child(2) { animation-delay: 0.2s; }
+    .stat-item:nth-child(3) { animation-delay: 0.3s; }
+
+    .stat-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .stat-number {
+      font-family: var(--font-mono);
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-number.gold { color: var(--gold); }
+    .stat-number.red  { color: var(--accent-light); }
+
+    .stat-desc {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* ============================================================
+       GAME CARDS
+    ============================================================ */
+    .games-section {
+      padding-block: 80px;
+    }
+
+    .section-header {
+      margin-bottom: 40px;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .game-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      will-change: transform;
+      animation: fade-up 0.5s ease-out both;
+    }
+
+    .game-card:nth-child(1) { animation-delay: 0.05s; }
+    .game-card:nth-child(2) { animation-delay: 0.10s; }
+    .game-card:nth-child(3) { animation-delay: 0.15s; }
+    .game-card:nth-child(4) { animation-delay: 0.20s; }
+    .game-card:nth-child(5) { animation-delay: 0.25s; }
+    .game-card:nth-child(6) { animation-delay: 0.30s; }
+
+    @media (hover: hover) {
+      .game-card:hover {
+        border-color: rgba(193,18,31,0.4);
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(193,18,31,0.2), 0 0 0 1px rgba(193,18,31,0.15);
+      }
+    }
+
+    /* CSS placeholder for game image */
+    .game-thumb {
+      aspect-ratio: 4/3;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-thumb-bg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .game-thumb-icon {
+      font-size: 52px;
+      line-height: 1;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6));
+      transition: transform 0.3s;
+    }
+
+    @media (hover: hover) {
+      .game-card:hover .game-thumb-icon {
+        transform: scale(1.12);
+      }
+    }
+
+    .game-thumb-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,14,0.9) 0%, transparent 60%);
+    }
+
+    .game-info {
+      padding: 12px 14px 14px;
+    }
+
+    .game-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 3px;
+    }
+
+    .game-provider {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+
+    .game-tag {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .game-tag.hot  { background: var(--accent); color: #fff; }
+    .game-tag.new  { background: var(--gold);   color: #000; }
+    .game-tag.live { background: rgba(193,18,31,0.2); border: 1px solid var(--accent); color: var(--accent-light); }
+
+    /* ============================================================
+       GAME CATEGORIES
+    ============================================================ */
+    .categories-section {
+      padding-block: 80px;
+      background: linear-gradient(180deg, transparent 0%, rgba(12,12,12,0.8) 50%, transparent 100%);
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .cat-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      will-change: transform;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: fade-up 0.5s ease-out both;
+    }
+
+    .cat-card:nth-child(1) { animation-delay: 0.05s; }
+    .cat-card:nth-child(2) { animation-delay: 0.10s; }
+    .cat-card:nth-child(3) { animation-delay: 0.15s; }
+    .cat-card:nth-child(4) { animation-delay: 0.20s; }
+    .cat-card:nth-child(5) { animation-delay: 0.25s; }
+    .cat-card:nth-child(6) { animation-delay: 0.30s; }
+
+    .cat-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 60%, rgba(255,255,255,0.02) 100%);
+      pointer-events: none;
+    }
+
+    @media (hover: hover) {
+      .cat-card:hover {
+        border-color: rgba(193,18,31,0.35);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 30px rgba(193,18,31,0.15);
+      }
+    }
+
+    .cat-emoji {
+      font-size: 36px;
+      line-height: 1;
+      transition: transform 0.3s;
+    }
+
+    @media (hover: hover) {
+      .cat-card:hover .cat-emoji {
+        transform: scale(1.15) rotate(-5deg);
+      }
+    }
+
+    .cat-name {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .cat-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+
+    /* ============================================================
+       FEATURES
+    ============================================================ */
+    .features-section {
+      padding-block: 80px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .feature-card {
+      position: relative;
+      background: rgba(17,17,20,0.7);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+      will-change: transform;
+      animation: fade-up 0.5s ease-out both;
+    }
+
+    /* glass-morphism */
+    @supports (backdrop-filter: blur(1px)) {
+      .feature-card {
+        background: rgba(17,17,20,0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+    }
+
+    .feature-card:nth-child(1) { animation-delay: 0.05s; }
+    .feature-card:nth-child(2) { animation-delay: 0.12s; }
+    .feature-card:nth-child(3) { animation-delay: 0.19s; }
+    .feature-card:nth-child(4) { animation-delay: 0.26s; }
+
+    @media (hover: hover) {
+      .feature-card:hover {
+        border-color: rgba(193,18,31,0.25);
+        transform: translateY(-4px);
+      }
+    }
+
+    .feature-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(193,18,31,0.1);
+      border: 1px solid rgba(193,18,31,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .feature-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      color: var(--text-sec);
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       CRYPTO SECTION
+    ============================================================ */
+    .crypto-section {
+      padding-block: 80px;
+      border-top: 1px solid var(--border);
+    }
+
+    .crypto-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .crypto-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      cursor: default;
+      transition: border-color 0.25s, transform 0.2s;
+      will-change: transform;
+      min-width: 110px;
+    }
+
+    @media (hover: hover) {
+      .crypto-item:hover {
+        border-color: rgba(244,162,97,0.3);
+        transform: translateY(-4px);
+      }
+    }
+
+    .crypto-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .crypto-icon.btc  { background: rgba(247,147,26,0.15);  color: #f7931a; border: 1px solid rgba(247,147,26,0.3); }
+    .crypto-icon.eth  { background: rgba(98,126,234,0.15);  color: #627eea; border: 1px solid rgba(98,126,234,0.3); }
+    .crypto-icon.usdt { background: rgba(38,161,123,0.15);  color: #26a17b; border: 1px solid rgba(38,161,123,0.3); }
+    .crypto-icon.ltc  { background: rgba(191,191,191,0.15); color: #bfbfbf; border: 1px solid rgba(191,191,191,0.3); }
+    .crypto-icon.doge { background: rgba(203,166,52,0.15);  color: #cba634; border: 1px solid rgba(203,166,52,0.3); }
+    .crypto-icon.sol  { background: rgba(153,69,255,0.15);  color: #9945ff; border: 1px solid rgba(153,69,255,0.3); }
+
+    .crypto-name {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-sec);
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding-block: 48px 32px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand {}
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .footer-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.8;
+      max-width: 240px;
+    }
+
+    .footer-nav-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+
+    .footer-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .footer-nav-list a {
+      font-size: 13px;
+      color: var(--text-sec);
+      transition: color 0.2s;
+    }
+
+    @media (hover: hover) {
+      .footer-nav-list a:hover { color: var(--text); }
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .social-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    @media (hover: hover) {
+      .social-btn:hover {
+        background: rgba(193,18,31,0.15);
+        border-color: rgba(193,18,31,0.3);
+      }
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .age-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(193,18,31,0.1);
+      border: 1px solid rgba(193,18,31,0.3);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-light);
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .bonus-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 40px 32px;
+      }
+
+      .bonus-badge-wrap { order: -1; }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+      .footer-brand { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .header-actions .btn-outline,
+      .header-actions .btn-red { display: none; }
+      .burger { display: flex; }
+
+      .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats {
+        gap: 24px;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding-block: 60px 80px; }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-cta { flex-direction: column; align-items: flex-start; }
+
+      .bonus-card { padding: 32px 24px; }
+
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 360px) {
+      .hero-title { font-size: 44px; }
+      .games-grid  { grid-template-columns: 1fr; }
+      .categories-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       HEADER
+  ============================================================ -->
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="#" aria-label="KROVAVYY — на главную">
+        <div class="logo-icon" aria-hidden="true">♠</div>
+        <span class="logo-name">KROVA<span>VYY</span></span>
+      </a>
+
+      <nav aria-label="Основная навигация">
+        <a class="nav-link" href="#">Казино</a>
+        <a class="nav-link" href="#">Спорт</a>
+        <a class="nav-link" href="#">Акции</a>
+        <a class="nav-link" href="#">Provably Fair</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn-outline" type="button">Войти</button>
+        <button class="btn-red" type="button">Играть</button>
+        <button class="burger" id="burgerBtn" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Мобильная навигация">
+    <a class="nav-link" href="#">Казино</a>
+    <a class="nav-link" href="#">Спорт</a>
+    <a class="nav-link" href="#">Акции</a>
+    <a class="nav-link" href="#">Provably Fair</a>
+    <div class="mobile-menu-actions">
+      <button class="btn-outline" type="button">Войти</button>
+      <button class="btn-red" type="button">Играть</button>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ============================================================
+         HERO
+    ============================================================ -->
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-ring"></div>
+        <div class="hero-ring-inner"></div>
+      </div>
+
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <div class="hero-badge-dot" aria-hidden="true"></div>
+            <span>Онлайн сейчас — 14&nbsp;832 игрока</span>
+          </div>
+
+          <h1 class="hero-title" id="heroTitle">
+            <span class="line-red">ПОБЕДА</span><br>
+            ЖДЁТ<br>
+            <span class="line-gold">СМЕЛЫХ</span>
+          </h1>
+
+          <p class="hero-sub">
+            Честные игры на блокчейне. Мгновенные выплаты в крипто.
+            Без регистрации, без KYC — просто подключи кошелёк и играй.
+          </p>
+
+          <div class="hero-cta">
+            <button class="btn-hero" type="button">
+              <span aria-hidden="true">⚡</span>
+              Начать игру
+            </button>
+            <a class="btn-ghost" href="#">
+              Как это работает
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="hero-stat-val">
+                <span id="statJackpot"
+                  data-target="284.7"
+                  data-suffix=" BTC"
+                  data-decimals="1">0 BTC</span>
+              </div>
+              <div class="hero-stat-label">Текущий джекпот</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-val">
+                <span id="statPlayers"
+                  data-target="14832"
+                  data-suffix="">0</span>
+              </div>
+              <div class="hero-stat-label">Игроков онлайн</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-val">
+                <span id="statWin"
+                  data-target="99.1"
+                  data-suffix="%"
+                  data-decimals="1">0%</span>
+                <span class="accent"> RTP</span>
+              </div>
+              <div class="hero-stat-label">Средний RTP</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         WELCOME BONUS
+    ============================================================ -->
+    <section class="bonus-section" aria-labelledby="bonusTitle">
+      <div class="container">
+        <div class="bonus-card">
+          <div class="bonus-content">
+            <p class="bonus-eyebrow">Приветственный бонус</p>
+            <h2 class="bonus-title" id="bonusTitle">100% НА ПЕРВЫЙ ДЕПОЗИТ</h2>
+            <p class="bonus-subtitle">до 1 BTC</p>
+
+            <ul class="bonus-checks" aria-label="Условия бонуса">
+              <li>
+                <span class="check-icon" aria-hidden="true">✓</span>
+                Бонус начисляется мгновенно после депозита
+              </li>
+              <li>
+                <span class="check-icon" aria-hidden="true">✓</span>
+                Минимальный депозит — 0.001 BTC или эквивалент
+              </li>
+              <li>
+                <span class="check-icon" aria-hidden="true">✓</span>
+                Действует для всех игр кроме спортивных ставок
+              </li>
+            </ul>
+
+            <button class="btn-red" type="button" style="padding: 13px 28px; font-size: 13px;">
+              Получить бонус
+            </button>
+          </div>
+
+          <div class="bonus-badge-wrap" aria-hidden="true">
+            <div class="bonus-pct">100%</div>
+            <div class="bonus-pct-label">Бонус</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         LIVE STATS TICKER
+    ============================================================ -->
+    <section class="stats-section" aria-labelledby="statsHeading">
+      <h2 class="sr-only" id="statsHeading">Статистика в реальном времени</h2>
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-icon" aria-hidden="true">₿</div>
+            <div class="stat-number gold"
+              id="cntJackpot"
+              data-target="2847"
+              data-suffix=" BTC"
+              data-decimals="3"
+              aria-live="polite">0 BTC</div>
+            <div class="stat-desc">Выплачено всего</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon" aria-hidden="true">👥</div>
+            <div class="stat-number"
+              id="cntPlayers"
+              data-target="14832"
+              data-suffix="">0</div>
+            <div class="stat-desc">Игроков онлайн</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon" aria-hidden="true">🏆</div>
+            <div class="stat-number red"
+              id="cntWin"
+              data-target="4.83"
+              data-prefix=""
+              data-suffix=" BTC"
+              data-decimals="2">0 BTC</div>
+            <div class="stat-desc">Крупнейший выигрыш за сутки</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         GAME CARDS
+    ============================================================ -->
+    <section class="games-section" aria-labelledby="gamesTitle">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-label">Популярное</p>
+          <h2 class="section-title" id="gamesTitle">Горячие игры</h2>
+        </div>
+
+        <div class="games-grid">
+          <article class="game-card" tabindex="0" aria-label="Sweet Bonanza">
+            <div class="game-thumb">
+              <div class="game-thumb-bg" style="background: linear-gradient(135deg, #2d0a1e, #6b1428);">
+                <span class="game-thumb-icon" aria-hidden="true">🍬</span>
+              </div>
+              <div class="game-thumb-overlay"></div>
+              <span class="game-tag hot" aria-label="Популярная игра">HOT</span>
+            </div>
+            <div class="game-info">
+              <div class="game-title">Sweet Bonanza</div>
+              <div class="game-provider">Pragmatic Play</div>
+            </div>
+          </article>
+
+          <article class="game-card" tabindex="0" aria-label="Gates of Olympus">
+            <div class="game-thumb">
+              <div class="game-thumb-bg" style="background: linear-gradient(135deg, #0f1a3e, #1e3a6e);">
+                <span class="game-thumb-icon" aria-hidden="true">⚡</span>
+              </div>
+              <div class="game-thumb-overlay"></div>
+              <span class="game-tag new" aria-label="Новая игра">NEW</span>
+            </div>
+            <div class="game-info">
+              <div class="game-title">Gates of Olympus</div>
+              <div class="game-provider">Pragmatic Play</div>
+            </div>
+          </article>
+
+          <article class="game-card" tabindex="0" aria-label="Aviator">
+            <div class="game-thumb">
+              <div class="game-thumb-bg" style="background: linear-gradient(135deg, #1a0808, #3d1010);">
+                <span class="game-thumb-icon" aria-hidden="true">✈️</span>
+              </div>
+              <div class="game-thumb-overlay"></div>
+              <span class="game-tag hot" aria-label="Популярная игра">HOT</span>
+            </div>
+            <div class="game-info">
+              <div class="game-title">Aviator</div>
+              <div class="game-provider">Spribe</div>
+            </div>
+          </article>
+
+          <article class="game-card" tabindex="0" aria-label="Live Blackjack">
+            <div class="game-thumb">
+              <div class="game-thumb-bg" style="background: linear-gradient(135deg, #0a1a0a, #143614);">
+                <span class="game-thumb-icon" aria-hidden="true">♠️</span>
+              </div>
+              <div class="game-thumb-overlay"></div>
+              <span class="game-tag live" aria-label="Живая игра">LIVE</span>
+            </div>
+            <div class="game-info">
+              <div class="game-title">Live Blackjack</div>
+              <div class="game-provider">Evolution</div>
+            </div>
+          </article>
+
+          <article class="game-card" tabindex="0" aria-label="Mines">
+            <div class="game-thumb">
+              <div class="game-thumb-bg" style="background: linear-gradient(135deg, #1a1200, #382800);">
+                <span class="game-thumb-icon" aria-hidden="true">💣</span>
+              </div>
+              <div class="game-thumb-overlay"></div>
+              <span class="game-tag hot" aria-label="Популярная игра">HOT</span>
+            </div>
+            <div class="game-info">
+              <div class="game-title">Mines</div>
+              <div class="game-provider">BGaming</div>
+            </div>
+          </article>
+
+          <article class="game-card" tabindex="0" aria-label="Plinko">
+            <div class="game-thumb">
+              <div class="game-thumb-bg" style="background: linear-gradient(135deg, #0a0a2e, #1a1a5c);">
+                <span class="game-thumb-icon" aria-hidden="true">⚽</span>
+              </div>
+              <div class="game-thumb-overlay"></div>
+              <span class="game-tag new" aria-label="Новая игра">NEW</span>
+            </div>
+            <div class="game-info">
+              <div class="game-title">Plinko</div>
+              <div class="game-provider">BGaming</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         GAME CATEGORIES
+    ============================================================ -->
+    <section class="categories-section" aria-labelledby="catsTitle">
+      <div class="container">
+        <p class="section-label">Разделы</p>
+        <h2 class="section-title" id="catsTitle">Категории игр</h2>
+
+        <div class="categories-grid">
+          <div class="cat-card" tabindex="0" role="button" aria-label="Слоты — 2400 игр">
+            <span class="cat-emoji" aria-hidden="true">🎰</span>
+            <div class="cat-name">Слоты</div>
+            <div class="cat-count">2 400+ игр</div>
+          </div>
+          <div class="cat-card" tabindex="0" role="button" aria-label="Live Casino — 180 столов">
+            <span class="cat-emoji" aria-hidden="true">🎲</span>
+            <div class="cat-name">Live Casino</div>
+            <div class="cat-count">180+ столов</div>
+          </div>
+          <div class="cat-card" tabindex="0" role="button" aria-label="Crash — 12 игр">
+            <span class="cat-emoji" aria-hidden="true">📈</span>
+            <div class="cat-name">Crash</div>
+            <div class="cat-count">12 игр</div>
+          </div>
+          <div class="cat-card" tabindex="0" role="button" aria-label="Dice — 6 игр">
+            <span class="cat-emoji" aria-hidden="true">🎯</span>
+            <div class="cat-name">Dice</div>
+            <div class="cat-count">6 вариантов</div>
+          </div>
+          <div class="cat-card" tabindex="0" role="button" aria-label="Mines — 8 игр">
+            <span class="cat-emoji" aria-hidden="true">💣</span>
+            <div class="cat-name">Mines</div>
+            <div class="cat-count">8 режимов</div>
+          </div>
+          <div class="cat-card" tabindex="0" role="button" aria-label="Plinko — 5 игр">
+            <span class="cat-emoji" aria-hidden="true">🎳</span>
+            <div class="cat-name">Plinko</div>
+            <div class="cat-count">5 вариантов</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FEATURES
+    ============================================================ -->
+    <section class="features-section" aria-labelledby="featuresTitle">
+      <div class="container">
+        <p class="section-label">Почему мы</p>
+        <h2 class="section-title" id="featuresTitle">Наши преимущества</h2>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon-wrap" aria-hidden="true">🔍</div>
+            <h3 class="feature-title">Provably Fair</h3>
+            <p class="feature-desc">Каждый исход верифицируется на блокчейне. Проверь любой раунд самостоятельно — ни одного нечестного броска.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap" aria-hidden="true">💬</div>
+            <h3 class="feature-title">24/7 Поддержка</h3>
+            <p class="feature-desc">Живые агенты в чате круглосуточно. Среднее время ответа — 90 секунд. На русском и английском.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap" aria-hidden="true">⚡</div>
+            <h3 class="feature-title">Мгновенные выплаты</h3>
+            <p class="feature-desc">Вывод без задержек, без лимитов на сумму. BTC, ETH, USDT обрабатываются в среднем за 2 минуты.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap" aria-hidden="true">🎭</div>
+            <h3 class="feature-title">Без KYC</h3>
+            <p class="feature-desc">Никаких документов, паспортов и верификации. Подключи кошелёк — и сразу в игре. Анонимность гарантирована.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CRYPTO SECTION
+    ============================================================ -->
+    <section class="crypto-section" aria-labelledby="cryptoTitle">
+      <div class="container">
+        <p class="section-label" style="text-align: center;">Принимаем</p>
+        <h2 class="section-title" id="cryptoTitle" style="text-align: center;">Поддерживаемые криптовалюты</h2>
+
+        <div class="crypto-grid">
+          <div class="crypto-item" aria-label="Bitcoin">
+            <div class="crypto-icon btc" aria-hidden="true">₿</div>
+            <span class="crypto-name">BTC</span>
+          </div>
+          <div class="crypto-item" aria-label="Ethereum">
+            <div class="crypto-icon eth" aria-hidden="true">Ξ</div>
+            <span class="crypto-name">ETH</span>
+          </div>
+          <div class="crypto-item" aria-label="Tether">
+            <div class="crypto-icon usdt" aria-hidden="true">₮</div>
+            <span class="crypto-name">USDT</span>
+          </div>
+          <div class="crypto-item" aria-label="Litecoin">
+            <div class="crypto-icon ltc" aria-hidden="true">Ł</div>
+            <span class="crypto-name">LTC</span>
+          </div>
+          <div class="crypto-item" aria-label="Dogecoin">
+            <div class="crypto-icon doge" aria-hidden="true">Ð</div>
+            <span class="crypto-name">DOGE</span>
+          </div>
+          <div class="crypto-item" aria-label="Solana">
+            <div class="crypto-icon sol" aria-hidden="true">◎</div>
+            <span class="crypto-name">SOL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="logo-icon" aria-hidden="true" style="width:28px;height:28px;font-size:14px;">♠</div>
+            <span class="logo-name" style="font-size:20px;">KROVA<span>VYY</span></span>
+          </div>
+          <p class="footer-desc">Честное криптоказино нового поколения. Все результаты верифицируются на блокчейне.</p>
+          <div class="footer-socials" aria-label="Социальные сети">
+            <a class="social-btn" href="#" aria-label="Telegram" tabindex="0">
+              <span aria-hidden="true">✈</span>
+            </a>
+            <a class="social-btn" href="#" aria-label="Twitter / X" tabindex="0">
+              <span aria-hidden="true">𝕏</span>
+            </a>
+            <a class="social-btn" href="#" aria-label="Discord" tabindex="0">
+              <span aria-hidden="true">⚡</span>
+            </a>
+          </div>
+        </div>
+
+        <nav aria-label="Навигация по казино">
+          <p class="footer-nav-title">Казино</p>
+          <ul class="footer-nav-list">
+            <li><a href="#">Слоты</a></li>
+            <li><a href="#">Live Casino</a></li>
+            <li><a href="#">Игры с краш</a></li>
+            <li><a href="#">Турниры</a></li>
+            <li><a href="#">VIP Программа</a></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Навигация по поддержке">
+          <p class="footer-nav-title">Поддержка</p>
+          <ul class="footer-nav-list">
+            <li><a href="#">Provably Fair</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Условия</a></li>
+            <li><a href="#">Ответственная игра</a></li>
+            <li><a href="#">Контакты</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 KROVAVYY Casino. Все права защищены.</p>
+        <span class="age-badge" aria-label="Только для лиц старше 18 лет">18+</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    ;(function() {
+      'use strict'
+
+      // ── Burger menu ──────────────────────────────────────────────
+      const burgerBtn = document.getElementById('burgerBtn')
+      const mobileMenu = document.getElementById('mobileMenu')
+
+      burgerBtn.addEventListener('click', function() {
+        const isOpen = mobileMenu.classList.toggle('open')
+        burgerBtn.classList.toggle('active', isOpen)
+        burgerBtn.setAttribute('aria-expanded', String(isOpen))
+        burgerBtn.setAttribute('aria-label', isOpen ? 'Закрыть меню' : 'Открыть меню')
+      })
+
+      // Close mobile menu on outside click
+      document.addEventListener('click', function(e) {
+        if (!burgerBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+          mobileMenu.classList.remove('open')
+          burgerBtn.classList.remove('active')
+          burgerBtn.setAttribute('aria-expanded', 'false')
+          burgerBtn.setAttribute('aria-label', 'Открыть меню')
+        }
+      })
+
+      // Close mobile menu on resize back to desktop
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+          mobileMenu.classList.remove('open')
+          burgerBtn.classList.remove('active')
+          burgerBtn.setAttribute('aria-expanded', 'false')
+        }
+      })
+
+      // ── CountUp ──────────────────────────────────────────────────
+      function easeOutExpo(t) {
+        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
+      }
+
+      function countUp(el, duration) {
+        duration = duration || 2200
+        const target   = parseFloat(el.dataset.target)
+        const prefix   = el.dataset.prefix  || ''
+        const suffix   = el.dataset.suffix  || ''
+        const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals, 10) : 0
+        const start    = performance.now()
+
+        function update(now) {
+          const progress = Math.min((now - start) / duration, 1)
+          const value    = target * easeOutExpo(progress)
+          const formatted = decimals > 0
+            ? value.toFixed(decimals)
+            : Math.round(value).toLocaleString('ru-RU')
+          el.textContent = prefix + formatted + suffix
+          if (progress < 1) requestAnimationFrame(update)
+        }
+
+        requestAnimationFrame(update)
+      }
+
+      // ── IntersectionObserver for countUp ─────────────────────────
+      const countEls = document.querySelectorAll(
+        '#statJackpot, #statPlayers, #statWin, #cntJackpot, #cntPlayers, #cntWin'
+      )
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              countUp(entry.target)
+              io.unobserve(entry.target)
+            }
+          })
+        }, { threshold: 0.5 })
+
+        countEls.forEach(function(el) { io.observe(el) })
+      } else {
+        // fallback — run immediately
+        countEls.forEach(function(el) { countUp(el) })
+      }
+
+      // ── Keyboard nav for cat cards ────────────────────────────────
+      document.querySelectorAll('[role="button"]').forEach(function(el) {
+        el.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            el.click()
+          }
+        })
+      })
+
+    })()
+  </script>
+</body>
+</html>
+```

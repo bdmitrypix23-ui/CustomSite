@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Haiku Casino — премиум крипто-казино с мгновенными выплатами и приватностью.">
+  <title>Haiku Casino — Играй с Крипто</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #080808;
+      --bg-card: #111111;
+      --accent-red: #e63946;
+      --accent-gold: #f0942c;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --text-tertiary: #808080;
+      --border-subtle: #2a2a2a;
+      --crypto-btc: #f7931a;
+      --crypto-eth: #627eea;
+      --crypto-usdt: #26a17b;
+      --crypto-ltc: #345d9d;
+      --crypto-doge: #ba9f33;
+      --crypto-sol: #9945ff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, var(--bg-dark) 0%, #0f0f0f 50%, var(--bg-dark) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===================== HEADER ===================== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(10, 10, 10, 0.95);
+      padding: 1rem 2rem;
+    }
+
+    @supports (backdrop-filter: blur(1px)) {
+      header {
+        background: rgba(10, 10, 10, 0.7);
+        backdrop-filter: blur(12px);
+      }
+    }
+
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    nav {
+      display: none;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      nav {
+        display: flex;
+      }
+    }
+
+    nav a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    @media (hover: hover) {
+      nav a:hover {
+        color: var(--accent-red);
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--accent-red);
+      outline-offset: 2px;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--accent-red);
+      color: var(--accent-red);
+    }
+
+    @media (hover: hover) {
+      .btn-outline:hover {
+        background: rgba(230, 57, 70, 0.1);
+      }
+    }
+
+    .btn-primary {
+      background: var(--accent-red);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    @media (hover: hover) {
+      .btn-primary:hover {
+        background: #d62839;
+        box-shadow: 0 0 20px rgba(230, 57, 70, 0.5);
+      }
+    }
+
+    .burger-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 28px;
+      height: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    @media (min-width: 768px) {
+      .burger-menu {
+        display: none;
+      }
+    }
+
+    .burger-menu span {
+      width: 100%;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .burger-menu.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .burger-menu.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .burger-menu.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 1.5rem;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .mobile-menu.active {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      padding: 0.75rem;
+    }
+
+    .mobile-menu .header-actions {
+      flex-direction: column;
+      width: 100%;
+      gap: 0.75rem;
+    }
+
+    .mobile-menu .btn {
+      width: 100%;
+    }
+
+    /* ===================== HERO ===================== */
+    .hero {
+      position: relative;
+      padding: 100px 2rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding: 60px 1rem;
+      }
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(230, 57, 70, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(240, 148, 44, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--accent-red), var(--accent-gold), var(--accent-red));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.25rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 1.75rem;
+      }
+    }
+
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.8s ease-out 0.1s both;
+    }
+
+    .hero .btn-primary {
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+      margin-bottom: 3rem;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .stat-item {
+      animation: fadeInUp 0.8s ease-out 0.3s both;
+    }
+
+    .stat-value {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1.75rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 0.5rem;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===================== WELCOME BONUS ===================== */
+    .bonus-section {
+      padding: 4rem 2rem;
+      background: linear-gradient(135deg, rgba(15, 15, 15, 0.5) 0%, rgba(30, 30, 30, 0.5) 100%);
+    }
+
+    .bonus-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .bonus-card {
+      position: relative;
+      border-radius: 12px;
+      background: var(--bg-card);
+      padding: 3rem 2rem;
+      text-align: center;
+      border: 2px solid transparent;
+    }
+
+    .bonus-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      padding: 2px;
+      background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
+      border-radius: inherit;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .bonus-card h2 {
+      position: relative;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .bonus-card p {
+      position: relative;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+
+    .bonus-features {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .bonus-feature {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem;
+      border-radius: 6px;
+      background: rgba(230, 57, 70, 0.05);
+    }
+
+    .bonus-feature span:first-child {
+      color: var(--accent-red);
+      font-size: 1.25rem;
+    }
+
+    .bonus-card .btn-primary {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    /* ===================== GAME CARDS ===================== */
+    .games-section {
+      padding: 4rem 2rem;
+    }
+
+    .section-title {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 2.25rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .games-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .game-card {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(30, 30, 30, 0.8) 0%, rgba(20, 20, 20, 0.8) 100%);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      will-change: transform;
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 40%, rgba(230, 57, 70, 0.2) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    @media (hover: hover) {
+      .game-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--accent-red);
+        box-shadow: 0 0 25px rgba(230, 57, 70, 0.3);
+      }
+
+      .game-card:hover::before {
+        opacity: 1;
+      }
+    }
+
+    .game-icon {
+      font-size: 3rem;
+      z-index: 2;
+    }
+
+    /* ===================== STATS TICKER ===================== */
+    .ticker-section {
+      padding: 3rem 2rem;
+      background: linear-gradient(90deg, rgba(230, 57, 70, 0.05) 0%, rgba(240, 148, 44, 0.05) 100%);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .ticker-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .ticker-item {
+      text-align: center;
+    }
+
+    .ticker-value {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--accent-gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .ticker-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ===================== CATEGORIES ===================== */
+    .categories-section {
+      padding: 4rem 2rem;
+    }
+
+    .categories-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .category-card {
+      position: relative;
+      padding: 2rem 1rem;
+      border-radius: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      will-change: transform;
+    }
+
+    .category-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, transparent, rgba(230, 57, 70, 0.2), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    @media (hover: hover) {
+      .category-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--accent-red);
+        box-shadow: 0 0 20px rgba(230, 57, 70, 0.25);
+      }
+
+      .category-card:hover::after {
+        opacity: 1;
+      }
+    }
+
+    .category-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .category-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===================== FEATURES ===================== */
+    .features-section {
+      padding: 4rem 2rem;
+      background: linear-gradient(135deg, rgba(15, 15, 15, 0.5) 0%, rgba(30, 30, 30, 0.5) 100%);
+    }
+
+    .features-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      padding: 2rem;
+      border-radius: 12px;
+      background: rgba(20, 20, 20, 0.6);
+      border: 1px solid var(--border-subtle);
+    }
+
+    @supports (backdrop-filter: blur(1px)) {
+      .feature-card {
+        background: rgba(20, 20, 20, 0.3);
+        backdrop-filter: blur(8px);
+      }
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.125rem;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ===================== CRYPTO TOKENS ===================== */
+    .crypto-section {
+      padding: 4rem 2rem;
+    }
+
+    .crypto-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 2rem;
+    }
+
+    .crypto-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      transition: all 0.3s ease;
+      will-change: transform;
+    }
+
+    @media (hover: hover) {
+      .crypto-item:hover {
+        transform: translateY(-6px);
+        border-color: var(--accent-red);
+        box-shadow: 0 0 20px rgba(230, 57, 70, 0.2);
+      }
+    }
+
+    .crypto-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    .crypto-btc .crypto-icon {
+      background: linear-gradient(135deg, #f7931a, #f7931a88);
+    }
+
+    .crypto-eth .crypto-icon {
+      background: linear-gradient(135deg, #627eea, #627eea88);
+    }
+
+    .crypto-usdt .crypto-icon {
+      background: linear-gradient(135deg, #26a17b, #26a17b88);
+    }
+
+    .crypto-ltc .crypto-icon {
+      background: linear-gradient(135deg, #345d9d, #345d9d88);
+    }
+
+    .crypto-doge .crypto-icon {
+      background: linear-gradient(135deg, #ba9f33, #ba9f3388);
+    }
+
+    .crypto-sol .crypto-icon {
+      background: linear-gradient(135deg, #9945ff, #9945ff88);
+    }
+
+    .crypto-name {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+
+    /* ===================== FOOTER ===================== */
+    footer {
+      padding: 3rem 2rem;
+      background: var(--bg-dark);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .footer-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-col h4 {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 600;
+    }
+
+    .footer-col a {
+      display: block;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    @media (hover: hover) {
+      .footer-col a:hover {
+        color: var(--accent-red);
+      }
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @media (min-width: 768px) {
+      .footer-bottom {
+        flex-direction: row;
+      }
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .footer-social a {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(230, 57, 70, 0.1);
+      border: 1px solid var(--accent-red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-red);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    @media (hover: hover) {
+      .footer-social a:hover {
+        background: var(--accent-red);
+        color: white;
+      }
+    }
+
+    .footer-bottom-text {
+      color: var(--text-tertiary);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .footer-18plus {
+      color: var(--accent-red);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 480px) {
+      .header-container {
+        padding: 0.5rem 0;
+      }
+
+      .logo {
+        font-size: 1.25rem;
+      }
+
+      .btn-outline {
+        display: none;
+      }
+
+      .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .crypto-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+      }
+
+      .crypto-item {
+        padding: 1rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+      }
+
+      .hero-stats {
+        gap: 1rem;
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+      }
+
+      .section-title {
+        font-size: 1.75rem;
+      }
+
+      .bonus-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .bonus-card h2 {
+        font-size: 1.5rem;
+      }
+
+      .feature-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ===================== HEADER ===================== -->
+  <header>
+    <div class="header-container">
+      <div class="logo">₿ HAIKU</div>
+      <nav>
+        <a href="#games">Казино</a>
+        <a href="#categories">Спорт</a>
+        <a href="#features">О нас</a>
+        <a href="#crypto">Крипто</a>
+      </nav>
+      <div class="header-actions">
+        <button class="btn btn-outline">Войти</button>
+        <button class="btn btn-primary">Играть</button>
+      </div>
+      <button class="burger-menu" aria-label="Меню" id="burgerMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#games">Казино</a>
+      <a href="#categories">Спорт</a>
+      <a href="#features">О нас</a>
+      <a href="#crypto">Крипто</a>
+      <div class="header-actions">
+        <button class="btn btn-outline">Войти</button>
+        <button class="btn btn-primary">Играть</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Криптовалюта. Конфиденциальность. Прибыль.</h1>
+      <p>Премиум крипто-казино с провериваемой справедливостью, мгновенными выплатами и полной анонимностью</p>
+      <button class="btn btn-primary">Начать Играть</button>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-value" data-target="14832">14,832</div>
+          <div class="stat-label">Онлайн Игроков</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" data-target="2847" data-suffix=" ฿" data-decimals="3">0.000</div>
+          <div class="stat-label">Выплачено Сегодня</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" data-target="99" data-suffix="%">0%</div>
+          <div class="stat-label">RTP В Среднем</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WELCOME BONUS ===================== -->
+  <section class="bonus-section">
+    <div class="bonus-container">
+      <div class="bonus-card">
+        <h2>100% На Первый Депозит</h2>
+        <p>До 1 ₿ или эквивалента в USDT</p>
+        <div class="bonus-features">
+          <div class="bonus-feature">
+            <span>✓</span>
+            <span>Без требований по отыгрышу (50x игровой механики)</span>
+          </div>
+          <div class="bonus-feature">
+            <span>✓</span>
+            <span>Вывод первого выигрыша за 5 минут</span>
+          </div>
+          <div class="bonus-feature">
+            <span>✓</span>
+            <span>Применяется ко всем криптовалютам</span>
+          </div>
+        </div>
+        <button class="btn btn-primary">Получить Бонус</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GAME CARDS ===================== -->
+  <section class="games-section" id="games">
+    <h2 class="section-title">Популярные Игры</h2>
+    <div class="games-grid">
+      <div class="game-card">
+        <span class="game-icon" aria-hidden="true">🎰</span>
+      </div>
+      <div class="game-card">
+        <span class="game-icon" aria-hidden="true">🎲</span>
+      </div>
+      <div class="game-card">
+        <span class="game-icon" aria-hidden="true">🃏</span>
+      </div>
+      <div class="game-card">
+        <span class="game-icon" aria-hidden="true">🎯</span>
+      </div>
+      <div class="game-card">
+        <span class="game-icon" aria-hidden="true">⚡</span>
+      </div>
+      <div class="game-card">
+        <span class="game-icon" aria-hidden="true">💎</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== STATS TICKER ===================== -->
+  <section class="ticker-section">
+    <div class="ticker-container">
+      <div class="ticker-item">
+        <div class="ticker-value" data-target="6380" data-prefix="₿ " data-decimals="2">₿ 0.00</div>
+        <div class="ticker-label">Джекпот Сегодня</div>
+      </div>
+      <div class="ticker-item">
+        <div class="ticker-value" data-target="847362">847,362</div>
+        <div class="ticker-label">Всего Спинов</div>
+      </div>
+      <div class="ticker-item">
+        <div class="ticker-value" data-target="1284" data-prefix="₿ " data-decimals="3">₿ 0.000</div>
+        <div class="ticker-label">Максимальный Выигрыш</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CATEGORIES ===================== -->
+  <section class="categories-section" id="categories">
+    <h2 class="section-title">Категории Игр</h2>
+    <div class="categories-grid">
+      <div class="category-card">
+        <span class="category-icon" aria-hidden="true">🎰</span>
+        <div class="category-name">Слоты</div>
+      </div>
+      <div class="category-card">
+        <span class="category-icon" aria-hidden="true">🎥</span>
+        <div class="category-name">Live Casino</div>
+      </div>
+      <div class="category-card">
+        <span class="category-icon" aria-hidden="true">💥</span>
+        <div class="category-name">Crash</div>
+      </div>
+      <div class="category-card">
+        <span class="category-icon" aria-hidden="true">🎲</span>
+        <div class="category-name">Dice</div>
+      </div>
+      <div class="category-card">
+        <span class="category-icon" aria-hidden="true">⛏️</span>
+        <div class="category-name">Mines</div>
+      </div>
+      <div class="category-card">
+        <span class="category-icon" aria-hidden="true">📍</span>
+        <div class="category-name">Plinko</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FEATURES ===================== -->
+  <section class="features-section" id="features">
+    <h2 class="section-title">Почему Haiku</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon" aria-hidden="true">✓</span>
+        <h3>Провериваемая Справедливость</h3>
+        <p>Каждый спин может быть проверен. Используй нашу систему подтверждения для 100% честности</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon" aria-hidden="true">⚡</span>
+        <h3>Мгновенные Выплаты</h3>
+        <p>Выводи крипто за 5-10 минут. Без бюрократии, без скрытых комиссий</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon" aria-hidden="true">🔒</span>
+        <h3>Полная Анонимность</h3>
+        <p>Играй без KYC, без регистрации по паспорту. Только кошелёк и игра</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon" aria-hidden="true">🌍</span>
+        <h3>24/7 Поддержка</h3>
+        <p>Живой чат, техподдержка в Telegram. Ответим за 5 минут на любой вопрос</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CRYPTO TOKENS ===================== -->
+  <section class="crypto-section" id="crypto">
+    <h2 class="section-title">Принимаемые Криптовалюты</h2>
+    <div class="crypto-grid">
+      <div class="crypto-item crypto-btc">
+        <div class="crypto-icon">₿</div>
+        <span class="crypto-name">BTC</span>
+      </div>
+      <div class="crypto-item crypto-eth">
+        <div class="crypto-icon">Ξ</div>
+        <span class="crypto-name">ETH</span>
+      </div>
+      <div class="crypto-item crypto-usdt">
+        <div class="crypto-icon">Ⓤ</div>
+        <span class="crypto-name">USDT</span>
+      </div>
+      <div class="crypto-item crypto-ltc">
+        <div class="crypto-icon">Ł</div>
+        <span class="crypto-name">LTC</span>
+      </div>
+      <div class="crypto-item crypto-doge">
+        <div class="crypto-icon">Ð</div>
+        <span class="crypto-name">DOGE</span>
+      </div>
+      <div class="crypto-item crypto-sol">
+        <div class="crypto-icon">◎</div>
+        <span class="crypto-name">SOL</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Казино</h4>
+          <a href="#">Все Игры</a>
+          <a href="#">Турниры</a>
+          <a href="#">VIP Программа</a>
+          <a href="#">Referral</a>
+        </div>
+        <div class="footer-col">
+          <h4>Компания</h4>
+          <a href="#">О Haiku</a>
+          <a href="#">Вакансии</a>
+          <a href="#">Блог</a>
+          <a href="#">Контакты</a>
+        </div>
+        <div class="footer-col">
+          <h4>Поддержка</h4>
+          <a href="#">FAQ</a>
+          <a href="#">Техподдержка</a>
+          <a href="#">Правила</a>
+          <a href="#">Безопасность</a>
+        </div>
+        <div class="footer-col">
+          <h4>Легально</h4>
+          <a href="#">Условия</a>
+          <a href="#">Политика</a>
+          <a href="#">Ответственность</a>
+          <a href="#">Compliance</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-bottom-text">
+          <span class="footer-18plus">⚠️ 18+</span> — Только для взрослых. Играй ответственно.
+        </div>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="Telegram">✈️</a>
+          <a href="#" aria-label="Discord">🎮</a>
+        </div>
+        <div class="footer-bottom-text">
+          © 2026 Haiku Casino. Все права защищены.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ===================== BURGER MENU =====================
+    const burgerMenu = document.getElementById('burgerMenu')
+    const mobileMenu = document.getElementById('mobileMenu')
+
+    burgerMenu.addEventListener('click', () => {
+      burgerMenu.classList.toggle('active')
+      mobileMenu.classList.toggle('active')
+    })
+
+    // Close menu on link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        burgerMenu.classList.remove('active')
+        mobileMenu.classList.remove('active')
+      })
+    })
+
+    // ===================== COUNT UP ANIMATION =====================
+    function countUp(el, target, duration = 2000) {
+      const prefix = el.dataset.prefix || ''
+      const suffix = el.dataset.suffix || ''
+      const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0
+      const start = performance.now()
+
+      function easeOutExpo(t) {
+        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
+      }
+
+      function update(now) {
+        const progress = Math.min((now - start) / duration, 1)
+        const value = target * easeOutExpo(progress)
+        const formatted = decimals > 0
+          ? value.toFixed(decimals)
+          : Math.round(value).toLocaleString('ru-RU')
+        el.textContent = prefix + formatted + suffix
+        if (progress < 1) requestAnimationFrame(update)
+      }
+
+      requestAnimationFrame(update)
+    }
+
+    // Intersection Observer для lazy count-up
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.dataset.counted) {
+          const target = parseFloat(entry.target.dataset.target)
+          const duration = parseInt(entry.target.dataset.duration) || 2000
+          countUp(entry.target, target, duration)
+          entry.target.dataset.counted = 'true'
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.5 })
+
+    // Observe all elements with data-target
+    document.querySelectorAll('[data-target]').forEach(el => {
+      observer.observe(el)
+    })
+
+    // ===================== SMOOTH SCROLL =====================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href')
+        if (href === '#') return
+        e.preventDefault()
+        const target = document.querySelector(href)
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' })
+        }
+      })
+    })
+
+    // ===================== FOCUS MANAGEMENT =====================
+    document.querySelectorAll('button, a[href], input').forEach(el => {
+      el.addEventListener('focus', function() {
+        this.style.outline = ''
+      })
+    })
+  </script>
+</body>
+</html>
