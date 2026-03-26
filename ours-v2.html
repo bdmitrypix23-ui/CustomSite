@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мурчелло — натуральный корм для кошек</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Lato:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    :root {
+      --green: #2d7a4e;
+      --green-light: #4a9d6a;
+      --yellow: #f4d35e;
+      --white: #f9f7f4;
+      --text-dark: #1a1a1a;
+      --text-light: #4a4a4a;
+      --border: #e5e1dc;
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 48px;
+      --space-xl: 64px;
+    }
+
+    body {
+      font-family: 'Lato', 'Helvetica Neue', 'Segoe UI', sans-serif;
+      background-color: var(--white);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+      background-color: rgba(249, 247, 244, 0.95);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md) var(--space-lg);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+      font-weight: 800;
+      color: var(--green);
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: var(--space-lg);
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.15s ease;
+    }
+
+    @media (hover: hover) {
+      nav a:hover {
+        color: var(--green);
+      }
+    }
+
+    nav a:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+      }
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: var(--space-xl) var(--space-lg);
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--space-xl);
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: clamp(2rem, 1.5rem + 3vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--text-dark);
+      margin-bottom: var(--space-md);
+      letter-spacing: -0.03em;
+    }
+
+    .hero-content p {
+      font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1rem);
+      color: var(--text-light);
+      margin-bottom: var(--space-lg);
+      max-width: 450px;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      background: var(--green);
+      color: var(--white);
+      padding: var(--space-sm) var(--space-md);
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.15s ease;
+      font-family: 'Lato', sans-serif;
+    }
+
+    @media (hover: hover) {
+      .hero-cta:hover {
+        background: var(--green-light);
+      }
+    }
+
+    .hero-cta:active {
+      transform: scale(0.98);
+    }
+
+    .hero-cta:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    /* Hero decorative shape */
+    .hero-visual {
+      position: relative;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cat-shape {
+      width: 280px;
+      height: 280px;
+      background: var(--yellow);
+      border-radius: 140px 140px 180px 180px;
+      position: relative;
+      opacity: 0.9;
+    }
+
+    .cat-shape::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 30%;
+      width: 60px;
+      height: 100px;
+      background: var(--yellow);
+      border-radius: 30px 30px 0 0;
+      transform: rotate(-25deg);
+    }
+
+    .cat-shape::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 30%;
+      width: 60px;
+      height: 100px;
+      background: var(--yellow);
+      border-radius: 30px 30px 0 0;
+      transform: rotate(25deg);
+    }
+
+    .cat-eye {
+      position: absolute;
+      width: 24px;
+      height: 32px;
+      background: var(--green);
+      border-radius: 50%;
+      top: 35%;
+    }
+
+    .cat-eye:first-of-type {
+      left: 30%;
+    }
+
+    .cat-eye:last-of-type {
+      right: 30%;
+    }
+
+    .cat-nose {
+      position: absolute;
+      width: 16px;
+      height: 20px;
+      background: var(--green);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: var(--space-lg) var(--space-md);
+      }
+
+      .hero-visual {
+        height: 300px;
+      }
+
+      .cat-shape {
+        width: 240px;
+        height: 240px;
+        border-radius: 120px 120px 150px 150px;
+      }
+    }
+
+    /* Features Section */
+    .features {
+      background: var(--white);
+      padding: var(--space-xl) var(--space-lg);
+      border-top: 1px solid var(--border);
+    }
+
+    .features-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .features-title {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: var(--space-lg);
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .feature-card {
+      padding: var(--space-md);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.15s ease, transform 0.15s ease;
+      background: var(--white);
+    }
+
+    .feature-card.featured {
+      grid-column: span 2;
+      border: 2px solid var(--green);
+      padding: var(--space-lg);
+      background: linear-gradient(135deg, rgba(45, 122, 78, 0.02), transparent);
+    }
+
+    @media (max-width: 768px) {
+      .feature-card.featured {
+        grid-column: span 1;
+      }
+    }
+
+    @media (hover: hover) {
+      .feature-card:hover {
+        border-color: var(--green-light);
+        transform: translateY(-2px);
+      }
+    }
+
+    .feature-card h3 {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: var(--space-xs);
+    }
+
+    .feature-card p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    /* Products Section */
+    .products {
+      padding: var(--space-xl) var(--space-lg);
+      background: var(--white);
+      border-top: 1px solid var(--border);
+    }
+
+    .products-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .products-title {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: var(--space-lg);
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .product-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: var(--space-md);
+      background: var(--white);
+      transition: border-color 0.15s ease, transform 0.15s ease;
+    }
+
+    @media (hover: hover) {
+      .product-card:hover {
+        border-color: var(--green-light);
+        transform: translateY(-2px);
+      }
+    }
+
+    .product-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--yellow);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Icon shapes */
+    .product-icon::before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background: inherit;
+    }
+
+    .product-icon.chicken::before {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+      clip-path: polygon(30% 0%, 70% 0%, 100% 40%, 100% 100%, 0% 100%, 0% 40%);
+    }
+
+    .product-icon.salmon::before {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+      clip-path: polygon(0% 30%, 30% 0%, 70% 0%, 100% 30%, 80% 50%, 100% 100%, 0% 100%, 20% 50%);
+    }
+
+    .product-icon.turkey::before {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+      clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    }
+
+    .product-card h3 {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: var(--space-xs);
+    }
+
+    .product-card p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      margin-bottom: var(--space-md);
+    }
+
+    .product-price {
+      color: var(--green);
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+
+    /* Reviews Section */
+    .reviews {
+      padding: var(--space-xl) var(--space-lg);
+      background: var(--white);
+      border-top: 1px solid var(--border);
+    }
+
+    .reviews-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .reviews-title {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: var(--space-lg);
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .review-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: var(--space-md);
+      background: var(--white);
+    }
+
+    .review-text {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      margin-bottom: var(--space-md);
+      font-style: italic;
+    }
+
+    .review-author {
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 0.95rem;
+    }
+
+    .review-cat {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      font-weight: 400;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--text-dark);
+      color: var(--white);
+      padding: var(--space-lg);
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a {
+      color: var(--yellow);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    @media (hover: hover) {
+      footer a:hover {
+        color: var(--green-light);
+      }
+    }
+
+    footer a:focus-visible {
+      outline: 2px solid var(--yellow);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--space-md);
+      text-align: left;
+      margin-bottom: var(--space-md);
+    }
+
+    .footer-section h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: var(--space-xs);
+      color: var(--yellow);
+    }
+
+    .footer-section p {
+      font-size: 0.9rem;
+      color: rgba(249, 247, 244, 0.8);
+      line-height: 1.8;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    .footer-links li {
+      display: inline;
+    }
+
+    .footer-copyright {
+      font-size: 0.85rem;
+      color: rgba(249, 247, 244, 0.6);
+      padding-top: var(--space-md);
+      border-top: 1px solid rgba(249, 247, 244, 0.2);
+      text-align: center;
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 480px) {
+      .header-container {
+        padding: var(--space-sm) var(--space-md);
+      }
+
+      .logo {
+        font-size: 1.25rem;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card.featured {
+        grid-column: span 1;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: var(--space-lg) var(--space-md);
+      }
+
+      .hero-visual {
+        height: 250px;
+      }
+
+      .cat-shape {
+        width: 200px;
+        height: 200px;
+        border-radius: 100px 100px 120px 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <a href="#" class="logo">Мурчелло</a>
+      <nav>
+        <a href="#products">Продукция</a>
+        <a href="#about">О нас</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Качественный корм для кошек по доступной цене</h1>
+      <p>Натуральные ингредиенты, без консервантов. Мурчелло — это золотая середина между качеством премиум-класса и честной ценой. Ваша кошка заслуживает лучшего.</p>
+      <button class="hero-cta">Узнать больше</button>
+    </div>
+    <div class="hero-visual">
+      <div class="cat-shape" aria-hidden="true">
+        <div class="cat-eye"></div>
+        <div class="cat-eye"></div>
+        <div class="cat-nose"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="about">
+    <div class="features-container">
+      <h2 class="features-title">Почему выбирают Мурчелло</h2>
+      <div class="features-grid">
+        <div class="feature-card featured">
+          <h3>Натуральные ингредиенты</h3>
+          <p>Только качественное мясо, крупы и овощи. Никаких искусственных добавок. Каждый компонент тщательно отбирается для здоровья вашего питомца.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Без консервантов</h3>
+          <p>Свежесть в каждой порции. Натуральная консервация без химии.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Ветеринары рекомендуют</h3>
+          <p>Одобрено специалистами. Сбалансированный состав для здоровья.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Коты выбирают</h3>
+          <p>Отличный вкус, который нравится даже капризным питомцам.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section class="products" id="products">
+    <div class="products-container">
+      <h2 class="products-title">Линейка продуктов</h2>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-icon chicken" aria-hidden="true"></div>
+          <h3>Курица и рис</h3>
+          <p>Классическая комбинация для здоровой шерсти и отличного пищеварения. Мягкий вкус, любят все кошки.</p>
+          <div class="product-price">450₽</div>
+        </div>
+        <div class="product-card">
+          <div class="product-icon salmon" aria-hidden="true"></div>
+          <h3>Лосось и шпинат</h3>
+          <p>Омега-3 для здоровья сердца и блеска шерсти. Лосось — натуральный источник витаминов и минералов.</p>
+          <div class="product-price">520₽</div>
+        </div>
+        <div class="product-card">
+          <div class="product-icon turkey" aria-hidden="true"></div>
+          <h3>Индейка и тыква</h3>
+          <p>Лёгкий вариант для чувствительного желудка. Тыква содержит клетчатку и полезна для пищеварения.</p>
+          <div class="product-price">490₽</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews Section -->
+  <section class="reviews" id="reviews">
+    <div class="reviews-container">
+      <h2 class="reviews-title">Отзывы владельцев</h2>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <p class="review-text">"Моя Мурка была сложной в еде, но Мурчелло съедает с аппетитом! Видно, что качественный корм — кошка активнее и шерсть сияет."</p>
+          <div class="review-author">Елена Петрова</div>
+          <div class="review-cat">Кошка: Мурка, 5 лет</div>
+        </div>
+        <div class="review-card">
+          <p class="review-text">"Отличный баланс цены и качества. Мой Барсик ест два года подряд, ветеринар говорит, что анализы идеальные."</p>
+          <div class="review-author">Иван Смирнов</div>
+          <div class="review-cat">Кот: Барсик, 3 года</div>
+        </div>
+        <div class="review-card">
+          <p class="review-text">"Сняла с премиум-корма из-за цены, начала давать Мурчелло. Честно, разницы не вижу. Кот доволен, я экономлю — win-win!"</p>
+          <div class="review-author">Мария Соколова</div>
+          <div class="review-cat">Кот: Васька, 7 лет</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Контакты</h3>
+        <p>
+          Email: <a href="mailto:info@murchello.ru">info@murchello.ru</a><br>
+          Телефон: <a href="tel:+79991234567">+7 (999) 123-45-67</a>
+        </p>
+      </div>
+      <div class="footer-section">
+        <h3>Соцсети</h3>
+        <div class="footer-links">
+          <li><a href="#" aria-label="ВКонтакте">ВКонтакте</a></li>
+          <li>•</li>
+          <li><a href="#" aria-label="Телеграм">Телеграм</a></li>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h3>Информация</h3>
+        <p>
+          <a href="#">Доставка и оплата</a><br>
+          <a href="#">Политика конфиденциальности</a>
+        </p>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      © 2026 Мурчелло. Натуральный корм для кошек.
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href !== '#') {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+
+    // Respect prefers-reduced-motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      document.documentElement.style.scrollBehavior = 'auto';
+    }
+  </script>
+</body>
+</html>
